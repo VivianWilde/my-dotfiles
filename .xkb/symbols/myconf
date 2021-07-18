@@ -1,0 +1,5 @@
+partial alphanumeric_keys
+xkb_symbols "swap_parens" {
+            replace key
+
+}
