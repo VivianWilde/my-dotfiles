@@ -1,0 +1,8 @@
+[Unit]
+Description=MPRIS/MPD usability improver
+
+[Service]
+ExecStart=%h/.cargo/bin/polybar-mpris daemon -c "%h/.config/polybar-mpris.toml"
+
+[Install]
+WantedBy=default.target

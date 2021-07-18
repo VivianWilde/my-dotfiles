@@ -1,0 +1,9 @@
+{
+  "window_command_mappings": [
+    { "class": "Gnome-terminal", "command": "gnome-terminal" },
+    { "class": "Evince", "command": "evince" },
+    { "class": "Emacs", "command": "emacsclient -nc" }
+  ],
+  "window_swallow_criteria": {},
+  "terminals": ["Gnome-terminal", "Alacritty", "Tilix"]
+}
