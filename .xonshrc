@@ -39,7 +39,7 @@ $XONSH_HISTORY_SIZE=131072
 
 source-zsh --interactive True --login False "echo loading xonsh foreign shell"
 
-xontrib load autojump bashisms coreutils histcpy readable-traceback whole_word_jumping z pipeliner  output_search
+xontrib load bashisms coreutils histcpy readable-traceback whole_word_jumping z pipeliner  output_search
 
 
 # XONSH WIZARD END

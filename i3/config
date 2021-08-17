@@ -10,7 +10,7 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 # Important startup stuff
-exec --no-startup-id "~/bin/monitor.sh"
+exec --no-startup-id "~/bin/laptop.sh"
 exec_always setxkbmap -option caps:swapescape -option parens:swap_brackets -option compose:rctrl
 set $mod Mod4
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -214,6 +214,8 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
+exec --no-startup-id redshift-gtk
 exec_always --no-startup-id ~/bin/autosuspend
 exec_always --no-startup-id "feh --bg-scale /home/rohan/Pictures/Wallpapers/cyan_planets.jpg"
 exec --no-startup-id nm-applet

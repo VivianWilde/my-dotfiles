@@ -209,19 +209,19 @@ alias aptinfo="apt-cache show"
     #Manjaro
 
 alias pac="pacmatic"
-alias summon="sudo --preserve-env pac -S"
+alias summon="sudo --preserve-env pac -Sv"
 alias exterminate="sudo --preserve-env=pacman_program pac -Rs"
 alias purge="sudo --preserve-env=pacman_program pac -Qdtq"
 alias update="pac -Qu"
-alias upgrade="sudo --preserve-env=pacman_program pac -Syu"
+alias upgrade="sudo --preserve-env=pacman_program pac -Syuv"
 alias pacinfo="pac -Si"
 alias pacsearch="pac -Ss"
 alias rosettav="o ~/Downloads/pacrosetta.html"
 alias rosettaw="w3m ~/Downloads/pacrosetta.html"
-alias ypac='yay --pacman "/usr/bin/powerpill"'
-alias ysummon="ypac -S"
-alias yupgrade="ypac -Syu"
-alias yayinfo="ypac -Si"
+alias ypac='yay --pacman "/usr/bin/pacmatic"'
+alias ysummon="ypac -Sv"
+alias yupgrade="ypac -Syuv"
+alias yinfo="ypac -Si"
 alias ysearch="ypac -Ss"
 
 #Fun
