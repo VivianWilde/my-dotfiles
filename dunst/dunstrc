@@ -30,10 +30,10 @@
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
 # Laptop/monitor
-    geometry = "800x4+1720+30" # Monitor
-    #geometry = "400x1+760+15"  #Laptop
-    font = Monospace 11 # Monitor
-    #font= Monospace 9   # Laptop
+    # geometry = "800x4+1720+30" # Monitor
+    geometry = "400x1+760+15"  #Laptop
+    # font = Monospace 11 # Monitor
+    font= Monospace 9   # Laptop
 
     # Show how many messages are currently hidden (because of geometry).
     indicate_hidden = yes
