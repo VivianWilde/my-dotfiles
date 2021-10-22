@@ -41,7 +41,7 @@ This function should only modify configuration layer settings."
 
      ;; dash
 
-     themes-megapack
+     ;; themes-megapack
      games
      colors
 
@@ -76,6 +76,10 @@ This function should only modify configuration layer settings."
      yaml
      html
      javascript
+     coffeescript
+     ;; (typescript :variables
+     ;;             typescript-fmt-on-save t
+     ;;             typescript-fmt-tool 'tide)
      scheme
      emacs-lisp
      ;git
@@ -83,7 +87,11 @@ This function should only modify configuration layer settings."
      org
      racket
                                         ;latex
-     lsp
+     (lsp :variables
+          lsp-use-lsp-ui nil
+          lsp-lens-enable t
+          lsp-modeline-diagnostics-enable nil)
+
      ;;(shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -141,6 +149,8 @@ This function should only modify configuration layer settings."
 
                                         ; themeing
                                       night-owl-theme
+                                      nano-theme
+                                      nano-modeline
                                       wc-mode
                                       org-d20
                                       org-roam
@@ -149,6 +159,7 @@ This function should only modify configuration layer settings."
                                         ;alert
                                         ;org-alert
                                         ;org-wild-notifier
+                                      gcmh
                                       )
 
 
@@ -216,7 +227,7 @@ It should only modify the values of Spacemacs settings."
    ;; Setting this >= 1 MB should increase performance for lsp servers
    ;; in emacs 27.
    ;; (default (* 1024 1024))
-   dotspacemacs-read-process-output-max (* 1024 1024)
+   dotspacemacs-read-process-output-max (* 1024 1024 2)
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
@@ -300,8 +311,9 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(subatomic
-                         dracula
+   dotspacemacs-themes '(dracula
+                         nano-dark
+                         subatomic
                          madhat2r
                          night-owl
                          spacemacs-dark
@@ -644,10 +656,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
                                         ;(require 'desktop-environment)
   ;(add-to-list 'load-path "/home/rohan/experiments/emacs-misc/packages/emacs-todoist")
   (add-to-list 'load-path "/home/rohan/experiments/emacs-misc/gmatscript.el")
+  ;; (gcmh-mode 1)
   ;;(require 'zen-mode) Glitchy, so don't bother
 	;(setq todoist-token "d343fae28a31136647e588735165cf32eabc4c76")
 	;(require 'todoist)
- (message "USER INIT LOADED")                                       ;(require 'gmat-mode)
+ (run-with-idle-timer 2 t (lambda () (garbage-collect)))
   )
 
 (defun dotspacemacs/user-load ()
@@ -665,10 +678,17 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  ;; (setq lsp-log-io nil)
+  ;; (setq lsp-idle-delay 0.500)
+
+
+                                        ; Smudge setup
+  (setq smudge-oauth2-client-id "2be412c6f3014dde8ed52f4b9756757e")
+  (setq smudge-oauth2-client-secret "c29a8c121421479eb46d16d23291efba")
   (cua-mode 1)
-  (message "HELLO WORLD")
   (desktop-read)
   (desktop-save-mode 1)
+
   (setq org-latex-pdf-process
         '("pdflatex -interaction nonstopmode -output-directory %o %f"
           "bibtex %b"
@@ -682,8 +702,22 @@ you should place your code here."
   (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
   (add-to-list 'auto-mode-alist '("^/home/rohan/[.]xonshrc\\''" . xonsh-mode))
 
+  (with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("mla"
+                 "\\documentclass{mla}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
   (global-company-mode)
 
+  (with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("extarticle"
+                 "\\documentclass{extarticle}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
   (defadvice org-call-for-shift-select (before org-call-for-shift-select-cua activate)
     (if (and cua-mode
              org-support-shift-select
@@ -708,7 +742,6 @@ you should place your code here."
   (global-set-key (kbd "M-)") 'previous-buffer)
   (global-set-key (kbd "M-]") 'previous-buffer)
   (setq org-export-with-smart-quotes t)
-  (message "HELLO WORLD")
                                         ;  (setq eclim-executable "/home/rohan/.eclipse/org.eclipse.platform_4.14.0_155965261_linux_gtk_x86_64/plugins/org.eclim_2.8.0/bin/eclim")
 
   (add-hook 'prog-mode-hook #'rainbow-mode)
@@ -747,7 +780,6 @@ you should place your code here."
   (setq-default hybrid-style-enable-hjkl-bindings t)
   (set-cursor-color "MediumSpringGreen")
   (setq browse-url-browser-function 'w3m-browse-url)
-  (message "GOODBYE WORLD")
 
   (setq ispell-dictionary "en_GB")
   )
@@ -1132,7 +1164,7 @@ This function is called at the very end of Spacemacs initialization."
  '(cursor-color "#cccccc")
  '(cursor-type 'bar)
  '(custom-safe-themes
-   '("c82d24bfba431e8104219bfd8e90d47f1ad6b80a504a7900cbee002a8f04392f" "9d84c720528fdb16f618025bd73d52c85c0b747e04ea86c7ef41d7bd77bab8b7" "0eccc893d77f889322d6299bec0f2263bffb6d3ecc79ccef76f1a2988859419e" "eb7be1648009af366d83f855191057bdc09348a2d9353db31da03b1cdec50cc5" "7feeed063855b06836e0262f77f5c6d3f415159a98a9676d549bfeb6c49637c4" "7023f8768081cd1275f7fd1cd567277e44402c65adfe4dc10a3a908055ed634d" "b11699e28cc2f6c34fa6336e67d443be89fadb6a9b60de0b1594f31340ea87e4" "0aefd26847666798da4ad8cd1aa6038ef1b0db92f94c24dc48d06ea445831207" "3b09eb07767faffb708574c44b9f46a6e2d3248e605cf144a7ca0bc9efd6bcf8" "9583f0b6511c5774e5ebfe32662105b4d7157f51473f64e5e1d8be3fc8565f01" "d54834a3ec381644880b49fb82ce9d6ccc11997510c7071cfbf3558c8f4b68f6" "ebd9bea137cafba0138f5a6996aa6851c4ee8263844c75a57798faacbcf8e3e4" "4639288d273cbd3dc880992e6032f9c817f17c4a91f00f3872009a099f5b3f84" "24fc62afe2e5f0609e436aa2427b396adf9a958a8fa660edbaab5fb13c08aae6" "c19e5291471680e72d8bd98f8d6e84f781754a9e8fc089536cda3f0b7c3550e3" "c5ad91387427abc66af38b8d6ea74cade4e3734129cbcb0c34cc90985d06dcb3" "0b2e94037dbb1ff45cc3cd89a07901eeed93849524b574fa8daa79901b2bfdcf" "1a1cdd9b407ceb299b73e4afd1b63d01bbf2e056ec47a9d95901f4198a0d2428" "c9ddf33b383e74dac7690255dd2c3dfa1961a8e8a1d20e401c6572febef61045" "392395ee6e6844aec5a76ca4f5c820b97119ddc5290f4e0f58b38c9748181e8d" "9b35c097a5025d5da1c97dba45fed027e4fb92faecbd2f89c2a79d2d80975181" "e6ccd0cc810aa6458391e95e4874942875252cd0342efd5a193de92bfbb6416b" "725a0ac226fc6a7372074c8924c18394448bb011916c05a87518ad4563738668" "862a0ccc73c12df4df325427f9285fa6a5bbba593a77257f43b01c84269f51b0" "8ffdc8c66ceeaf7921f4510a70d808f01b303e6b4d177c947b442e80d4228678" "3fa65d60abd566321f93d1354f91dedae8ab795bb688a421c69e2e0f7fa3c9bc" "b44f201f67425ece29e34972be12917189cac2bac90e3e35d3160bce211d3199" "3cd28471e80be3bd2657ca3f03fbb2884ab669662271794360866ab60b6cb6e6" "d71f6c718dab453b625c407adc50479867a557668d5c21599a1ebea204d9e4f3" "f391a94155d991d13aa857d56db98924136b98357640c8239b0e8eb6aca5436b" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "604ac011fc9bd042bc041330b3a5e5a86e764a46f7e9fe13e2a1f9f83bf44327" "de9fa4b3614611bed2fe75e105bd0d37542924b977299736f158dd4d7343c666" "462d6915a7eac1c6f00d5acd8b08ae379e12db2341e7d3eac44ff7f984a5e579" "0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" "41c8c11f649ba2832347fe16fe85cf66dafe5213ff4d659182e25378f9cfc183" "a24c5b3c12d147da6cef80938dca1223b7c7f70f2f382b26308eba014dc4833a" "450f3382907de50be905ae8a242ecede05ea9b858a8ed3cc8d1fbdf2d57090af" "28bf1b0a72e3a1e08242d776c5befc44ba67a36ced0e55df27cfc7ae6be6c24d" "9e31aff9afe3c20a33dd966b4c54c6a5151f07659362e4b06bde38ded5370dae" "8885761700542f5d0ea63436874bf3f9e279211707d4b1ca9ed6f53522f21934" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "04dd0236a367865e591927a3810f178e8d33c372ad5bfef48b5ce90d4b476481" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "274fa62b00d732d093fc3f120aca1b31a6bb484492f31081c1814a858e25c72e" default))
+   '("1ca05bdae217adeb636e9bc5e84c8f1d045be2c8004fafd5337d141d9b67a96f" "aca70b555c57572be1b4e4cec57bc0445dcb24920b12fb1fea5f6baa7f2cad02" "bd3b9675010d472170c5d540dded5c3d37d83b7c5414462737b60f44351fb3ed" "76b4632612953d1a8976d983c4fdf5c3af92d216e2f87ce2b0726a1f37606158" "e7ba99d0f4c93b9c5ca0a3f795c155fa29361927cadb99cfce301caf96055dfd" "d268b67e0935b9ebc427cad88ded41e875abfcc27abd409726a92e55459e0d01" "c1284dd4c650d6d74cfaf0106b8ae42270cab6c58f78efc5b7c825b6a4580417" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "c82d24bfba431e8104219bfd8e90d47f1ad6b80a504a7900cbee002a8f04392f" "9d84c720528fdb16f618025bd73d52c85c0b747e04ea86c7ef41d7bd77bab8b7" "0eccc893d77f889322d6299bec0f2263bffb6d3ecc79ccef76f1a2988859419e" "eb7be1648009af366d83f855191057bdc09348a2d9353db31da03b1cdec50cc5" "7feeed063855b06836e0262f77f5c6d3f415159a98a9676d549bfeb6c49637c4" "7023f8768081cd1275f7fd1cd567277e44402c65adfe4dc10a3a908055ed634d" "b11699e28cc2f6c34fa6336e67d443be89fadb6a9b60de0b1594f31340ea87e4" "0aefd26847666798da4ad8cd1aa6038ef1b0db92f94c24dc48d06ea445831207" "3b09eb07767faffb708574c44b9f46a6e2d3248e605cf144a7ca0bc9efd6bcf8" "9583f0b6511c5774e5ebfe32662105b4d7157f51473f64e5e1d8be3fc8565f01" "d54834a3ec381644880b49fb82ce9d6ccc11997510c7071cfbf3558c8f4b68f6" "ebd9bea137cafba0138f5a6996aa6851c4ee8263844c75a57798faacbcf8e3e4" "4639288d273cbd3dc880992e6032f9c817f17c4a91f00f3872009a099f5b3f84" "24fc62afe2e5f0609e436aa2427b396adf9a958a8fa660edbaab5fb13c08aae6" "c19e5291471680e72d8bd98f8d6e84f781754a9e8fc089536cda3f0b7c3550e3" "c5ad91387427abc66af38b8d6ea74cade4e3734129cbcb0c34cc90985d06dcb3" "0b2e94037dbb1ff45cc3cd89a07901eeed93849524b574fa8daa79901b2bfdcf" "1a1cdd9b407ceb299b73e4afd1b63d01bbf2e056ec47a9d95901f4198a0d2428" "c9ddf33b383e74dac7690255dd2c3dfa1961a8e8a1d20e401c6572febef61045" "392395ee6e6844aec5a76ca4f5c820b97119ddc5290f4e0f58b38c9748181e8d" "9b35c097a5025d5da1c97dba45fed027e4fb92faecbd2f89c2a79d2d80975181" "e6ccd0cc810aa6458391e95e4874942875252cd0342efd5a193de92bfbb6416b" "725a0ac226fc6a7372074c8924c18394448bb011916c05a87518ad4563738668" "862a0ccc73c12df4df325427f9285fa6a5bbba593a77257f43b01c84269f51b0" "8ffdc8c66ceeaf7921f4510a70d808f01b303e6b4d177c947b442e80d4228678" "3fa65d60abd566321f93d1354f91dedae8ab795bb688a421c69e2e0f7fa3c9bc" "b44f201f67425ece29e34972be12917189cac2bac90e3e35d3160bce211d3199" "3cd28471e80be3bd2657ca3f03fbb2884ab669662271794360866ab60b6cb6e6" "d71f6c718dab453b625c407adc50479867a557668d5c21599a1ebea204d9e4f3" "f391a94155d991d13aa857d56db98924136b98357640c8239b0e8eb6aca5436b" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "604ac011fc9bd042bc041330b3a5e5a86e764a46f7e9fe13e2a1f9f83bf44327" "de9fa4b3614611bed2fe75e105bd0d37542924b977299736f158dd4d7343c666" "462d6915a7eac1c6f00d5acd8b08ae379e12db2341e7d3eac44ff7f984a5e579" "0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" "41c8c11f649ba2832347fe16fe85cf66dafe5213ff4d659182e25378f9cfc183" "a24c5b3c12d147da6cef80938dca1223b7c7f70f2f382b26308eba014dc4833a" "450f3382907de50be905ae8a242ecede05ea9b858a8ed3cc8d1fbdf2d57090af" "28bf1b0a72e3a1e08242d776c5befc44ba67a36ced0e55df27cfc7ae6be6c24d" "9e31aff9afe3c20a33dd966b4c54c6a5151f07659362e4b06bde38ded5370dae" "8885761700542f5d0ea63436874bf3f9e279211707d4b1ca9ed6f53522f21934" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "04dd0236a367865e591927a3810f178e8d33c372ad5bfef48b5ce90d4b476481" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "274fa62b00d732d093fc3f120aca1b31a6bb484492f31081c1814a858e25c72e" default))
  '(custom-theme-directory "~/.config/emacs/themes")
  '(diary-entry-marker 'font-lock-variable-name-face)
  '(dynamic-completion-mode t)
@@ -1199,6 +1231,7 @@ static char *gnus-pointer[] = {
 \"###....####.######\",
 \"###..######.######\",
 \"###########.######\" };") t)
+ '(helm-completion-style 'emacs)
  '(highlight-changes-colors '("#EF5350" "#7E57C2"))
  '(highlight-indent-guides-auto-enabled nil)
  '(highlight-parentheses-colors '("#2aa198" "#b58900" "#268bd2" "#6c71c4" "#859900"))
@@ -1257,10 +1290,12 @@ static char *gnus-pointer[] = {
  '(lsp-disabled-clients '(mspyls lsp-python-ms))
  '(lsp-enable-file-watchers nil)
  '(lsp-keymap-prefix "M-l")
- '(lsp-log-io t)
+ '(lsp-log-io nil)
  '(lsp-pylsp-plugins-flake8-config "~/.config/flake8")
  '(lsp-pylsp-plugins-pydocstyle-enabled nil)
  '(lsp-pyright-auto-search-paths nil)
+ '(lsp-pyright-log-level "error")
+ '(lsp-pyright-multi-root nil)
  '(lsp-pyright-use-library-code-for-types nil)
  '(magit-diff-use-overlays nil)
  '(main-line-color1 "#222232")
@@ -1279,7 +1314,7 @@ static char *gnus-pointer[] = {
      (plantuml . t)))
  '(org-indent-boundary-char 32)
  '(org-indent-indentation-per-level 2)
- '(org-latex-packages-alist '(("\"\"" "tabularx" nil)))
+ '(org-latex-packages-alist '(("" "tabularx" nil)))
  '(org-src-lang-modes
    '(("arduino" . arduino)
      ("redis" . redis)
@@ -1302,7 +1337,7 @@ static char *gnus-pointer[] = {
      ("plantuml" . plantuml)))
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(ini-mode helm-c-moccur systemd helm-slime slime-company slime lastpass org-pdftools writeroom-mode visual-fill-column vterm visual-regexp treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil terminal-here symon symbol-overlay string-inflection spaceline-all-the-icons all-the-icons memoize prettier-js pippel pipenv password-generator overseer org-superstar tablist org-cliplink org-brain esxml nodejs-repl nameless modus-vivendi-theme modus-operandi-theme meghanada maven-test-mode lsp-ui kaolin-themes json-navigator hierarchy js2-refactor importmagic helm-xref multi window-purpose helm-org helm-ls-git groovy-mode groovy-imports pcache flycheck-package package-lint let-alist flycheck-elsa eziam-theme evil-textobj-line evil-org evil-lion evil-goggles emr list-utils editorconfig doom-themes devdocs company-reftex chocolate-theme centered-cursor-mode browse-at-remote blacken hybrid-mode font-lock+ dotenv-mode origami lsp-jedi dap-mode posframe lsp-treemacs bui treemacs pfuture zmq language-id js2-mode dash-functional dash helm-smex disaster company-c-headers cmake-mode clang-format libmpdel libmpdee google-this helm-youtube mpv versuri org-emms helm-emms helm-spotify org-tree-slide undohist frame-purpose helm-purpose todoist fireplace zeno-theme oceanic-theme srcery-theme silkworm-theme pastelmac-theme paganini-theme paper-theme sourcerer-theme sorcery-theme visual-ascii-mode wc-mode org-wc xonsh-mode yasnippet-snippets imenu-list org-ref key-chord helm-bibtex bibtex-completion biblio parsebib biblio-core org-pdfview pdf-tools org-gnome gnome-calendar telepathy org-autolist helm-org-rifle bog org-beautify-theme org-lookup-dnd annotate system-packages xterm-color typo stickyfunc-enhance srefactor spotify shell-pop ibuffer-projectile gmail-message-mode ham-mode html-to-markdown flymd eshell-z eshell-prompt-extras esh-help company-auctex auctex-latexmk auctex ranger proof-general company-coq minimap orgbox ob-ml-marklogic org-sidebar org-edit-latex latex-unicode-math-mode zencoding-mode zen-mode lyrics arc-dark-theme vue-html-mode vue-mode matlab-mode reformatter jdee company-jedi helm-ad ac-emacs-eclim kite-mini org-wild-notifier org-alert fortune-cookie edit-server-htmlize edit-server web orgnav helm-spotify-plus helm-lastpass helm-itunes helm-fuzzy-find helm-books helm-flyspell theme-magic selectric-mode cyberpunk-2019-theme poet-theme elfeed-web mew clipmon helm-eww helm-system-packages elfeed muse wordsmith-mode writegood-mode nord-theme qt-pro-mode crontab-mode company-emacs-eclim eclim ob-ipython ipython-shell-send jupyter mpdel javap-mode javadoc-lookup lsp-java helm-lsp lsp-mode company-lsp gradle-mode mvn nov ox-epub csv-mode impatient-mode hackernews flymake-racket xwidgete exwm commander homebrew-mode dark-mint-theme vimrc-mode dactyl-mode yaml-mode malyon vscode-icon dired-icon darcula-theme mode-icons company-flx flycheck-pyflakes skewer-mode indium company-tern tern livid-mode discover-js2-refactor transient visual-regexp-steroids org-d20 zones pydoc-info pydoc deft websocket ewal-spacemacs-themes desktop-environment better-defaults magithub magit folding elfeed-goodies google helm-google immaterial-theme night-owl-theme multi-term company-web web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode web-completion-data sphinx-doc jedi-direx direx jedi jedi-core python-environment epc ctable concurrent deferred elpy find-file-in-project pylint format-all smart-tabs-mode helm-w3m w3m emms conda geiser evil-smartparens evil-paredit cl-libify kite xml+ pixiv-novel-mode ereader rainbow-identifiers color-identifiers-mode typit mmt sudoku pacmacs 2048-game wgrep smex pandoc-mode ox-pandoc ht ivy-hydra flyspell-correct-ivy evil-cleverparens paredit engine-mode counsel-projectile counsel swiper ivy zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme bash-completion flymake-json jsonnet-mode web-beautify simple-httpd json-mode json-snatcher json-reformat multiple-cursors js-doc coffee-mode rainbow-mode xkcd recentf-ext jump-char iy-go-to-char buffer-move better-shell unfill racket-mode faceup org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim mmm-mode markdown-toc markdown-mode htmlize helm-company helm-c-yasnippet gnuplot git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-commit with-editor git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck diff-hl company-statistics company-anaconda company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
+   '(nano-modeline nano-theme smudge gcmh crdt hyperbole whole-line-or-region ini-mode helm-c-moccur systemd helm-slime slime-company slime lastpass org-pdftools writeroom-mode visual-fill-column vterm visual-regexp treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil terminal-here symon symbol-overlay string-inflection spaceline-all-the-icons all-the-icons memoize prettier-js pippel pipenv password-generator overseer org-superstar tablist org-cliplink org-brain esxml nodejs-repl nameless modus-vivendi-theme modus-operandi-theme meghanada maven-test-mode lsp-ui kaolin-themes json-navigator hierarchy js2-refactor helm-xref multi window-purpose helm-org helm-ls-git groovy-mode groovy-imports pcache flycheck-package package-lint let-alist flycheck-elsa eziam-theme evil-textobj-line evil-org evil-lion evil-goggles emr list-utils editorconfig doom-themes devdocs company-reftex chocolate-theme centered-cursor-mode browse-at-remote blacken hybrid-mode font-lock+ dotenv-mode origami lsp-jedi dap-mode posframe lsp-treemacs bui treemacs pfuture zmq language-id js2-mode dash-functional dash helm-smex disaster company-c-headers cmake-mode clang-format libmpdel libmpdee google-this helm-youtube mpv versuri org-emms helm-emms helm-spotify org-tree-slide undohist frame-purpose helm-purpose todoist fireplace zeno-theme oceanic-theme srcery-theme silkworm-theme pastelmac-theme paganini-theme paper-theme sourcerer-theme sorcery-theme visual-ascii-mode wc-mode org-wc xonsh-mode yasnippet-snippets imenu-list org-ref key-chord helm-bibtex bibtex-completion biblio parsebib biblio-core org-pdfview pdf-tools org-gnome gnome-calendar telepathy org-autolist helm-org-rifle bog org-beautify-theme org-lookup-dnd annotate system-packages xterm-color typo stickyfunc-enhance srefactor spotify shell-pop ibuffer-projectile gmail-message-mode ham-mode html-to-markdown flymd eshell-z eshell-prompt-extras esh-help company-auctex auctex-latexmk auctex ranger proof-general company-coq minimap orgbox ob-ml-marklogic org-sidebar org-edit-latex latex-unicode-math-mode zencoding-mode zen-mode lyrics arc-dark-theme vue-html-mode vue-mode matlab-mode reformatter jdee company-jedi helm-ad ac-emacs-eclim kite-mini org-wild-notifier org-alert fortune-cookie edit-server-htmlize edit-server web orgnav helm-spotify-plus helm-lastpass helm-itunes helm-fuzzy-find helm-books helm-flyspell theme-magic selectric-mode cyberpunk-2019-theme poet-theme elfeed-web mew clipmon helm-eww helm-system-packages elfeed muse wordsmith-mode writegood-mode nord-theme qt-pro-mode crontab-mode company-emacs-eclim eclim ob-ipython ipython-shell-send jupyter mpdel javap-mode javadoc-lookup lsp-java helm-lsp lsp-mode company-lsp gradle-mode mvn nov ox-epub csv-mode impatient-mode hackernews flymake-racket xwidgete exwm commander homebrew-mode dark-mint-theme vimrc-mode dactyl-mode yaml-mode malyon vscode-icon dired-icon darcula-theme mode-icons company-flx flycheck-pyflakes skewer-mode indium company-tern tern livid-mode discover-js2-refactor transient visual-regexp-steroids org-d20 zones pydoc-info pydoc deft websocket ewal-spacemacs-themes desktop-environment better-defaults magithub magit folding elfeed-goodies google helm-google immaterial-theme night-owl-theme multi-term company-web web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode web-completion-data sphinx-doc jedi-direx direx jedi jedi-core python-environment epc ctable concurrent deferred elpy find-file-in-project pylint format-all smart-tabs-mode helm-w3m w3m emms conda geiser evil-smartparens evil-paredit cl-libify kite xml+ pixiv-novel-mode ereader rainbow-identifiers color-identifiers-mode typit mmt sudoku pacmacs 2048-game wgrep smex pandoc-mode ox-pandoc ht ivy-hydra flyspell-correct-ivy evil-cleverparens paredit engine-mode counsel-projectile counsel swiper ivy zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme bash-completion flymake-json jsonnet-mode web-beautify simple-httpd json-mode json-snatcher json-reformat multiple-cursors js-doc coffee-mode rainbow-mode xkcd recentf-ext jump-char iy-go-to-char buffer-move better-shell unfill racket-mode faceup org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim mmm-mode markdown-toc markdown-mode htmlize helm-company helm-c-yasnippet gnuplot git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-commit with-editor git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck diff-hl company-statistics company-anaconda company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(plantuml-executable-path "/usr/bin/plantuml" t)
  '(plantuml-jar-path "/usr/share/java/plantuml.jar")
