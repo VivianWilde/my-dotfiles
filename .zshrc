@@ -37,7 +37,7 @@ export TEXT_AID_TOO_EDITOR="emacsclient -c"
 export TEXT_AID_TOO_SECRET="HELLO-WORLD"
 export SAVEHIST=1000
 export FOREIGN_ALIASES_SUPPRESS_SKIP_MESSAGE=True
-export pacman_program="/usr/bin/powerpill"
+# export pacman_program="/usr/bin/powerpill"
 export STK_INSTALL_DIR="$HOME/apps/stk-engine"
 export LD_LIBRARY_PATH="$STK_INSTALL_DIR/bin:$LD_LIBRARY_PATH"
 export STK_CONFIG_DIR="$HOME/.config/stk-engine"
@@ -218,7 +218,7 @@ alias pacinfo="pac -Si"
 alias pacsearch="pac -Ss"
 alias rosettav="o ~/Downloads/pacrosetta.html"
 alias rosettaw="w3m ~/Downloads/pacrosetta.html"
-alias ypac='env pacman_program="/usr/bin/yay --sudoloop --pacman powerpill" pacmatic'
+alias ypac='env pacman_program="/usr/bin/yay --sudoloop" pacmatic'
 alias ysummon="ypac -S"
 alias yupgrade="ypac -Syu"
 alias yinfo="ypac -Si"
