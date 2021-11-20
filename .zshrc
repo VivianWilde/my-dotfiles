@@ -5,10 +5,6 @@
 
 export LESSOPEN="| pygmentize -O style=monokai -g -f terminal256 %s"
 export ZSH="$HOME/.oh-my-zsh"
-export PATH="/opt/eclipse:$PATH"
-export PATH="$HOME/eclipse/java-2019-06/eclipse:$PATH"
-# export PATH="/root/.p2/pool/plugins/org.eclim_2.8.0/bin/eclimd:$PATH"
-#export PATH="$HOME/anaconda3/bin:$PATH"
 
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH="$HOME/.pub-cache/bin:$PATH"
@@ -16,14 +12,16 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/usr/local/opt/texinfo/bin:$PATH"
 export PATH="$HOME/.local/share/umake/ide:$PATH"
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
-#export PATH="$PATH:U|sers/rohan/.local/bin"
 export PATH="/usr/racket:$PATH"
 export PATH="$HOME/experiments/pythonia:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
+export PATH="$HOME/.config/doom-emacs/bin:$PATH"
+
 export WINEARCH="win64"
 export WINEPATH="/usr/bin"
 export WINEPREFIX="$HOME/.wine"
 export PATH="$WINEPATH:$PATH"
+
 export MANPATH="$HOME/anaconda3/share/man:$HOME/funny-manpages:/usr/share/man:$MANPATH"
 # $EDITOR should open in terminal
 export BROWSER='/usr/bin/vivaldi-stable'

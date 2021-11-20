@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-outrun-electric)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -62,20 +62,20 @@
 (map! "C--"
      (cmd! (text-scale-decrease)))
 
-(map! "M-e"
-      (cmd! (command-execute 'execute-extended-command)))
+;(map! "M-e"
+;      (cmd! (command-execute 'execute-extended-command)))
 (map! "M-q"
       (cmd! (command-execute 'consult-buffer)))
 
 (map! "M-o"
       (cmd! (command-execute 'other-window)))
 
-(map! "C-M-v"
-      (cmd! (visual-line-mode)))
+;; (map! "C-M-v"
+;;       (cmd! (visual-line-mode)))
 
-(map! (:after 'ox-latex
+(map! (:after 'org-mode
        :map org-mode-map
-       "M-f M-c" #'org-latex-export-to-pdf))
+       "M-p" #'org-latex-export-to-pdf))
 
 (map! :leader
       (:prefix-map ("b" . "buffer")
@@ -85,37 +85,77 @@
 (map! :leader
       (:prefix-map ("c" . "code")
        :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines))
+
 ; Mode declarations
 (auto-save-visited-mode)
 (global-visual-line-mode t)
 (global-undo-tree-mode t)
 (cua-mode 1)
 ;; (desktop-read)
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
 ; Misc variable modifications
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 ;; (add-to-list 'auto-mode-alist '("^/home/rohan/[.]xonshrc\\''" . xonsh-mode))
 (setq python-shell-interpreter "ipython3"
       python-shell-interpreter-args "--simple-prompt --pprint")
+
+
+
+
+;; Doom-specific config
 (setq confirm-kill-emacs nil)
+(setq doom-scratch-initial-major-mode 'org-mode)
+(setq doom-font (font-spec :family "Source Code Pro" :size 12 :weight 'light))
 
-(after! 'ox-latex
+(setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 13))
 
+(after! ox-latex
   (add-to-list 'org-latex-classes
                '("extarticle"
                  "\\documentclass{extarticle}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+               )
+
 
   (add-to-list 'org-latex-classes
                '("mla"
                  "\\documentclass{mla}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+               ))
 
+(after! org-mode
+  (define-key org-mode-map (kbd "M-p") 'org-latex-export-to-pdf))
+
+(after! hl-todo
+  (setq hl-todo-keyword-faces
+        '(
+          ("TODO" . "#dc752f")
+          ("NEXT" . "#dc752f")
+          ("THEM" . "#2d9574")
+          ("PROG" . "#4f97d7")
+          ("OKAY" . "#4f97d7")
+          ("DONT" . "#f2241f")
+          ("FAIL" . "#f2241f")
+          ("DONE" . "#86dc2f")
+          ("NOTE" . "#b1951d")
+          ("KLUDGE" . "#b1951d")
+          ("HACK" . "#b1951d")
+          ("TEMP" . "#b1951d")
+          ("FIXME" . "#dc752f")
+          ("XXX+" . "#dc752f")
+          ("\\?\\?\\?+" . "#dc752f")
+          ("IDEA" . "#2d9574")
+          )
+          )
+        )
+(after! coffee-mode
+  (set-company-backend! 'coffee-mode
+    '(company-yasnippet :with company-dabbrev)))
 
 ; Hooks
 (add-hook 'text-mode-hook #'auto-save-visited-mode)
@@ -168,4 +208,3 @@
 (global-subword-mode 1)                           ; Iterate through CamelCase words
 
 (setq-default major-mode 'org-mode)
-(setq display-line-numbers-type 'relative)

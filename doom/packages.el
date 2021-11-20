@@ -56,3 +56,27 @@
 (package! helm-org-rifle)
 (package! pandoc)
 (package! ox-pandoc)
+;; (package! ox-latex)
+(package! evil-better-visual-line)
+
+(package! imgur :recipe
+              (:type git
+               :host github
+	       :repo "larsmagne/imgur.el"))
+
+
+(package! meme :recipe
+              (:type git
+               :host github
+	       :repo "larsmagne/meme"))
+(package! coffee-mode)
+(package! company-web)
+(package! consult-company)
+(package! typescript-mode)
+(package! tide)
+(package! realgud)
+(package! realgud-ipdb)
+(package! fortune-cookie)
+(package! bnf-mode)
+(package! lark-mode
+  :recipe (:local-repo "~/experiments/elisp/lark-mode"))

@@ -21,16 +21,16 @@
 
        :completion
        company           ; the ultimate code completion backend
-       ;; helm              ; the *other* search engine for love and life
+       ;; (helm +icons +fuzzy)              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       ;;ivy               ; a search engine for love and life
+       ;; (ivy +icons +prescient)              ; a search engine for love and life
        (vertico +icons)                          ; the search engine of the future
 
        :ui
        deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
-       ;; doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;(emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
@@ -113,12 +113,12 @@
        ;;agda              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
        ;;cc                ; C > C++ == 1
-       ;;clojure           ; java with a lisp
+       clojure           ; java with a lisp
        common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
-       ;;data              ; config/data formats
+       data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
        ;;dhall
        ;;elixir            ; erlang done right
@@ -172,17 +172,17 @@
        ;;zig               ; C, but simpler
 
        :email
-       ;;(mu4e +org +gmail)
+       (mu4e +org +gmail)
        ;;notmuch
        ;;(wanderlust +gmail)
 
        :app
        calendar
-       ;;emms
+       emms
        everywhere        ; *leave* Emacs!? You must be joking
-       ;;irc               ; how neckbeards socialize
-       ;;(rss +org)        ; emacs as an RSS reader
-       ;;twitter           ; twitter client https://twitter.com/vnought
+       irc               ; how neckbeards socialize
+       (rss +org)        ; emacs as an RSS reader
+       twitter           ; twitter client https://twitter.com/vnought
 
        :config
        ;;literate
