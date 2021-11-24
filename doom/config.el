@@ -25,8 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-outrun-electric)
-
+(setq doom-theme 'doom-palenight)
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -116,8 +115,8 @@
                  "\\documentclass{extarticle}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-               )
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+               
 
 
   (add-to-list 'org-latex-classes
@@ -125,8 +124,8 @@
                  "\\documentclass{mla}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-               ))
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+               
 
 (after! org-mode
   (define-key org-mode-map (kbd "M-p") 'org-latex-export-to-pdf))
@@ -149,10 +148,10 @@
           ("FIXME" . "#dc752f")
           ("XXX+" . "#dc752f")
           ("\\?\\?\\?+" . "#dc752f")
-          ("IDEA" . "#2d9574")
-          )
-          )
-        )
+          ("IDEA" . "#2d9574"))))
+          
+          
+        
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
     '(company-yasnippet :with company-dabbrev)))

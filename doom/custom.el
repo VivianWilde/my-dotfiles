@@ -6,7 +6,7 @@
  '(ansi-color-names-vector
    ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])
  '(custom-safe-themes
-   '("c85514b33ffedb58963da19bedac23e370a52822f548f9c8a18f34afd33f8c63" "f7fed1aadf1967523c120c4c82ea48442a51ac65074ba544a5aefc5af490893b" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "da53441eb1a2a6c50217ee685a850c259e9974a8fa60e899d393040b4b8cc922" "db5b906ccc66db25ccd23fc531a213a1afb500d717125d526d8ff67df768f2fc" default))
+   '("47db50ff66e35d3a440485357fb6acb767c100e135ccdf459060407f8baea7b2" "28a104f642d09d3e5c62ce3464ea2c143b9130167282ea97ddcc3607b381823f" "c85514b33ffedb58963da19bedac23e370a52822f548f9c8a18f34afd33f8c63" "f7fed1aadf1967523c120c4c82ea48442a51ac65074ba544a5aefc5af490893b" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "da53441eb1a2a6c50217ee685a850c259e9974a8fa60e899d393040b4b8cc922" "db5b906ccc66db25ccd23fc531a213a1afb500d717125d526d8ff67df768f2fc" default))
  '(exwm-floating-border-color "#191b20")
  '(fci-rule-color "#5B6268")
  '(highlight-tail-colors
@@ -17,6 +17,7 @@
  '(jdee-db-active-breakpoint-face-colors (cons "#1B2229" "#51afef"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
+ '(line-spacing 0.2)
  '(objed-cursor-color "#ff6c6b")
  '(package-selected-packages
    '(xr bnf-mode fortune-cookie pacmacs realgud-ipdb imenu-list))
