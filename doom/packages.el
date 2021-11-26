@@ -78,5 +78,8 @@
 (package! realgud-ipdb)
 (package! fortune-cookie)
 (package! bnf-mode)
+(package! helm-swoop)
 (package! lark-mode
   :recipe (:local-repo "~/experiments/elisp/lark-mode"))
+
+(package! lsp-origami)

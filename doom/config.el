@@ -64,7 +64,7 @@
 ;(map! "M-e"
 ;      (cmd! (command-execute 'execute-extended-command)))
 (map! "M-q"
-      (cmd! (command-execute 'consult-buffer)))
+      (cmd! (command-execute 'helm-mini)))
 
 (map! "M-o"
       (cmd! (command-execute 'other-window)))
@@ -72,14 +72,25 @@
 ;; (map! "C-M-v"
 ;;       (cmd! (visual-line-mode)))
 
-(map! (:after 'org-mode
+(map! (:after 'org
        :map org-mode-map
        "M-p" #'org-latex-export-to-pdf))
 
 (map! :leader
       (:prefix-map ("b" . "buffer")
-       :desc "Consult Switch Buffer" "b" #'consult-buffer))
+       :desc "Helm Switch Buffer" "b" #'helm-mini))
 
+(map! :leader
+      (:prefix-map ("s" . "search")
+       :desc "Helm Search Buffer" "s" #'helm-swoop-without-pre-input))
+
+(map! :leader
+      (:prefix-map ("s" . "search")
+       :desc "Helm Org Rifle" "S" #'helm-org-rifle))
+
+(map! :leader
+      (:prefix-map ("s" . "search")
+       :desc "Helm Search All" "B" #'helm-multi-swoop-all))
 
 (map! :leader
       (:prefix-map ("c" . "code")
@@ -98,7 +109,7 @@
 ;; (add-to-list 'auto-mode-alist '("^/home/rohan/[.]xonshrc\\''" . xonsh-mode))
 (setq python-shell-interpreter "ipython3"
       python-shell-interpreter-args "--simple-prompt --pprint")
-
+(setq helm-swoop-pre-input-function (lambda () ""))
 
 
 
@@ -108,6 +119,13 @@
 (setq doom-font (font-spec :family "Source Code Pro" :size 12 :weight 'light))
 
 (setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 13))
+;; Enable folding
+(setq lsp-enable-folding t)
+(use-package! lsp-origami)
+(add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
+
+;; Add origami and LSP integration
+(add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
 
 (after! ox-latex
   (add-to-list 'org-latex-classes
@@ -127,8 +145,16 @@
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
                
 
-(after! org-mode
-  (define-key org-mode-map (kbd "M-p") 'org-latex-export-to-pdf))
+(after! org
+  ;; (define-key org-mode-map (kbd "M-p") 'org-latex-export-to-pdf)
+  (setq org-pretty-entities t)
+  ;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (setq org-list-demote-modify-bullet
+       '(("+" . "-") ("-" . "+") ("*" . "+")))
+  (setq org-edit-src-auto-save-idle-delay 300)
+  (setq org-insert-heading-respect-content nil)
+ )
 
 (after! hl-todo
   (setq hl-todo-keyword-faces
@@ -162,14 +188,14 @@
 (add-hook 'text-mode-hook #'hl-todo-mode)
 
 ;; (add-hook 'prog-mode-hook #'rainbow-mode)
-;; (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook #'auto-save-visited-mode)
 (add-hook 'prog-mode-hook #'hl-todo-mode)
 
-(add-hook 'org-mode-hook #'visual-line-mode)
-(add-hook 'org-mode-hook #'auto-save-visited-mode)
+;; (add-hook 'org-mode-hook #'visual-line-mode)
+;; (add-hook 'org-mode-hook #'auto-save-visited-mode)
 ;; (add-hook 'org-mode-hook #'wc-mode)
-(add-hook 'org-mode-hook #'org-indent-mode)
+;; (add-hook 'org-mode-hook #'org-indent-mode)
 
 ;; (add-hook 'python-mode-hook #'sphinx-doc-mode)
 ;; (add-hook 'python-mode-hook #'anaconda-mode)
