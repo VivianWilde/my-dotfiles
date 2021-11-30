@@ -241,10 +241,10 @@ exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
 exec "systemctl start --user emacs"
 # Window focus
 #bindsym $mod+v [class="Vivaldi-stable"] focus
-bindsym $mod+v exec nextmatch Vivaldi
-bindsym $mod+Shift+v exec vivaldi
-bindsym $mod+e exec nextmatch Emacs
-bindsym $mod+Shift+e exec emacsclient -nc
+bindsym $mod+Shft+v exec nextmatch Vivaldi
+bindsym $mod+v exec vivaldi
+bindsym $mod+Shift+e exec nextmatch Emacs
+bindsym $mod+e exec emacsclient -nc
 # bindsym $mod+\/ exec com.github.alainm23.planner.quick-add
 # bindsym $mod+n exec nextmatch Org.gnome.Nautilus
 bindsym $mod+Shift+n exec nautilus -w

@@ -83,3 +83,11 @@
   :recipe (:local-repo "~/experiments/elisp/lark-mode"))
 
 (package! lsp-origami)
+
+(package! evil-cleverparens)
+(package! evil-smartparens)
+(package! bespoke-themes
+  :recipe (:host github :repo "mclear-tools/bespoke-themes" :branch "main"))
+
+(package! bespoke-modeline
+  :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))

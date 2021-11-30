@@ -9,7 +9,7 @@
 (setq user-full-name "Rohan Goyal "
       user-mail-address "goyal.rohan.03@gmail.com")
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+;;;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
 ;; + `doom-font'
@@ -26,6 +26,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-palenight)
+(setq bespoke-set-theme 'light)
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -95,14 +96,20 @@
 (map! :leader
       (:prefix-map ("c" . "code")
        :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines))
+;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
+;;
 
 ; Mode declarations
 (auto-save-visited-mode)
-(global-visual-line-mode t)
-(global-undo-tree-mode t)
-(cua-mode 1)
+(global-visual-line-mode)
+(global-undo-tree-mode)
+(global-origami-mode)
+(smartparens-global-strict-mode)
+(sp-use-paredit-bindings)
+;; (cua-mode 1)
 ;; (desktop-read)
 ;; (desktop-save-mode 1)
+(profiler-start 'cpu+mem)
 
 ; Misc variable modifications
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
@@ -110,11 +117,11 @@
 (setq python-shell-interpreter "ipython3"
       python-shell-interpreter-args "--simple-prompt --pprint")
 (setq helm-swoop-pre-input-function (lambda () ""))
-
+(setq history-delete-duplicates t)
 
 
 ;; Doom-specific config
-(setq confirm-kill-emacs nil)
+;; (setq confirm-kill-emacs nil)
 (setq doom-scratch-initial-major-mode 'org-mode)
 (setq doom-font (font-spec :family "Source Code Pro" :size 12 :weight 'light))
 
@@ -122,9 +129,6 @@
 ;; Enable folding
 (setq lsp-enable-folding t)
 (use-package! lsp-origami)
-(add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
-
-;; Add origami and LSP integration
 (add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
 
 (after! ox-latex
@@ -146,10 +150,11 @@
                
 
 (after! org
-  ;; (define-key org-mode-map (kbd "M-p") 'org-latex-export-to-pdf)
+  (define-key org-mode-map (kbd "M-p") 'org-latex-export-to-pdf)
   (setq org-pretty-entities t)
   ;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-  (add-hook 'org-mode-hook 'org-indent-mode)
+  (add-hook! 'org-mode-hook 'org-indent-mode)
+(add-hook! 'org-mode-hook (lambda () (define-key org-mode-map (kbd "M-p"))'org-latex-export-to-pdf))
   (setq org-list-demote-modify-bullet
        '(("+" . "-") ("-" . "+") ("*" . "+")))
   (setq org-edit-src-auto-save-idle-delay 300)
@@ -174,23 +179,30 @@
           ("FIXME" . "#dc752f")
           ("XXX+" . "#dc752f")
           ("\\?\\?\\?+" . "#dc752f")
-          ("IDEA" . "#2d9574"))))
-          
-          
-        
+          ("IDEA" . "#2d9574")
+          ("CITE" . "#dc752f")
+          ("OBVIOUS" . "#dc752f")
+          ("PHRASING" . "#dc752f")
+          ("LACKING" . "#dc752f"))))
+
+
+
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
     '(company-yasnippet :with company-dabbrev)))
 
 ; Hooks
-(add-hook 'text-mode-hook #'auto-save-visited-mode)
-(add-hook 'text-mode-hook #'visual-line-mode)
-(add-hook 'text-mode-hook #'hl-todo-mode)
+(add-hook! 'text-mode-hook #'auto-save-visited-mode)
+(add-hook! 'text-mode-hook #'visual-line-mode)
+(add-hook! 'text-mode-hook #'hl-todo-mode)
 
-;; (add-hook 'prog-mode-hook #'rainbow-mode)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'prog-mode-hook #'auto-save-visited-mode)
-(add-hook 'prog-mode-hook #'hl-todo-mode)
+(add-hook! 'doom-init-ui-hook (lambda () (defalias 'doom/delete-frame-with-prompt 'delete-frame)))
+; (add-hook 'prog-mode-hook #'rainbow-mode)
+(add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook! 'prog-mode-hook #'auto-save-visited-mode)
+(add-hook! 'prog-mode-hook #'hl-todo-mode)
+(add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
+(add-hook! 'smartparens-mode-hook #'evil-smartparens-mode)
 
 ;; (add-hook 'org-mode-hook #'visual-line-mode)
 ;; (add-hook 'org-mode-hook #'auto-save-visited-mode)
@@ -200,15 +212,16 @@
 ;; (add-hook 'python-mode-hook #'sphinx-doc-mode)
 ;; (add-hook 'python-mode-hook #'anaconda-mode)
 ;; (add-hook 'python-mode-hook #'elpy-mode)
-(add-hook 'markdown-mode-hook #'auto-save-visited-mode)
-(add-hook 'markdown-mode-hook #'visual-line-mode)
+(add-hook! 'markdown-mode-hook #'auto-save-visited-mode)
+(add-hook! 'markdown-mode-hook #'visual-line-mode)
 
-(add-hook 'nov-mode-hook #'visual-line-mode)
-(add-hook 'nov-mode-hook #'visual-fill-column-mode)
+(add-hook! 'nov-mode-hook #'visual-line-mode)
+(add-hook! 'nov-mode-hook #'visual-fill-column-mode)
 
-(add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
-(add-hook 'ielm-mode-hook #'eldoc-mode)
+(add-hook! 'emacs-lisp-mode-hook #'eldoc-mode)
+(add-hook! 'lisp-interaction-mode-hook #'eldoc-mode)
+(add-hook! 'ielm-mode-hook #'eldoc-mode)
+
 
 
 ;; Stuff from
@@ -233,3 +246,16 @@
 (global-subword-mode 1)                           ; Iterate through CamelCase words
 
 (setq-default major-mode 'org-mode)
+
+
+
+;;  Custom function defs, etc
+(defun org-blockify-comment (region)
+  ;; Basically, take a bunch of # comments, and place them inside a block
+  ;; Process: Wrapped in save-excursion: Construct region, call uncomment on region, mark it, insert comment structure template.
+  )
+
+(defun find-commented-region (start comment-char)
+
+
+  )
