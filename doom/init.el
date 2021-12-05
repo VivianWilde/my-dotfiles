@@ -20,11 +20,11 @@
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
-       (company +childframe)       ; the ultimate code completion backend
-       (helm +icons)              ; the *other* search engine for love and life
+       company       ; the ultimate code completion backend
+       ;; (helm +icons +fuzzy)              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;; (ivy +icons +prescient)              ; a search engine for love and life
-       ;; (vertico +icons)                          ; the search engine of the future
+       (vertico +icons)                          ; the search engine of the future
 
        :ui
        deft              ; notational velocity for Emacs
@@ -43,10 +43,10 @@
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
-       treemacs          ; a project drawer, like neotree but cooler
+       ;; treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        vc-gutter         ; vcs diff in the fringe
-       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        ;;window-select     ; visually switch windows
        ;; workspaces        ; tab emulation, persistence & separate workspaces
        zen               ; distraction-free coding or writing
@@ -97,7 +97,7 @@
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
-       pdf               ; pdf enhancements
+       ;; pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
@@ -172,7 +172,7 @@
        ;;zig               ; C, but simpler
 
        :email
-       (mu4e +org +gmail)
+       ;; (mu4e +org +gmail)
        ;;notmuch
        ;;(wanderlust +gmail)
 
@@ -180,9 +180,9 @@
        calendar
        emms
        everywhere        ; *leave* Emacs!? You must be joking
-       irc               ; how neckbeards socialize
-       (rss +org)        ; emacs as an RSS reader
-       twitter           ; twitter client https://twitter.com/vnought
+       ;; irc               ; how neckbeards socialize
+       ;; (rss +org)        ; emacs as an RSS reader
+       ;; twitter           ; twitter client https://twitter.com/vnought
 
        :config
        ;;literate

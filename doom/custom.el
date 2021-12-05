@@ -21,7 +21,7 @@
  '(line-spacing 0.2)
  '(objed-cursor-color "#ff6c6b")
  '(package-selected-packages
-   '(xr bnf-mode fortune-cookie pacmacs realgud-ipdb imenu-list))
+   '(org-present xr bnf-mode fortune-cookie pacmacs realgud-ipdb imenu-list))
  '(pdf-view-midnight-colors (cons "#bbc2cf" "#282c34"))
  '(rustic-ansi-faces
    ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])

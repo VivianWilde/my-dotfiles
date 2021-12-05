@@ -51,7 +51,6 @@
 ;; (add-to-list 'load-path "~/build/doom-nano-testing")
 ;; (require 'load-nano)
 ;; (package! coffee-mode)
-(package! nano-theme)
 (package! geiser-guile)
 (package! helm-org-rifle)
 (package! pandoc)
@@ -59,21 +58,21 @@
 ;; (package! ox-latex)
 (package! evil-better-visual-line)
 
-(package! imgur :recipe
-              (:type git
-               :host github
-	       :repo "larsmagne/imgur.el"))
+;; (package! imgur :recipe
+;;               (:type git
+;;                :host github
+;; 	       :repo "larsmagne/imgur.el"))
 
 
-(package! meme :recipe
-              (:type git
-               :host github
-	       :repo "larsmagne/meme"))
+;; (package! meme :recipe
+;;               (:type git
+;;                :host github
+;; 	       :repo "larsmagne/meme"))
 (package! coffee-mode)
 (package! company-web)
-(package! consult-company)
-(package! typescript-mode)
-(package! tide)
+;; (package! consult-company)
+;; (package! typescript-mode)
+;; (package! tide)
 (package! realgud)
 (package! realgud-ipdb)
 (package! fortune-cookie)
@@ -86,8 +85,7 @@
 
 (package! evil-cleverparens)
 (package! evil-smartparens)
-(package! bespoke-themes
-  :recipe (:host github :repo "mclear-tools/bespoke-themes" :branch "main"))
-
-(package! bespoke-modeline
-  :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))
+;; (package! bespoke-themes
+;;   :recipe (:host github :repo "mclear-tools/bespoke-themes" :branch "main"))
+;; (package! bespoke-modeline
+  ;; :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))

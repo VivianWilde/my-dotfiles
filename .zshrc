@@ -216,7 +216,7 @@ alias pacinfo="pac -Si"
 alias pacsearch="pac -Ss"
 alias rosettav="o ~/Downloads/pacrosetta.html"
 alias rosettaw="w3m ~/Downloads/pacrosetta.html"
-alias ypac='env pacman_program="/usr/bin/yay --sudoloop" pacmatic'
+alias ypac='env pacman_program="/usr/bin/yay" pacmatic'
 alias ysummon="ypac -S"
 alias yupgrade="ypac -Syu"
 alias yinfo="ypac -Si"
