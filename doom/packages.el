@@ -85,7 +85,10 @@
 
 (package! evil-cleverparens)
 (package! evil-smartparens)
+(package! ox-reveal)
+(package! htmlize)
+(package! lsp-grammarly)
 ;; (package! bespoke-themes
 ;;   :recipe (:host github :repo "mclear-tools/bespoke-themes" :branch "main"))
 ;; (package! bespoke-modeline
-  ;; :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))
+;; :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))
