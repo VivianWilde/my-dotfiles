@@ -220,6 +220,7 @@ bindsym $mod+r mode "resize"
 exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
 exec --no-startup-id redshift-gtk
 exec_always --no-startup-id "~/bin/autosuspend"
+exec_always --no-startup-id "~/bin/monitor-1920.sh"
 exec_always --no-startup-id "feh --bg-scale /home/rohan/Pictures/Wallpapers/cyan_planets.jpg"
 exec --no-startup-id nm-applet
 exec volctl
@@ -232,7 +233,7 @@ exec_always --no-startup-id autotiling
 exec albert
 exec libinput-gestures
 exec "synapse -s"
-exec '/home/rohan/.config/polybar/launch.sh'
+exec_always '/home/rohan/.config/polybar/launch.sh'
 exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
 exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
 exec tilix

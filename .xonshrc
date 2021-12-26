@@ -1,6 +1,6 @@
 # XONSH WEBCONFIG START
-$PROMPT = '{INTENSE_BLUE} {cwd} {INTENSE_RED}❯{INTENSE_YELLOW}❯{INTENSE_GREEN}❯{RESET} '
-$XONSH_COLOR_STYLE = 'emacs'
+$PROMPT = '{CYAN}{cwd} {INTENSE_RED}❯{INTENSE_YELLOW}❯{INTENSE_GREEN}❯{RESET} '
+# $XONSH_COLOR_STYLE = 'inkpot'
 # XONSH WEBCONFIG END
 $COMMANDS_CACHE_SIZE_WARNING='10000'
 # XONSH WIZARD START
@@ -33,16 +33,25 @@ $PRETTY_PRINT_RESULTS = '1'
 #$PROMPT = '{BLUE}{cwd} $ '
 $THREAD_SUBPROCS = '1'
 $XONSH_AUTOPAIR = '1'
-$XONSH_COLOR_STYLE = "native"
+# $XONSH_COLOR_STYLE = "native"
 # $XONSH_SHOW_TRACEBACK = True
 $XONSH_HISTORY_SIZE=131072
 
 source-zsh --interactive True --login False "echo loading xonsh foreign shell"
 
-xontrib load bashisms coreutils histcpy readable-traceback whole_word_jumping z pipeliner  output_search cd powerline_binding gitinfo jedi 
+xontrib load bashisms coreutils histcpy readable-traceback whole_word_jumping z pipeliner  output_search gitinfo jedi
+
 
 
 # XONSH WIZARD END
+
+from xonsh.tools import register_custom_style
+mystyle = {
+    "BLUE": "#004CFF"
+}
+register_custom_style("mystyle", mystyle, base="emacs")
+$XONSH_COLOR_STYLE="mystyle"
+
 # if "eterm" not in $TERM:
 #	 xontrib load powerline
 

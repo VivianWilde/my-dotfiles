@@ -54,6 +54,8 @@
 ;; they are implemented.
 
                                         ; Keybindings
+
+(map! "M-W" #'yank)
 (map! "C-s"
       (cmd! (save-buffer)))
 
@@ -65,28 +67,53 @@
 (after! evil
   (map! :nvieo "C-n" #'next-line)
   (map! :nvieo "C-p" #'previous-line)
-  (map! :nvieo :map override-global-map "M-q" #'consult-buffer)
-  (map! :nvieo :map override-global-map "M-o" #'other-window)
+  ;; (map! :nvieo :map override-global-map "M-q" #'consult-buffer)
+  ;; (map! :nvieo :map override-global-map "M-o" #'other-window)
   )
 
 ;; (map! "C-M-v"
 ;;       (cmd! (visual-line-mode)))
 
-(map! (:after 'org
-       :map org-mode-map
-       "M-p" #'org-latex-export-to-pdf))
+(map!
+      :map org-mode-map
+      :nvieo
+      "M-p" #'org-latex-export-to-pdf)
 
+(map!
+      :map org-mode-map
+      :nvieo
+      "C-c d" #'org-lookup-dnd-at-point)
+
+(map! :map smudge-mode-map "M-p" 'smudge-command-map)
 ;; (map! (:after 'org
 ;;        :map org-mode-map
 ;;        "C-c &" #'org-mark-ring-goto))
-(map! :leader
-      (:prefix-map ("b" . "buffer")
-       :desc "Consult Buffer" "b" #'consult-buffer))
+(when (featurep! :completion vertico) (map! :leader
+       (:prefix-map ("b" . "buffer")
+        :desc "Consult Buffer" "b" #'consult-buffer)))
 
-(map! :leader
-      (:prefix-map ("s" . "search")
-       :desc "Consult Imenu All" "I" #'consult-imenu-multi
-       ))
+(when (featurep! :completion vertico) (map! :leader
+       (:prefix-map ("s" . "search")
+        :desc "Consult Imenu All"
+        "I" #'consult-imenu-multi
+        )))
+
+(when (featurep! :completion vertico) (map! :leader
+                                            (:prefix-map ("f" . "file")
+                                             :desc "Open File Externally"
+                                             "o" #'consult-file-externally)))
+(map!
+ :leader (:prefix-map ("a" . "Music")
+          :desc "Next Track" "l" #'counsel-spotify-next
+          :desc "Previous Track" "h" #'counsel-spotify-previous
+          :desc "Play/Pause" "/" #'counsel-spotify-toggle-play-pause
+          :desc "Playlist" "p" #'counsel-spotify-search-playlist
+          :desc "Album" "a" #'counsel-spotify-search-album
+          :desc "Track" "t" #'counsel-spotify-search-track
+          :desc "Tracks by Album" "A" #'counsel-spotify-search-tracks-by-album
+          :desc "Artist" "m" #'counsel-spotify-search-tracks-by-artist
+          :desc "My Playlists"))
+
 (defalias 'consult--project-root (lambda () "/home/rohan"))
 ;;; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
 ;; (map! :leader
@@ -104,22 +131,56 @@
 (map! :leader
       (:prefix-map ("c" . "code")
        :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines))
+(map! :map java-mode-map ";" (cmd! (insert ";") (newline-and-indent)))
 ;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
 ;;
+;;
+;;
+                                        ; EAF+Evil Config
+;; https://github.com/emacs-eaf/emacs-application-framework/wiki/Evil
+;; (define-key key-translation-map (kbd "SPC")
+;;   (lambda (prompt)
+;;     (if (derived-mode-p 'eaf-mode)
+;;         (pcase eaf--buffer-app-name
+;;           ("browser" (if  (string= (eaf-call-sync "call_function" eaf--buffer-id "is_focus") "True")
+;;                          (kbd "SPC")
+;;                        (kbd eaf-evil-leader-key)))
+;;           ("pdf-viewer" (kbd eaf-evil-leader-key))
+;;           ("image-viewer" (kbd eaf-evil-leader-key))
+;;           (_  (kbd "SPC")))
+;;       (kbd "SPC"))))
+
 
                                         ; Mode declarations
-(auto-save-visited-mode)
-(global-visual-line-mode)
-(global-undo-tree-mode)
-(global-origami-mode)
-(smartparens-global-strict-mode)
+(auto-save-visited-mode 1)
+(global-visual-line-mode 1)
+(global-undo-tree-mode 1)
+(global-origami-mode 1)
+(smartparens-global-mode 1)
+(show-smartparens-global-mode 1)
+(smartparens-global-strict-mode 1)
 (sp-use-paredit-bindings)
 ;; (cua-mode 1)
 ;; (desktop-read)
 ;; (desktop-save-mode 1)
-(profiler-start 'cpu+mem)
+;; (profiler-start 'cpu+mem)
 
                                         ; Misc variable modifications
+(after! orderless
+  (add-to-list 'orderless-matching-styles 'orderless-flex t))
+(after! org-lookup-dnd
+  (setq completion-ignore-case t)
+  (setq! org-lookup-dnd-sources
+         '(
+           ("/home/rohan/drive/RPG/5e/Rulebooks/PHB.pdf" 1 4 4 t)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/Monster Manual [11th Print].pdf" 1 4 4 nil)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/Dungeons & Dragons D&D 5E 5th Ed - Dungeon Master's Guide - OCR ToC.pdf" 1 1 1 t)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/City_and_Wild.pdf" 0 2 2 nil)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/Volo's Guide to Monsters.pdf" 1 1 1 t)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
+
+           ))
+  )
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (setq python-shell-interpreter "ipython3"
       python-shell-interpreter-args "--simple-prompt --pprint")
@@ -136,10 +197,23 @@
 (setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 13))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
 
+;; Secrets
+(setq counsel-spotify-client-id "5ce31a3c706e4f1db765a5d064429202")
+(setq counsel-spotify-client-secret "40b1c9bb956e4dd2aa72287e8b0c4a06")
+(setq smudge-oauth2-client-id "2be412c6f3014dde8ed52f4b9756757e")
+(setq smudge-oauth2-client-secret "c29a8c121421479eb46d16d23291efba")
+(setq smudge-transport 'connect)
+
+
+
                                         ; Enable folding
 (setq lsp-enable-folding t)
 (use-package! lsp-origami)
 (add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
+
+;; (after! company-tabnine
+;;   (add-to-list 'company-backends #'company-tabnine)
+;; )
 
                                         ; Org Config
 (after! ox-latex
@@ -177,7 +251,7 @@
 
 (after! org
   (define-key org-mode-map (kbd "M-p") 'org-latex-export-to-pdf)
-  (map! :map)
+  ;; (map! :map)
   (setq org-pretty-entities t)
   ;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
   (add-hook! 'org-mode-hook 'org-indent-mode)
@@ -193,7 +267,8 @@
   )
 
 (after! babel
-  (add-to-list 'org-babel-tangle-lang-exts '("python" . "py")))
+  (add-to-list 'org-babel-tangle-lang-exts '("python" . "py"))
+  (add-to-list 'org-babel-tangle-lang-exts '("elixir" . "ex")))
 (after! hl-todo
   (setq hl-todo-keyword-faces
         '(
@@ -218,11 +293,16 @@
           ("PHRASING" . "#dc752f")
           ("LACKING" . "#dc752f"))))
 
-
+; Programming Language Config
 
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
     '(company-yasnippet :with company-dabbrev)))
+(after! meghanada
+  (set-company-backend! 'java-mode
+    '(company-meghanada :with company-yasnippet :with company-dabbrev)))
+(after! java-mode
+  (map))
 
 (after! geiser
   (setq geiser-scheme-implementation 'mit)
@@ -272,16 +352,7 @@
       auto-save-default t                         ; Nobody likes to loose work, I certainly don't
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
-      ;; scroll-preserve-screen-position 'always     ; Don't have `point' jump around
-      scroll-margin 2)                            ; It's nice to maintain a little margin
-
-(display-time-mode 1)                             ; Enable time in the mode-line
-
-;; (unless (string-match-p "^Power N/A" (battery))   ; On laptops...
-;; (display-battery-mode 1))                       ; it's nice to know how much power you have
-(display-battery-mode 0)
-
-(global-subword-mode 1)                           ; Iterate through CamelCase words
+      scroll-margin 2) (display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1) ;; scroll-preserve-screen-position 'always     ; Don't have `point' jump around                            ; It's nice to maintain a little margin                             ; Enable time in the mode-line (unless (string-match-p "^Power N/A" (battery))   ; On laptops... (display-battery-mode 1))                       ; it's nice to know how much power you have                           ; Iterate through CamelCase words
 
 (setq-default major-mode 'org-mode)
 

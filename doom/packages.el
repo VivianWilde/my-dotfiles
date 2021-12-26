@@ -52,7 +52,7 @@
 ;; (require 'load-nano)
 ;; (package! coffee-mode)
 (package! geiser-guile)
-(package! helm-org-rifle)
+;; (package! helm-org-rifle)
 (package! pandoc)
 (package! ox-pandoc)
 ;; (package! ox-latex)
@@ -68,26 +68,42 @@
 ;;               (:type git
 ;;                :host github
 ;; 	       :repo "larsmagne/meme"))
-(package! coffee-mode)
-(package! company-web)
+;; (package! coffee-mode)
+;; (package! company-web)
 ;; (package! consult-company)
 ;; (package! typescript-mode)
 ;; (package! tide)
-(package! realgud)
-(package! realgud-ipdb)
-(package! fortune-cookie)
+;; (package! realgud)
+;; (package! realgud-ipdb)
+;; (package! fortune-cookie)
 (package! bnf-mode)
-(package! helm-swoop)
+;; (package! helm-swoop)
 (package! lark-mode
   :recipe (:local-repo "~/experiments/elisp/lark-mode"))
+(package! org-lookup-dnd
+  :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
 
 (package! lsp-origami)
 
 (package! evil-cleverparens)
 (package! evil-smartparens)
-(package! ox-reveal)
+;; (package! ox-reveal)
 (package! htmlize)
-(package! lsp-grammarly)
+(package! info-plus)
+(package! floobits)
+(package! w3m)
+(package! xonsh-mode)
+(package! emacs-python-pytest :disable t)
+;; (package! consult-spotify)
+;; (package! cyberpunk-theme)
+(package! counsel-spotify)
+(package! smudge)
+;; (package! company-tabnine)
+;; (package! emacs-application-framework
+;; :recipe (:host github :repo "manateelazycat/emacs-application-framework"
+;; :files ("eaf.el" "src/lisp/*.el")))
+
+;;(package! lsp-grammarly)
 ;; (package! bespoke-themes
 ;;   :recipe (:host github :repo "mclear-tools/bespoke-themes" :branch "main"))
 ;; (package! bespoke-modeline
