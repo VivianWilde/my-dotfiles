@@ -24,3 +24,9 @@ node_modules
 nltk-data
 WebstormProjects
 Zotero
+
+go
+tmp
+emacs-git
+*.bak
+node_modules

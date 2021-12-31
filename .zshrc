@@ -15,6 +15,7 @@ export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="/usr/racket:$PATH"
 export PATH="$HOME/experiments/pythonia:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
+export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
 export PATH="$HOME/.config/doom-emacs/bin:$PATH"
 
 export WINEARCH="win64"
@@ -318,7 +319,7 @@ export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 # source $HOME/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # source $HOME/.oh-my-zsh/plugins/z/z.sh
-#export PATH="$HOME/bin:/usr/bin:$PATH"
+export PATH="$HOME/bin:/usr/bin:$PATH"
 fortune
 #xmodmap
 #xmodmap -e "keycode 35=parenright braceright"
@@ -336,8 +337,8 @@ export palantir=$(kdeconnect-cli -a --id-only|head -n 1)
 
 #source $HOME/.config/broot/launcher/bash/br
 
-PATH="/home/rohan/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/rohan/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/rohan/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/rohan/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/rohan/perl5"; export PERL_MM_OPT;
+# PATH="/home/rohan/perl5/bin${PATH:+:${PATH}}"; export PATH;
+# PERL5LIB="/home/rohan/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+# PERL_LOCAL_LIB_ROOT="/home/rohan/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+# PERL_MB_OPT="--install_base \"/home/rohan/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=/home/rohan/perl5"; export PERL_MM_OPT;
