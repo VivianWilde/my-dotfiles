@@ -77,7 +77,7 @@ bindsym $mod+Shift+q kill
 
 # Start dmenu (a program launcher)
  bindsym $mod+d exec synapse
- bindsym $mod+space exec synapse
+ # bindsym $mod+space exec synapse
  # unbind control+space
  # bindsym control+space exec albert toggle
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -233,6 +233,7 @@ exec_always --no-startup-id autotiling
 exec albert
 exec libinput-gestures
 exec "synapse -s"
+exec "ulauncher --no-window-shadow --hide-window"
 exec_always '/home/rohan/.config/polybar/launch.sh'
 exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
 exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"

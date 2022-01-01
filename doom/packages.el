@@ -98,6 +98,12 @@
 ;; (package! cyberpunk-theme)
 (package! counsel-spotify)
 (package! smudge)
+(package! nano-emacs
+  :recipe (:type git :host github :repo "rougier/nano-emacs"))
+(package! nano-theme)
+(package! nano-modeline)
+(package! zeitgeist)
+
 ;; (package! company-tabnine)
 ;; (package! emacs-application-framework
 ;; :recipe (:host github :repo "manateelazycat/emacs-application-framework"
@@ -107,4 +113,4 @@
 ;; (package! bespoke-themes
 ;;   :recipe (:host github :repo "mclear-tools/bespoke-themes" :branch "main"))
 ;; (package! bespoke-modeline
-;; :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))
+;;   :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))

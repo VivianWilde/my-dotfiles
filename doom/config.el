@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-outrun-electric)
+(setq doom-theme 'nano-dark)
 ;; (setq bespoke-set-theme 'dark)
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -152,6 +152,7 @@
 
 
                                         ; Mode declarations
+(nano-modeline-mode 1)
 (auto-save-visited-mode 1)
 (global-visual-line-mode 1)
 (global-undo-tree-mode 1)
@@ -166,6 +167,8 @@
 ;; (profiler-start 'cpu+mem)
 
                                         ; Misc variable modifications
+(use-package! zeitgeist)
+( setq zeitgeist-emacs-application "application://spacemacs.desktop")
 (after! orderless
   (add-to-list 'orderless-matching-styles 'orderless-flex t))
 (after! org-lookup-dnd
@@ -352,7 +355,8 @@
       auto-save-default t                         ; Nobody likes to loose work, I certainly don't
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
-      scroll-margin 2) (display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1) ;; scroll-preserve-screen-position 'always     ; Don't have `point' jump around                            ; It's nice to maintain a little margin                             ; Enable time in the mode-line (unless (string-match-p "^Power N/A" (battery))   ; On laptops... (display-battery-mode 1))                       ; it's nice to know how much power you have                           ; Iterate through CamelCase words
+      scroll-margin 2)
+(display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1) ;; scroll-preserve-screen-position 'always     ; Don't have `point' jump around                            ; It's nice to maintain a little margin                             ; Enable time in the mode-line (unless (string-match-p "^Power N/A" (battery))   ; On laptops... (display-battery-mode 1))                       ; it's nice to know how much power you have                           ; Iterate through CamelCase words
 
 (setq-default major-mode 'org-mode)
 
