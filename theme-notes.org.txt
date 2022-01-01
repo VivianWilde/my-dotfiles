@@ -1,0 +1,12 @@
+* Cyberpunk
+GTK: HackingParrot
+Emacs: Outrun Electric
+Tilix: Cyberpunk-Neon
+Vivaldi: Cyberpunk
+Xonsh: Emacs
+BG: Cyan Planets
+* Nord
+Emacs: Nano-Dark
+Vivaldi: Nano Attempt
+Tilix: Nord
+BG: From https://github.com/dxnst/nord-backgrounds
