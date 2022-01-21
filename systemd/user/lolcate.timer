@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily lolcate database update
+Requires=lolcate.service
+[Timer]
+OnCalendar=minutely
+# RandomizedDelaySec=2m
+Persistent=true
+[Install]
+WantedBy=timers.target

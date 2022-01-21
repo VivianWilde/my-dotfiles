@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily locate database update
+Requires=lolcate.service
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=12h
+Persistent=true
+[Install]
+WantedBy=timers.target

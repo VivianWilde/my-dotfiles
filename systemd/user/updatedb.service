@@ -1,0 +1,18 @@
+[Unit]
+Description=Update locate database
+Wants=lolcate.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/updatedb
+Nice=19
+IOSchedulingClass=idle
+IOSchedulingPriority=7
+
+PrivateTmp=true
+PrivateDevices=true
+PrivateNetwork=true
+ProtectSystem=full
+
+[Install]
+WantedBy=default.target
