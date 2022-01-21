@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'nano-dark)
+(setq doom-theme 'doom-nord)
 ;; (setq bespoke-set-theme 'dark)
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -55,7 +55,13 @@
 
                                         ; Keybindings
 
-(map! "M-W" #'yank)
+(defalias 'normal-paste 'clipboard-yank)
+(defalias 'normal-copy 'clipboard-kill-ring-save)
+(defalias 'normal-cut 'clipboard-kill-region)
+(map! "M-W" #'normal-copy)
+(map! "C-W" #'normal-cut)
+(map! "C-Y" #'normal-paste)
+
 (map! "C-s"
       (cmd! (save-buffer)))
 
@@ -71,18 +77,15 @@
   ;; (map! :nvieo :map override-global-map "M-o" #'other-window)
   )
 
-;; (map! "C-M-v"
-;;       (cmd! (visual-line-mode)))
-
 (map!
       :map org-mode-map
       :nvieo
       "M-p" #'org-latex-export-to-pdf)
 
 (map!
-      :map org-mode-map
-      :nvieo
-      "C-c d" #'org-lookup-dnd-at-point)
+ :map org-mode-map
+ :nvieo
+ "C-c d" #'org-lookup-dnd-at-point)
 
 (map! :map smudge-mode-map "M-p" 'smudge-command-map)
 ;; (map! (:after 'org
@@ -99,9 +102,23 @@
         )))
 
 (when (featurep! :completion vertico) (map! :leader
+       (:prefix-map ("s" . "search")
+        :desc "Consult Ripgrep"
+        "R" #'consult-ripgrep
+        )))
+(when (featurep! :completion vertico) (map! :leader
                                             (:prefix-map ("f" . "file")
                                              :desc "Open File Externally"
                                              "o" #'consult-file-externally)))
+
+(map! :leader
+      (:prefix-map ("c" . "code")
+       :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines))
+(map! :map java-mode-map ";" (cmd! (insert ";") (newline-and-indent)))
+;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
+
+
+                                        ; Custom Key Groups
 (map!
  :leader (:prefix-map ("a" . "Music")
           :desc "Next Track" "l" #'counsel-spotify-next
@@ -113,45 +130,37 @@
           :desc "Tracks by Album" "A" #'counsel-spotify-search-tracks-by-album
           :desc "Artist" "m" #'counsel-spotify-search-tracks-by-artist
           :desc "My Playlists"))
+(map!
+ :leader
+ (:prefix-map ("d" . "D&D")
+  :desc "Lookup in PDFs" "l" #'org-lookup-dnd-at-point
+  :desc "Lookup in API" "a" #'dnd5e-api-search
+  :desc "Roll d20" "d" #'org-d20-d20
+  :desc "Roll dice" "r" #'org-d20-roll
+  :desc "Lookup in local SRD" "s" #'dnd-search-srd
+  ))
 
-(defalias 'consult--project-root (lambda () "/home/rohan"))
-;;; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
-;; (map! :leader
-;;       (:prefix-map ("s" . "search")
-;;        :desc "Helm Search Buffer" "s" #'helm-swoop-without-pre-input))
-
-;; (map! :leader
-;;       (:prefix-map ("s" . "search")
-;;        :desc "Helm Org Rifle" "S" #'helm-org-rifle))
-
-;; (map! :leader
-;;       (:prefix-map ("s" . "search")
-;;        :desc "Helm Search All" "B" #'helm-multi-swoop-all))
-
-(map! :leader
-      (:prefix-map ("c" . "code")
-       :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines))
-(map! :map java-mode-map ";" (cmd! (insert ";") (newline-and-indent)))
-;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
-;;
-;;
-;;
-                                        ; EAF+Evil Config
-;; https://github.com/emacs-eaf/emacs-application-framework/wiki/Evil
-;; (define-key key-translation-map (kbd "SPC")
-;;   (lambda (prompt)
-;;     (if (derived-mode-p 'eaf-mode)
-;;         (pcase eaf--buffer-app-name
-;;           ("browser" (if  (string= (eaf-call-sync "call_function" eaf--buffer-id "is_focus") "True")
-;;                          (kbd "SPC")
-;;                        (kbd eaf-evil-leader-key)))
-;;           ("pdf-viewer" (kbd eaf-evil-leader-key))
-;;           ("image-viewer" (kbd eaf-evil-leader-key))
-;;           (_  (kbd "SPC")))
-;;       (kbd "SPC"))))
+(map!
+ :leader
+(:prefix-map ("l" . "Lookup in API")
+ :desc "Monsters" "m m" #'dnd5e-api-search-monsters
+ :desc "Spells" "s" #'dnd5e-api-search-spells
+ :desc "Races" "r a" #'dnd5e-api-search-races
+ :desc "Rules" "r u" #'dnd5e-api-search-rules
+ :desc "Features" "f" #'dnd5e-api-search-features
+ :desc "Traits" "t" #'dnd5e-api-search-traits
+ :desc "Classes" "c l" #'dnd5e-api-search-classes
+ :desc "Equipment" "e" #'dnd5e-api-search-equipment
+ :desc "Languages" "l" #'dnd5e-api-search-languages
+ :desc "Conditions" "c o" #'dnd5e-api-search-conditions
+ :desc "Magic Items" "m i" #'dnd5e-api-search-magic-items
+ :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
+ :desc "Generic" "RET" #'dnd5e-api-search))
 
 
                                         ; Mode declarations
+(lisp-extra-font-lock-global-mode 1)
+(global-hide-mode-line-mode 1)
 (nano-modeline-mode 1)
 (auto-save-visited-mode 1)
 (global-visual-line-mode 1)
@@ -161,36 +170,50 @@
 (show-smartparens-global-mode 1)
 (smartparens-global-strict-mode 1)
 (sp-use-paredit-bindings)
-;; (cua-mode 1)
-;; (desktop-read)
-;; (desktop-save-mode 1)
-;; (profiler-start 'cpu+mem)
 
                                         ; Misc variable modifications
-(use-package! zeitgeist)
-( setq zeitgeist-emacs-application "application://spacemacs.desktop")
-(after! orderless
-  (add-to-list 'orderless-matching-styles 'orderless-flex t))
-(after! org-lookup-dnd
-  (setq completion-ignore-case t)
-  (setq! org-lookup-dnd-sources
-         '(
-           ("/home/rohan/drive/RPG/5e/Rulebooks/PHB.pdf" 1 4 4 t)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/Monster Manual [11th Print].pdf" 1 4 4 nil)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/Dungeons & Dragons D&D 5E 5th Ed - Dungeon Master's Guide - OCR ToC.pdf" 1 1 1 t)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/City_and_Wild.pdf" 0 2 2 nil)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/Volo's Guide to Monsters.pdf" 1 1 1 t)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
-
-           ))
+                                        ;
+(after! elcord
+  (setq!
+   elcord-editor-icon "emacs_material_icon"
+   elcord-use-major-mode-as-main-icon nil)
   )
+(after! consult
+;;; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
+  (setq consult-project-root-function (lambda () "/home/rohan"))
+;;; Make consult-ripgrep use ripgrep-all which works in pdfs, etc.
+  (setq consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+  )
+
+(after! canvas-emacs
+  (setq
+   canvas-baseurl "https://bcourses.berkeley.edu"
+   canvas-token "1072~RY8ay1gYwkn5niL77AKGZnwg9KNWj9ywNabDFAFs5ZBvlwggHcIajMgmGrL2tftR"))
+
+
+(set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
+(add-to-list 'load-path "/home/rohan/.config/doom/local-packages")
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
+(add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
+(setq suggest-key-bindings nil)
 (setq python-shell-interpreter "ipython3"
       python-shell-interpreter-args "--simple-prompt --pprint")
 (setq helm-swoop-pre-input-function (lambda () ""))
 (setq history-delete-duplicates t)
+(setq smudge-transport 'connect)
 
-(add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
+(use-package! zeitgeist)
+(setq zeitgeist-emacs-application "application://spacemacs.desktop")
+;; (after! orderless
+;;   (add-to-list 'orderless-matching-styles 'orderless-flex t)) ; Fuzzy matching
+;;
+(after! imenu-list
+  (setq imenu-list-focus-after-activation t
+        imenu-list-position 'left
+        imenu-list-size 0.25)
+  (map! :nvieo "C-'" #'imenu-list-smart-toggle)
+  )
+
 
                                         ; Doom-specific config
 ;; (setq confirm-kill-emacs nil)
@@ -205,7 +228,6 @@
 (setq counsel-spotify-client-secret "40b1c9bb956e4dd2aa72287e8b0c4a06")
 (setq smudge-oauth2-client-id "2be412c6f3014dde8ed52f4b9756757e")
 (setq smudge-oauth2-client-secret "c29a8c121421479eb46d16d23291efba")
-(setq smudge-transport 'connect)
 
 
 
@@ -213,10 +235,6 @@
 (setq lsp-enable-folding t)
 (use-package! lsp-origami)
 (add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
-
-;; (after! company-tabnine
-;;   (add-to-list 'company-backends #'company-tabnine)
-;; )
 
                                         ; Org Config
 (after! ox-latex
@@ -296,21 +314,29 @@
           ("PHRASING" . "#dc752f")
           ("LACKING" . "#dc752f"))))
 
+(after! org-lookup-dnd
+  (setq! completion-ignore-case t
+         org-lookup-dnd-sources
+         '(
+           ("/home/rohan/drive/RPG/5e/Rulebooks/PHB.pdf" 1 4 4 t)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/Monster Manual.pdf" 1 4 4 nil)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/Dungeons & Dragons D&D 5E 5th Ed - Dungeon Master's Guide - OCR ToC.pdf" 1 1 1 t)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/City_and_Wild.pdf" 0 2 2 nil)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/Volo's Guide to Monsters.pdf" 1 1 1 t)
+           ("/home/rohan/drive/RPG/5e/Rulebooks/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
+
+           ))
+  )
 ; Programming Language Config
 
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
     '(company-yasnippet :with company-dabbrev)))
-(after! meghanada
-  (set-company-backend! 'java-mode
-    '(company-meghanada :with company-yasnippet :with company-dabbrev)))
-(after! java-mode
-  (map))
 
 (after! geiser
   (setq geiser-scheme-implementation 'mit)
-  (add-hook! 'scheme-mode-hook #'run-geiser)
-  )
+  (add-hook! 'scheme-mode-hook #'run-geiser))
+
                                         ; Hooks
 (add-hook! 'text-mode-hook #'auto-save-visited-mode)
 (add-hook! 'text-mode-hook #'visual-line-mode)
@@ -324,14 +350,9 @@
 (add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
 (add-hook! 'smartparens-mode-hook #'evil-smartparens-mode)
 
-;; (add-hook 'org-mode-hook #'visual-line-mode)
-;; (add-hook 'org-mode-hook #'auto-save-visited-mode)
 ;; (add-hook 'org-mode-hook #'wc-mode)
-;; (add-hook 'org-mode-hook #'org-indent-mode)
+(add-hook 'org-mode-hook #'org-indent-mode)
 
-;; (add-hook 'python-mode-hook #'sphinx-doc-mode)
-;; (add-hook 'python-mode-hook #'anaconda-mode)
-;; (add-hook 'python-mode-hook #'elpy-mode)
 (add-hook! 'markdown-mode-hook #'auto-save-visited-mode)
 (add-hook! 'markdown-mode-hook #'visual-line-mode)
 
@@ -339,15 +360,22 @@
 (add-hook! 'nov-mode-hook #'visual-fill-column-mode)
 
 (add-hook! 'emacs-lisp-mode-hook #'eldoc-mode)
+(add-hook! 'emacs-lisp-mode-hook #'nameless-mode)
+(add-hook! 'emacs-lisp-mode-hook #'highlight-defined-mode)
+;; (add-hook! 'emacs-lisp-mode-hook #'sotlisp-mode)
+
 (add-hook! 'lisp-interaction-mode-hook #'eldoc-mode)
 (add-hook! 'ielm-mode-hook #'eldoc-mode)
+
+(add-hook! 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
+(add-hook! pdf-tools-enabled-hook #'hide-mode-line-mode)
 
 
 
                                         ; Stuff from
 (setq-default
- delete-by-moving-to-trash t                      ; Delete files to trash
- window-combination-resize t                      ; take new window space from all other windows (not just current)
+ delete-by-moving-to-trash t            ; Delete files to trash
+ window-combination-resize t ; take new window space from all other windows (not just current)
  x-stretch-cursor t)                              ; Stretch cursor to the glyph width
 
 (setq undo-limit 20000000                         ; Raise undo-limit to 80Mb
@@ -356,11 +384,19 @@
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
       scroll-margin 2)
-(display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1) ;; scroll-preserve-screen-position 'always     ; Don't have `point' jump around                            ; It's nice to maintain a little margin                             ; Enable time in the mode-line (unless (string-match-p "^Power N/A" (battery))   ; On laptops... (display-battery-mode 1))                       ; it's nice to know how much power you have                           ; Iterate through CamelCase words
-
+(display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1)
 (setq-default major-mode 'org-mode)
 
                                         ; Custom Functions
+
+(defun dnd-search-srd ()
+  (interactive)
+  (let (
+        (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+        )
+   (consult-ripgrep "~/drive/RPG/5e/Rulebooks/5e-srd-split"))
+  )
+
 (defun org-blockify-comment (region)
   ;; Basically, take a bunch of # comments, and place them inside a block
   ;; Process: Wrapped in save-excursion: Construct region, call uncomment on region, mark it, insert comment structure template.

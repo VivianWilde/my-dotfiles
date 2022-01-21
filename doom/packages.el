@@ -80,8 +80,8 @@
 ;; (package! helm-swoop)
 (package! lark-mode
   :recipe (:local-repo "~/experiments/elisp/lark-mode"))
-(package! org-lookup-dnd
-  :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
+
+(package! org-d20)
 
 (package! lsp-origami)
 
@@ -104,6 +104,7 @@
 (package! nano-modeline)
 (package! zeitgeist)
 
+(package! imenu-list)
 ;; (package! company-tabnine)
 ;; (package! emacs-application-framework
 ;; :recipe (:host github :repo "manateelazycat/emacs-application-framework"
@@ -114,3 +115,28 @@
 ;;   :recipe (:host github :repo "mclear-tools/bespoke-themes" :branch "main"))
 ;; (package! bespoke-modeline
 ;;   :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))
+
+(package! dash)
+(package! s)
+(package! ht)
+(package! org-lookup-dnd
+  :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
+(package! plz
+  :recipe (:local-repo "~/.config/doom/local-packages/plz"))
+(package! dnd5e-api
+   :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
+
+(package! canvas-emacs
+  :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
+
+(package! gjdb
+  :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
+
+;; (package! org-panel
+;;   :recipe (:local-repo "~/.config/doom/local-packages/org-panel"))
+
+
+(package! sotlisp)
+(package! highlight-defined)
+(package! lisp-extra-font-lock)
+(package! nameless)

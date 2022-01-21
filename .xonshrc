@@ -1,15 +1,19 @@
 # XONSH WEBCONFIG START
+
+source-zsh --interactive True --login False "echo loading xonsh foreign shell"
 $PROMPT = '{CYAN}{cwd} {INTENSE_RED}❯{INTENSE_YELLOW}❯{INTENSE_GREEN}❯{RESET} '
 # $XONSH_COLOR_STYLE = 'inkpot'
 # XONSH WEBCONFIG END
 $COMMANDS_CACHE_SIZE_WARNING='10000'
 # XONSH WIZARD START
-$AUTO_CD = '1'
-$AUTO_PUSHD = ''
-$AUTO_SUGGEST = '1'
+# setopt AUTO_CD
+$AUTO_CD = True
+$AUTO_PUSHD = True
+$CDPATH=("$HOME/d" ,"$HOME/d/sp22", "$HOME/d/*")
+$AUTO_SUGGEST = True
 $AUTO_SUGGEST_IN_COMPLETIONS = '1'
 $CASE_SENSITIVE_COMPLETIONS = '1'
-$COLOR_INPUT = '1'
+$COLOR_INPUT = True
 $COLOR_RESULTS = '1'
 $COMPLETIONS_BRACKETS = '1'
 $COMPLETIONS_CONFIRM = '1'
@@ -32,12 +36,11 @@ $PATHEXT = 'APPIMAGE'
 $PRETTY_PRINT_RESULTS = '1'
 #$PROMPT = '{BLUE}{cwd} $ '
 $THREAD_SUBPROCS = '1'
-$XONSH_AUTOPAIR = '1'
+$XONSH_AUTOPAIR = True
 # $XONSH_COLOR_STYLE = "native"
 # $XONSH_SHOW_TRACEBACK = True
 $XONSH_HISTORY_SIZE=131072
 
-source-zsh --interactive True --login False "echo loading xonsh foreign shell"
 
 xontrib load bashisms coreutils histcpy readable-traceback whole_word_jumping z pipeliner  output_search gitinfo jedi
 
@@ -58,9 +61,3 @@ $XONSH_COLOR_STYLE="mystyle"
 aliases['nemohere']="nautilus @($(pwd).strip()) . &"
 aliases['nemosu']="sudo nautilus @($(pwd).strip())"
 
-# if !(pgrep -f "emacs --daemon").returncode :  #Server is not running
-#     emacs --daemon
-#     clear
-
-
-fortune
