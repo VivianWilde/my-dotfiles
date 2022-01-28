@@ -4,12 +4,14 @@
 ;; sync' after modifying this file!
 
 
+;;; Primitive Setup
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Rohan Goyal "
       user-mail-address "goyal.rohan.03@gmail.com")
 
-;;;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+;;; Theming/Fonts
+;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
 ;; + `doom-font'
@@ -27,10 +29,10 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-city-lights)
 (setq doom-city-lights-brighter-comments t)
-;; (setq bespoke-set-theme 'dark)
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/org")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -54,8 +56,24 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-                                 ; Keybindings
 
+;;; Probably Tecosaur
+(setq-default
+ delete-by-moving-to-trash t            ; Delete files to trash
+ window-combination-resize t ; take new window space from all other windows (not just current)
+ x-stretch-cursor t)                              ; Stretch cursor to the glyph width
+
+(setq undo-limit 20000000                         ; Raise undo-limit to 80Mb
+      evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
+      auto-save-default t                         ; Nobody likes to loose work, I certainly don't
+      truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
+      password-cache-expiry nil                   ; I can trust my computers ... can't I?
+      scroll-margin 2)
+(display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1)
+(setq-default major-mode 'org-mode)
+
+
+;;; Keybindings
 (defalias 'normal-paste 'clipboard-yank)
 (defalias 'normal-copy 'clipboard-kill-ring-save)
 (defalias 'normal-cut 'clipboard-kill-region)
@@ -76,34 +94,26 @@
   )
 
 (map!
-      :map org-mode-map
-      :nvieo
-      "M-p" #'org-latex-export-to-pdf)
-
-(map!
  :map org-mode-map
  :nvieo
- "C-c d" #'org-lookup-dnd-at-point)
+ "M-p" #'org-latex-export-to-pdf)
 
-(map! :map smudge-mode-map "M-p" 'smudge-command-map)
-;; (map! (:after 'org
-;;        :map org-mode-map
-;;        "C-c &" #'org-mark-ring-goto))
+;;;; Vertico
 (when (featurep! :completion vertico) (map! :leader
-       (:prefix-map ("b" . "buffer")
-        :desc "Consult Buffer" "b" #'consult-buffer)))
+                                            (:prefix-map ("b" . "buffer")
+                                             :desc "Consult Buffer" "b" #'consult-buffer)))
 
 (when (featurep! :completion vertico) (map! :leader
-       (:prefix-map ("s" . "search")
-        :desc "Consult Imenu All"
-        "I" #'consult-imenu-all
-        )))
+                                            (:prefix-map ("s" . "search")
+                                             :desc "Consult Imenu All"
+                                             "I" #'consult-imenu-all
+                                             )))
 
 (when (featurep! :completion vertico) (map! :leader
-       (:prefix-map ("s" . "search")
-        :desc "Consult Ripgrep"
-        "R" #'consult-ripgrep
-        )))
+                                            (:prefix-map ("s" . "search")
+                                             :desc "Consult Ripgrep"
+                                             "R" #'consult-ripgrep
+                                             )))
 (when (featurep! :completion vertico) (map! :leader
                                             (:prefix-map ("f" . "file")
                                              :desc "Open File Externally"
@@ -112,11 +122,10 @@
 (map! :leader
       (:prefix-map ("c" . "code")
        :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines))
-(map! :map java-mode-map ";" (cmd! (insert ";") (newline-and-indent)))
 ;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
 
 
-                                        ; Custom Key Groups
+;;;; Custom Key Groups
 (map!
  :leader (:prefix-map ("a" . "Music")
           :desc "Next Track" "l" #'counsel-spotify-next
@@ -140,23 +149,23 @@
 
 (map!
  :leader
-(:prefix-map ("l" . "Lookup in API")
- :desc "Monsters" "m m" #'dnd5e-api-search-monsters
- :desc "Spells" "s" #'dnd5e-api-search-spells
- :desc "Races" "r a" #'dnd5e-api-search-races
- :desc "Rules" "r u" #'dnd5e-api-search-rules
- :desc "Features" "f" #'dnd5e-api-search-features
- :desc "Traits" "t" #'dnd5e-api-search-traits
- :desc "Classes" "c l" #'dnd5e-api-search-classes
- :desc "Equipment" "e" #'dnd5e-api-search-equipment
- :desc "Languages" "l" #'dnd5e-api-search-languages
- :desc "Conditions" "c o" #'dnd5e-api-search-conditions
- :desc "Magic Items" "m i" #'dnd5e-api-search-magic-items
- :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
- :desc "Generic" "RET" #'dnd5e-api-search))
+ (:prefix-map ("l" . "Lookup in API")
+  :desc "Monsters" "m m" #'dnd5e-api-search-monsters
+  :desc "Spells" "s" #'dnd5e-api-search-spells
+  :desc "Races" "r a" #'dnd5e-api-search-races
+  :desc "Rules" "r u" #'dnd5e-api-search-rules
+  :desc "Features" "f" #'dnd5e-api-search-features
+  :desc "Traits" "t" #'dnd5e-api-search-traits
+  :desc "Classes" "c l" #'dnd5e-api-search-classes
+  :desc "Equipment" "e" #'dnd5e-api-search-equipment
+  :desc "Languages" "l" #'dnd5e-api-search-languages
+  :desc "Conditions" "c o" #'dnd5e-api-search-conditions
+  :desc "Magic Items" "m i" #'dnd5e-api-search-magic-items
+  :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
+  :desc "Generic" "RET" #'dnd5e-api-search))
 
 
-                                        ; Mode declarations
+                                        ;;; Mode declarations
 (lisp-extra-font-lock-global-mode 1)
 (global-hide-mode-line-mode 1)
 (nano-modeline-mode 1)
@@ -167,35 +176,8 @@
 (smartparens-global-mode 1)
 (show-smartparens-global-mode 1)
 (smartparens-global-strict-mode 1)
-(sp-use-paredit-bindings)
 
-                                        ; Misc variable modifications
-                                        ;
-(after! elcord
-  (setq!
-   elcord-editor-icon "emacs_material_icon"
-   elcord-use-major-mode-as-main-icon nil)
-  )
-(after! consult
-;;; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
-  (defun consult-imenu-all (&optional query)
-    (interactive)
-    (let ((consult-project-root-function (lambda () (expand-file-name "~"))))
-      (consult-imenu-multi query)
-      ))
-;;; Make consult-ripgrep use ripgrep-all which works in pdfs, etc.
-  (setq consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
-
-  (setq consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r .")
-  )
-
-(after! canvas-emacs
-  (setq
-   canvas-baseurl "https://bcourses.berkeley.edu"
-   canvas-token "1072~RY8ay1gYwkn5niL77AKGZnwg9KNWj9ywNabDFAFs5ZBvlwggHcIajMgmGrL2tftR"))
-
-
-(set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
+;;; Misc variable modifications
 (add-to-list 'load-path "/home/rohan/.config/doom/local-packages")
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
@@ -206,11 +188,22 @@
 (setq history-delete-duplicates t)
 (setq smudge-transport 'connect)
 
-(use-package! zeitgeist)
-(setq zeitgeist-emacs-application "application://spacemacs.desktop")
-;; (after! orderless
-;;   (add-to-list 'orderless-matching-styles 'orderless-flex t)) ; Fuzzy matching
-;;
+
+;;; Package Configuration
+(after! consult
+  ;; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
+  (defun consult-imenu-all (&optional query)
+    (interactive)
+    (let ((consult-project-root-function (lambda () (expand-file-name "~"))))
+      (consult-imenu-multi query)
+      ))
+  ;; Make consult-ripgrep use ripgrep-all which works in pdfs, etc.
+  (setq consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+  (setq consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r .")
+  )
+
+
+
 (after! imenu-list
   (setq imenu-list-focus-after-activation t
         imenu-list-position 'left
@@ -218,16 +211,48 @@
   (map! :nvieo "C-'" #'imenu-list-smart-toggle)
   )
 
+(after! hl-todo
+  (setq hl-todo-keyword-faces
+        '(
+          ("TODO" . "#dc752f")
+          ("NEXT" . "#dc752f")
+          ("THEM" . "#2d9574")
+          ("PROG" . "#4f97d7")
+          ("OKAY" . "#4f97d7")
+          ("DONT" . "#f2241f")
+          ("FAIL" . "#f2241f")
+          ("DONE" . "#86dc2f")
+          ("NOTE" . "#b1951d")
+          ("KLUDGE" . "#b1951d")
+          ("HACK" . "#b1951d")
+          ("TEMP" . "#b1951d")
+          ("FIXME" . "#dc752f")
+          ("XXX+" . "#dc752f")
+          ("\\?\\?\\?+" . "#dc752f")
+          ("IDEA" . "#2d9574")
+          ("CITE" . "#dc752f")
+          ("OBVIOUS" . "#dc752f")
+          ("PHRASING" . "#dc752f")
+          ("LACKING" . "#dc752f"))))
 
-                                        ; Doom-specific config
-;; (setq confirm-kill-emacs nil)
+(use-package! zeitgeist)
+(setq zeitgeist-emacs-application "application://spacemacs.desktop")
+
+(sp-use-paredit-bindings)
+
+;;; Doom-specific config
+(set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
 (setq doom-scratch-initial-major-mode 'org-mode)
 (setq doom-font (font-spec :family "Overpass Mono" :size 14))
 
 (setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 13))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
 
-;; Secrets
+;;; Secrets
+(after! canvas-emacs
+  (setq
+   canvas-baseurl "https://bcourses.berkeley.edu"
+   canvas-token "1072~RY8ay1gYwkn5niL77AKGZnwg9KNWj9ywNabDFAFs5ZBvlwggHcIajMgmGrL2tftR"))
 (setq counsel-spotify-client-id "5ce31a3c706e4f1db765a5d064429202")
 (setq counsel-spotify-client-secret "40b1c9bb956e4dd2aa72287e8b0c4a06")
 (setq smudge-oauth2-client-id "2be412c6f3014dde8ed52f4b9756757e")
@@ -240,7 +265,16 @@
 (use-package! lsp-origami)
 (add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
 
-                                        ; Org Config
+;;; Org Config
+(after! org
+  (setq org-pretty-entities t)
+  (add-hook! 'org-mode-hook 'org-indent-mode)
+  (setq org-list-demote-modify-bullet
+        '(("+" . "-") ("-" . "+") ("*" . "+")))
+  ;; (setq org-edit-src-auto-save-idle-delay 300)
+  (setq org-insert-heading-respect-content nil))
+
+
 (after! ox-latex
   (setq org-latex-minted-options '(("breaklines")))
   (add-to-list 'org-latex-classes
@@ -269,54 +303,14 @@
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
   (setq org-src-fontify-natively t)
-
-
   )
 
-
-(after! org
-  (define-key org-mode-map (kbd "M-p") 'org-latex-export-to-pdf)
-  ;; (map! :map)
-  (setq org-pretty-entities t)
-  ;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-  (add-hook! 'org-mode-hook 'org-indent-mode)
-  ;; (add-hook! 'org-mode-hook (lambda () (define-key org-mode-map (kbd "M-p"))'org-latex-export-to-pdf))
-  (setq org-list-demote-modify-bullet
-        '(("+" . "-") ("-" . "+") ("*" . "+")))
-  ;; (setq org-edit-src-auto-save-idle-delay 300)
-  (setq org-insert-heading-respect-content nil)
-  )
-
-(after! ox-reveal
-  (setq org-reveal-root "file:///home/rohan/node_modules/reveal.js")
-  )
 
 (after! babel
   (add-to-list 'org-babel-tangle-lang-exts '("python" . "py"))
   (add-to-list 'org-babel-tangle-lang-exts '("elixir" . "ex")))
-(after! hl-todo
-  (setq hl-todo-keyword-faces
-        '(
-          ("TODO" . "#dc752f")
-          ("NEXT" . "#dc752f")
-          ("THEM" . "#2d9574")
-          ("PROG" . "#4f97d7")
-          ("OKAY" . "#4f97d7")
-          ("DONT" . "#f2241f")
-          ("FAIL" . "#f2241f")
-          ("DONE" . "#86dc2f")
-          ("NOTE" . "#b1951d")
-          ("KLUDGE" . "#b1951d")
-          ("HACK" . "#b1951d")
-          ("TEMP" . "#b1951d")
-          ("FIXME" . "#dc752f")
-          ("XXX+" . "#dc752f")
-          ("\\?\\?\\?+" . "#dc752f")
-          ("IDEA" . "#2d9574")
-          ("CITE" . "#dc752f")
-          ("OBVIOUS" . "#dc752f")
-          ("PHRASING" . "#dc752f")
-          ("LACKING" . "#dc752f"))))
+
+
 
 (after! org-lookup-dnd
   (setq! completion-ignore-case t
@@ -331,7 +325,9 @@
 
            ))
   )
-; Programming Language Config
+;;; Programming Language Config
+
+(map! :map java-mode-map ";" (cmd! (insert ";") (newline-and-indent)))
 
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
@@ -341,20 +337,15 @@
   (setq geiser-scheme-implementation 'mit)
   (add-hook! 'scheme-mode-hook #'run-geiser))
 
-                                        ; Hooks
+;;; Hooks
+(add-hook! 'doom-init-ui-hook (lambda () (defalias 'doom/delete-frame-with-prompt 'delete-frame)))
+(add-hook! 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
+(add-hook! pdf-tools-enabled-hook #'hide-mode-line-mode)
+
+;;;; Prose
 (add-hook! 'text-mode-hook #'auto-save-visited-mode)
 (add-hook! 'text-mode-hook #'visual-line-mode)
 (add-hook! 'text-mode-hook #'hl-todo-mode)
-
-(add-hook! 'doom-init-ui-hook (lambda () (defalias 'doom/delete-frame-with-prompt 'delete-frame)))
-                                        ; (add-hook 'prog-mode-hook #'rainbow-mode)
-(add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
-(add-hook! 'prog-mode-hook #'auto-save-visited-mode)
-(add-hook! 'prog-mode-hook #'hl-todo-mode)
-(add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
-(add-hook! 'smartparens-mode-hook #'evil-smartparens-mode)
-(add-hook! 'smartparens-disabled-hook (lambda () (evil-smartparens-mode -1)))
-(add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
 
 ;; (add-hook 'org-mode-hook #'wc-mode)
 (add-hook 'org-mode-hook #'org-indent-mode)
@@ -365,42 +356,39 @@
 (add-hook! 'nov-mode-hook #'visual-line-mode)
 (add-hook! 'nov-mode-hook #'visual-fill-column-mode)
 
+
+;;;; Programming
+(add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook! 'prog-mode-hook #'auto-save-visited-mode)
+(add-hook! 'prog-mode-hook #'hl-todo-mode)
+
 (add-hook! 'emacs-lisp-mode-hook #'eldoc-mode)
 (add-hook! 'emacs-lisp-mode-hook #'nameless-mode)
 (add-hook! 'emacs-lisp-mode-hook #'highlight-defined-mode)
-;; (add-hook! 'emacs-lisp-mode-hook #'sotlisp-mode)
 
 (add-hook! 'lisp-interaction-mode-hook #'eldoc-mode)
 (add-hook! 'ielm-mode-hook #'eldoc-mode)
+;; (add-hook! 'emacs-lisp-mode-hook #'sotlisp-mode)
 
-(add-hook! 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
-(add-hook! pdf-tools-enabled-hook #'hide-mode-line-mode)
+;;;; Smartparens
+(add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
+(add-hook! 'smartparens-mode-hook #'evil-smartparens-mode)
+(add-hook! 'smartparens-disabled-hook (lambda () (evil-smartparens-mode -1)))
+(add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
 
 
 
-                                        ; Stuff from
-(setq-default
- delete-by-moving-to-trash t            ; Delete files to trash
- window-combination-resize t ; take new window space from all other windows (not just current)
- x-stretch-cursor t)                              ; Stretch cursor to the glyph width
 
-(setq undo-limit 20000000                         ; Raise undo-limit to 80Mb
-      evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
-      auto-save-default t                         ; Nobody likes to loose work, I certainly don't
-      truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
-      password-cache-expiry nil                   ; I can trust my computers ... can't I?
-      scroll-margin 2)
-(display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1)
-(setq-default major-mode 'org-mode)
 
-                                        ; Custom Functions
+
+;;; Custom Functions
 
 (defun dnd-search-srd ()
   (interactive)
   (let (
         (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
         )
-   (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
+    (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
   )
 
 (defun org-blockify-comment (region)
