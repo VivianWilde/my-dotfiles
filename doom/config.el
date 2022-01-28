@@ -25,7 +25,8 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-nord)
+(setq doom-theme 'doom-city-lights)
+(setq doom-city-lights-brighter-comments t)
 ;; (setq bespoke-set-theme 'dark)
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -33,7 +34,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -53,7 +54,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-                                        ; Keybindings
+                                 ; Keybindings
 
 (defalias 'normal-paste 'clipboard-yank)
 (defalias 'normal-copy 'clipboard-kill-ring-save)
@@ -61,9 +62,6 @@
 (map! "M-W" #'normal-copy)
 (map! "C-W" #'normal-cut)
 (map! "C-Y" #'normal-paste)
-
-(map! "C-s"
-      (cmd! (save-buffer)))
 
 (map! "C-+"
       (cmd! (text-scale-increase)))
@@ -98,7 +96,7 @@
 (when (featurep! :completion vertico) (map! :leader
        (:prefix-map ("s" . "search")
         :desc "Consult Imenu All"
-        "I" #'consult-imenu-multi
+        "I" #'consult-imenu-all
         )))
 
 (when (featurep! :completion vertico) (map! :leader
@@ -180,9 +178,15 @@
   )
 (after! consult
 ;;; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
-  (setq consult-project-root-function (lambda () "/home/rohan"))
+  (defun consult-imenu-all (&optional query)
+    (interactive)
+    (let ((consult-project-root-function (lambda () (expand-file-name "~"))))
+      (consult-imenu-multi query)
+      ))
 ;;; Make consult-ripgrep use ripgrep-all which works in pdfs, etc.
   (setq consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+
+  (setq consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r .")
   )
 
 (after! canvas-emacs
@@ -318,12 +322,12 @@
   (setq! completion-ignore-case t
          org-lookup-dnd-sources
          '(
-           ("/home/rohan/drive/RPG/5e/Rulebooks/PHB.pdf" 1 4 4 t)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/Monster Manual.pdf" 1 4 4 nil)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/Dungeons & Dragons D&D 5E 5th Ed - Dungeon Master's Guide - OCR ToC.pdf" 1 1 1 t)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/City_and_Wild.pdf" 0 2 2 nil)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/Volo's Guide to Monsters.pdf" 1 1 1 t)
-           ("/home/rohan/drive/RPG/5e/Rulebooks/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
+           ("/home/rohan/drive/RPG/5e/core/phb.pdf" 1 4 4 t)
+           ("/home/rohan/drive/RPG/5e/core/Monster Manual.pdf" 1 4 4 nil)
+           ("/home/rohan/drive/RPG/5e/core/dmg.pdf" 1 1 1 t)
+           ("/home/rohan/drive/RPG/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
+           ("/home/rohan/drive/RPG/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
+           ("/home/rohan/drive/RPG/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
 
            ))
   )
@@ -349,6 +353,8 @@
 (add-hook! 'prog-mode-hook #'hl-todo-mode)
 (add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
 (add-hook! 'smartparens-mode-hook #'evil-smartparens-mode)
+(add-hook! 'smartparens-disabled-hook (lambda () (evil-smartparens-mode -1)))
+(add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
 
 ;; (add-hook 'org-mode-hook #'wc-mode)
 (add-hook 'org-mode-hook #'org-indent-mode)
@@ -394,7 +400,7 @@
   (let (
         (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
         )
-   (consult-ripgrep "~/drive/RPG/5e/Rulebooks/5e-srd-split"))
+   (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
   )
 
 (defun org-blockify-comment (region)

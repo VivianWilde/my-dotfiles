@@ -270,9 +270,10 @@ bindsym $mod+minus scratchpad show
 #bindsym $mod+0 [class="Mailspring"] scratchpad show
 bindsym Mod1+3 [class="Tilix"] scratchpad show
 bindsym $mod+Shift+s [class="Spotify"] scratchpad show
-bindsym $mod+Shift+d [class="discord.com__login"] scratchpad show
+# bindsym $mod+Shift+d [class="discord.com__login"] scratchpad show
 bindsym $mod+Shift+d [class="Vivaldi-stable"] scratchpad show
 bindsym $mod+n [class="Emacs"] scratchpad show
+bindsym $mod+b [class="Vivaldi-stable"] scratchpad show
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 # exec_always --no-startup-id ~/apps/i3scripts/bar.sh

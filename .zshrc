@@ -5,7 +5,7 @@
 
 # Auto-CD setup
 setopt AUTO_CD
-cdpath=($HOME/d $HOME/d/sp22)
+cdpath=($HOME/d $HOME/d/sp22 $HOME $HOME/drive)
 
 
 export LESSOPEN="| pygmentize -O style=monokai -g -f terminal256 %s"
@@ -47,9 +47,6 @@ export LD_LIBRARY_PATH="$STK_INSTALL_DIR/bin:$LD_LIBRARY_PATH"
 export STK_CONFIG_DIR="$HOME/.config/stk-engine"
 
 
-export HIL_PROJDIR="/home/rohan/OneDrive_Personal/School/cs/61b/old/skeleton-sp21/proj0"
-export CLASSPATH=".:/usr/share/java/*"
-export CLASSPATH="$CLASSPATH:$HIL_PROJDIR/javalib/*:$HIL_PROJDIR/out:$HIL_PROJDIR/game2048:/usr/share/java/*"
 #export PYTHONPATH="$HOME/.local/lib/python3.8/:/home/rohan/.local/lib/python3.8/site-packages"
 #export PYTHONHOME="$HOME/.local/lib/python3.8/:/home/rohan/.local/lib/python3.8/site-packages"
 # Set name of the theme to load --- if set to "random", it will
@@ -168,10 +165,6 @@ export LANG=en_US.UTF-8
     #Java
 alias jcomp="javac -d out"
 alias junit="java org.junit.runner.JUnitCore"
-
-    # 61b project 0
-alias comp2048="cd $HIL_PROJDIR; jcomp game2048/*"
-# alias runtest="comp2048; junit game2048.$1"
 
     #Onedrive management
 alias monitor='onedrive --monitor'
@@ -339,10 +332,14 @@ export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 export PATH="$HOME/bin:/usr/bin:$PATH"
 
 # CS61b
+#
+export CLASSPATH=".:/usr/share/java/*"
 export MASTERDIR=$HOME/d/cs/61b/cs61b-software
 export PATH=${PATH}:${MASTERDIR}/bin
 export CLASSPATH=${CLASSPATH:-.}
 export CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/*"
+export CLASSPATH="${CLASSPATH}:../*"
+export CLASSPATH="${CLASSPATH}:.."
 
 # For KDE connect, Xiaomi device id
 export palantir=$(kdeconnect-cli -a --id-only|head -n 1)

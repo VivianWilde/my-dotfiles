@@ -20,7 +20,7 @@
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
-       company       ; the ultimate code completion backend
+       (company +childframe)       ; the ultimate code completion backend
        ;; (helm +icons +fuzzy)              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;; (ivy +icons +prescient)              ; a search engine for love and life
@@ -66,6 +66,7 @@
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
+       biblio
        (dired +ranger +icons)             ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
        (ibuffer +icons)      ; interactive buffer management
@@ -90,12 +91,12 @@
        ;;docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
        ein               ; tame Jupyter notebooks with emacs
-       (eval +overlay)     ; run code, run (also, repls)
+       eval     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        (lookup +dictionary +offline)              ; navigate your code and its documentation
-       lsp               ; M-x vscode
+       (lsp +peek)               ; M-x vscode
        magit             ; a git porcelain for Emacs
-       ;;make              ; run make tasks from Emacs
+       make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
@@ -137,7 +138,7 @@
        ;;idris             ; a language you can depend on
        json              ; At least it ain't XML
        (java +lsp) ; the poster child for carpal tunnel syndrome
-       ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       ;; javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (latex +fold +lsp)             ; writing papers in Emacs has never been so fun
@@ -148,7 +149,7 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +dragndrop +pandoc +pretty +roam2 +ipython +noter)              ; organize your plain life in plain text
+       (org +dragndrop +pandoc +pretty +roam2 +noter +reference +journal +present)               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
