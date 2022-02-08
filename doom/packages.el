@@ -81,7 +81,6 @@
 (package! lark-mode
   :recipe (:local-repo "~/experiments/elisp/lark-mode"))
 
-(package! org-d20)
 
 (package! lsp-origami)
 
@@ -119,6 +118,7 @@
 (package! dash)
 (package! s)
 (package! ht)
+(package! org-d20)
 (package! org-lookup-dnd
   :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
 (package! plz

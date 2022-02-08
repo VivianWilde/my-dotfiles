@@ -5,7 +5,7 @@
 
 # Auto-CD setup
 setopt AUTO_CD
-cdpath=($HOME/d $HOME/d/sp22 $HOME $HOME/drive)
+cdpath=($HOME/d $HOME/d/sp22 $HOME $HOME/drive $HOME/d/cs61b/repo)
 
 
 export LESSOPEN="| pygmentize -O style=monokai -g -f terminal256 %s"
@@ -334,12 +334,12 @@ export PATH="$HOME/bin:/usr/bin:$PATH"
 # CS61b
 #
 export CLASSPATH=".:/usr/share/java/*"
+export CLASSPATH="${CLASSPATH}:../*"
+export CLASSPATH="${CLASSPATH}:.."
 export MASTERDIR=$HOME/d/cs/61b/cs61b-software
 export PATH=${PATH}:${MASTERDIR}/bin
 export CLASSPATH=${CLASSPATH:-.}
 export CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/*"
-export CLASSPATH="${CLASSPATH}:../*"
-export CLASSPATH="${CLASSPATH}:.."
 
 # For KDE connect, Xiaomi device id
 export palantir=$(kdeconnect-cli -a --id-only|head -n 1)

@@ -77,20 +77,16 @@
 (defalias 'normal-paste 'clipboard-yank)
 (defalias 'normal-copy 'clipboard-kill-ring-save)
 (defalias 'normal-cut 'clipboard-kill-region)
-(map! "M-W" #'normal-copy)
-(map! "C-W" #'normal-cut)
-(map! "C-Y" #'normal-paste)
+(map! :i "M-W" #'normal-copy)
+(map! :i "C-W" #'normal-cut)
+(map! :i "C-Y" #'normal-paste)
 
-(map! "C-+"
-      (cmd! (text-scale-increase)))
-(map! "C--"
-      (cmd! (text-scale-decrease)))
+(map! :nvieo "C--" (cmd! (text-scale-decrease 1)))
+(map! :nvieo "C-+" (cmd! (text-scale-increase 1)))
 
 (after! evil
   (map! :nvieo "C-n" #'next-line)
   (map! :nvieo "C-p" #'previous-line)
-  ;; (map! :nvieo :map override-global-map "M-q" #'consult-buffer)
-  ;; (map! :nvieo :map override-global-map "M-o" #'other-window)
   )
 
 (map!
@@ -98,32 +94,37 @@
  :nvieo
  "M-p" #'org-latex-export-to-pdf)
 
+(map! :nvieo "C-'" #'imenu-list-smart-toggle)
+
 ;;;; Vertico
-(when (featurep! :completion vertico) (map! :leader
-                                            (:prefix-map ("b" . "buffer")
-                                             :desc "Consult Buffer" "b" #'consult-buffer)))
+(when (featurep! :completion vertico)
+  (map! :leader
+        (:prefix-map ("b" . "buffer")
+         :desc "Consult Buffer" "b" #'consult-buffer)
+        (:prefix-map ("s" . "search")
+         :desc "Consult Imenu All"
+         "I" #'consult-imenu-all)
+        (:prefix-map ("s" . "search")
+         :desc "Consult Ripgrep"
+         "R" #'consult-ripgrep)
+        (:prefix-map ("f" . "file")
+         :desc "Open File Externally"
+         "o" #'consult-file-externally)
+        ("SPC" #'consult-buffer)
+        ))
 
-(when (featurep! :completion vertico) (map! :leader
-                                            (:prefix-map ("s" . "search")
-                                             :desc "Consult Imenu All"
-                                             "I" #'consult-imenu-all
-                                             )))
-
-(when (featurep! :completion vertico) (map! :leader
-                                            (:prefix-map ("s" . "search")
-                                             :desc "Consult Ripgrep"
-                                             "R" #'consult-ripgrep
-                                             )))
-(when (featurep! :completion vertico) (map! :leader
-                                            (:prefix-map ("f" . "file")
-                                             :desc "Open File Externally"
-                                             "o" #'consult-file-externally)))
 
 (map! :leader
       (:prefix-map ("c" . "code")
-       :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines))
+       :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines
+       :desc "Run Make Task" "m" #'+make/run-last))
+
+
+(map! :map ctl-x-map
+      "d" #'ranger)
 ;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
 
+;; Make it easier to run make tasks
 
 ;;;; Custom Key Groups
 (map!
@@ -145,10 +146,7 @@
   :desc "Roll d20" "d" #'org-d20-d20
   :desc "Roll dice" "r" #'org-d20-roll
   :desc "Lookup in local SRD" "s" #'dnd-search-srd
-  ))
-
-(map!
- :leader
+  )
  (:prefix-map ("l" . "Lookup in API")
   :desc "Monsters" "m m" #'dnd5e-api-search-monsters
   :desc "Spells" "s" #'dnd5e-api-search-spells
@@ -162,7 +160,9 @@
   :desc "Conditions" "c o" #'dnd5e-api-search-conditions
   :desc "Magic Items" "m i" #'dnd5e-api-search-magic-items
   :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
-  :desc "Generic" "RET" #'dnd5e-api-search))
+  :desc "Generic" "RET" #'dnd5e-api-search)
+ )
+
 
 
                                         ;;; Mode declarations
@@ -176,6 +176,8 @@
 (smartparens-global-mode 1)
 (show-smartparens-global-mode 1)
 (smartparens-global-strict-mode 1)
+(ranger-override-dired-mode t)
+
 
 ;;; Misc variable modifications
 (add-to-list 'load-path "/home/rohan/.config/doom/local-packages")
@@ -184,31 +186,42 @@
 (setq suggest-key-bindings nil)
 (setq python-shell-interpreter "ipython3"
       python-shell-interpreter-args "--simple-prompt --pprint")
-(setq helm-swoop-pre-input-function (lambda () ""))
+;; (setq helm-swoop-pre-input-function (lambda () ""))
 (setq history-delete-duplicates t)
 (setq smudge-transport 'connect)
+(setq ranger-override-dired 'ranger)
 
 
 ;;; Package Configuration
 (after! consult
   ;; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
-  (defun consult-imenu-all (&optional query)
-    (interactive)
-    (let ((consult-project-root-function (lambda () (expand-file-name "~"))))
-      (consult-imenu-multi query)
-      ))
-  ;; Make consult-ripgrep use ripgrep-all which works in pdfs, etc.
-  (setq consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
-  (setq consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r .")
-  )
+  (defun in-folder (path func)
+    "A wrapper which takes in a consult func which operates on a project root and makes it operate on the home folder."
+    (lambda (&optional &rest args)
+      (interactive)
+      (let ((consult-project-root-function (lambda () (expand-file-name path))))
+        (apply func args)
+        )))
 
+  (defalias #'everywhere (lambda  (f) (in-folder "~" f)))
+  (defalias #'consult-imenu-all (everywhere #'consult-imenu-multi))
+  (defalias #'consult-ripgrep-all (everywhere #'consult-ripgrep))
+  (defalias #'consult-ripgrep-in
+    (lambda ()
+      (interactive)
+      (let ((dir (read-file-name "Directory: ")))
+        (funcall (in-folder dir #'consult-ripgrep)))))
+  (setq
+   consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."
+   consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r ."))
 
+(after! vertico
+  (setq vertico-count 5))
 
 (after! imenu-list
   (setq imenu-list-focus-after-activation t
         imenu-list-position 'left
         imenu-list-size 0.25)
-  (map! :nvieo "C-'" #'imenu-list-smart-toggle)
   )
 
 (after! hl-todo
@@ -253,10 +266,10 @@
   (setq
    canvas-baseurl "https://bcourses.berkeley.edu"
    canvas-token "1072~RY8ay1gYwkn5niL77AKGZnwg9KNWj9ywNabDFAFs5ZBvlwggHcIajMgmGrL2tftR"))
-(setq counsel-spotify-client-id "5ce31a3c706e4f1db765a5d064429202")
-(setq counsel-spotify-client-secret "40b1c9bb956e4dd2aa72287e8b0c4a06")
-(setq smudge-oauth2-client-id "2be412c6f3014dde8ed52f4b9756757e")
-(setq smudge-oauth2-client-secret "c29a8c121421479eb46d16d23291efba")
+(setq counsel-spotify-client-id "5ce31a3c706e4f1db765a5d064429202"
+      counsel-spotify-client-secret "40b1c9bb956e4dd2aa72287e8b0c4a06"
+      smudge-oauth2-client-id "2be412c6f3014dde8ed52f4b9756757e"
+      smudge-oauth2-client-secret "c29a8c121421479eb46d16d23291efba")
 
 
 
@@ -292,6 +305,12 @@
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+  (add-to-list 'org-latex-classes
+               '("altacv"
+                 "\\documentclass{altacv}"
+                 ("\\section{%s}" . "\\cvsection*{%s}")
+                 ("\\subsection{%s}" . "\\cvsubsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\cvsubsubsection*{%s}")))
 
 
   (add-to-list 'org-latex-packages-alist '("" "minted"))
@@ -328,6 +347,35 @@
 ;;; Programming Language Config
 
 (map! :map java-mode-map ";" (cmd! (insert ";") (newline-and-indent)))
+(after! lsp-java
+
+  (dap-register-debug-template "Java Run Configuration"
+                               (list :type "java"
+                                     :request "launch"
+                                     :args ""
+                                     :vmArgs "--enable-preview"
+                                     :cwd nil
+                                     :stopOnEntry :json-false
+                                     :host "localhost"
+                                     :request "launch"
+                                     :modulePaths (vector)
+                                     :classPaths  (list "." ".." "../*" "/home/rohan/.config/doom-emacs/.local/etc/java-workspace/jdt.ls-java-project/bin" (expand-file-name  "~/d/cs/61b/cs61b-software/lib/*") "~/d/cs/61b/cs61b-software/lib/ucb.jar" "/usr/share/java")
+                                     :projectName nil
+                                     :mainClass nil))
+  (setq lsp-java-java-path (expand-file-name "~/bin/java"))
+  (setq dap-java-java-command (expand-file-name "~/bin/java"))
+  ;; (add-to-list 'lsp-java-9-args "--enable-preview")
+  ;; (add-to-list 'lsp-java-vmargs "--enable-preview")
+  ;; (add-to-list 'dap-java-test-additional-args "--enable-preview" 'append)
+  (setq! dap-java-args "--enable-preview")
+
+  (setq! dap-java-test-runner "/home/rohan/.config/emacs/.local/etc/lsp/eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar")
+  (setq! lsp-java-format-settings-url "file:///home/rohan/eclipse-workspace/sdvs/sdvs-cs-formatter.xml" )
+  (setq! lsp-java-format-settings-profile "CheckStyle-Generated sdvs")
+  (setq! dap-java-hot-reload 0)
+  )
+
+
 
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
@@ -397,9 +445,25 @@
   )
 
 (defun find-commented-region (start comment-char)
-
-
   )
+
+;;; Hacky Fixes
+(defun my-evil-fix ()
+  "Searching for a number messes up evil for whatever reason. This worked to fix it now, at least"
+  (interactive)
+  (setq evil-ex-search-history (cdr evil-ex-search-history))
+  (setq evil-ex-search-pattern '("clean" t t)))
+
+(defun reset-mode (mode)
+  "Mode is a function"
+  (funcall mode -1)
+  (funcall mode 1)
+  )
+
+(defun reset-visual-line ()
+  (interactive)
+  (reset-mode #'visual-line-mode))
+
 
                                         ; From Tecosaur, allows LSP to work in source blocks
 (cl-defmacro lsp-org-babel-enable (lang)
