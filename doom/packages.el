@@ -7,136 +7,116 @@
 
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
-;(package! some-package)
+                                        ;(package! some-package)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
-;(package! another-package
-;  :recipe (:host github :repo "username/repo"))
+                                        ;(package! another-package
+                                        ;  :recipe (:host github :repo "username/repo"))
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':
-;(package! this-package
-;  :recipe (:host github :repo "username/repo"
-;           :files ("some-file.el" "src/lisp/*.el")))
+                                        ;(package! this-package
+                                        ;  :recipe (:host github :repo "username/repo"
+                                        ;           :files ("some-file.el" "src/lisp/*.el")))
 
 ;; If you'd like to disable a package included with Doom, you can do so here
 ;; with the `:disable' property:
-;(package! builtin-package :disable t)
+                                        ;(package! builtin-package :disable t)
 
 ;; You can override the recipe of a built in package without having to specify
 ;; all the properties for `:recipe'. These will inherit the rest of its recipe
 ;; from Doom or MELPA/ELPA/Emacsmirror:
-;(package! builtin-package :recipe (:nonrecursive t))
-;(package! builtin-package-2 :recipe (:repo "myfork/package"))
+                                        ;(package! builtin-package :recipe (:nonrecursive t))
+                                        ;(package! builtin-package-2 :recipe (:repo "myfork/package"))
 
 ;; Specify a `:branch' to install a package from a particular branch or tag.
 ;; This is required for some packages whose default branch isn't 'master' (which
 ;; our package manager can't deal with; see raxod502/straight.el#279)
-;(package! builtin-package :recipe (:branch "develop"))
+                                        ;(package! builtin-package :recipe (:branch "develop"))
 
 ;; Use `:pin' to specify a particular commit to install.
-;(package! builtin-package :pin "1a2b3c4d5e")
+                                        ;(package! builtin-package :pin "1a2b3c4d5e")
 
 
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...
-;(unpin! pinned-package)
+                                        ;(unpin! pinned-package)
 ;; ...or multiple packages
-;(unpin! pinned-package another-pinned-package)
+                                        ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
-;(unpin! t)
+                                        ;(unpin! t)
 ;; (add-to-list 'load-path "~/build/doom-nano-testing")
-;; (require 'load-nano)
-;; (package! coffee-mode)
-(package! geiser-guile)
-;; (package! helm-org-rifle)
-(package! pandoc)
-(package! ox-pandoc)
-;; (package! ox-latex)
-(package! evil-better-visual-line)
-
-;; (package! imgur :recipe
-;;               (:type git
-;;                :host github
-;; 	       :repo "larsmagne/imgur.el"))
 
 
-;; (package! meme :recipe
-;;               (:type git
-;;                :host github
-;; 	       :repo "larsmagne/meme"))
-;; (package! coffee-mode)
-;; (package! company-web)
-;; (package! consult-company)
-;; (package! typescript-mode)
-;; (package! tide)
-;; (package! realgud)
-;; (package! realgud-ipdb)
-;; (package! fortune-cookie)
-(package! bnf-mode)
-;; (package! helm-swoop)
-(package! lark-mode
-  :recipe (:local-repo "~/experiments/elisp/lark-mode"))
-
-
-(package! lsp-origami)
-
-(package! evil-cleverparens)
-(package! evil-smartparens)
-;; (package! ox-reveal)
-(package! htmlize)
-(package! info-plus)
-(package! floobits)
-(package! w3m)
-(package! xonsh-mode)
-(package! emacs-python-pytest :disable t)
-;; (package! consult-spotify)
-;; (package! cyberpunk-theme)
-(package! counsel-spotify)
-(package! smudge)
-(package! nano-emacs
-  :recipe (:type git :host github :repo "rougier/nano-emacs"))
-(package! nano-theme)
-(package! nano-modeline)
-(package! zeitgeist)
-
-(package! imenu-list)
-;; (package! company-tabnine)
-;; (package! emacs-application-framework
-;; :recipe (:host github :repo "manateelazycat/emacs-application-framework"
-;; :files ("eaf.el" "src/lisp/*.el")))
-
-;;(package! lsp-grammarly)
-;; (package! bespoke-themes
-;;   :recipe (:host github :repo "mclear-tools/bespoke-themes" :branch "main"))
-;; (package! bespoke-modeline
-;;   :recipe (:host github :repo "mclear-tools/bespoke-modeline" :branch "main"))
-
+;;; Utilities
 (package! dash)
 (package! s)
 (package! ht)
-(package! org-d20)
-(package! org-lookup-dnd
-  :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
-(package! plz
-  :recipe (:local-repo "~/.config/doom/local-packages/plz"))
-(package! dnd5e-api
-   :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
+(package! plz :recipe (:local-repo "~/.config/doom/local-packages/plz"))
 
-(package! canvas-emacs
-  :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
+;;; Language Support
 
-(package! gjdb
-  :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
+;;;; Misc
+(package! bnf-mode)
+(package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
+(package! xonsh-mode)
+(package! spl :recipe (:local-repo "~/.config"))
 
-;; (package! org-panel
-;;   :recipe (:local-repo "~/.config/doom/local-packages/org-panel"))
+;;;; Web
+(package! coffee-mode)
+(package! company-web)
+;; (package! typescript-mode)
+;; (package! tide)
 
-
+;;;; Lisp/Scheme
+(package! geiser-guile)
 (package! sotlisp)
 (package! highlight-defined)
 (package! lisp-extra-font-lock)
 (package! nameless)
+
+;;; Prose/Org
+(package! pandoc)
+(package! ox-pandoc)
+(package! htmlize)
+;; (package! ox-reveal)
+;;(package! lsp-grammarly)
+;; (package! ox-latex)
+;; (package! org-panel
+;;   :recipe (:local-repo "~/.config/doom/local-packages/org-panel"))
+
+;;; Evil
+(package! evil-better-visual-line)
+(package! evil-cleverparens)
+(package! evil-smartparens)
+
+;;; Misc
+;;;; Programming
+(package! lsp-origami)
+(package! emacs-python-pytest :disable t)
+(package! imenu-list)
+(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
+;;;; Utilities
+(package! info-plus)
+(package! w3m)
+(package! counsel-spotify)
+(package! smudge)
+(package! zeitgeist)
+(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
+;; (package! consult-spotify)
+
+
+
+;;; Nano
+(package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
+(package! nano-theme)
+(package! nano-modeline)
+
+
+;;; D&D
+(package! org-d20)
+(package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
+(package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
