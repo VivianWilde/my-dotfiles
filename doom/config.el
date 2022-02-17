@@ -116,7 +116,7 @@
 
 (map! :leader
       (:prefix-map ("c" . "code")
-       :desc "Comment Lines" "l" #'evilnc-comment-or-uncomment-lines
+       :desc "Comment Lines" "l" #'comment-line
        :desc "Run Make Task" "m" #'+make/run-last))
 
 
@@ -216,7 +216,7 @@
    consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r ."))
 
 (after! vertico
-  (setq! vertico-count 5))
+  (setq! vertico-count 4))
 
 (after! imenu-list
   (setq imenu-list-focus-after-activation t

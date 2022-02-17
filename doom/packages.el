@@ -51,11 +51,12 @@
 ;; (add-to-list 'load-path "~/build/doom-nano-testing")
 
 
-;;; Utilities
+;;; Libraries
 (package! dash)
 (package! s)
 (package! ht)
 (package! plz :recipe (:local-repo "~/.config/doom/local-packages/plz"))
+(package! esxml)
 
 ;;; Language Support
 
@@ -106,6 +107,7 @@
 (package! smudge)
 (package! zeitgeist)
 (package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
+(package! nov.el)
 ;; (package! consult-spotify)
 
 
