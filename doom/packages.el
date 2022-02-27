@@ -91,13 +91,13 @@
 
 ;;; Evil
 (package! evil-better-visual-line)
-(package! evil-cleverparens)
+;; (package! evil-cleverparens)
 (package! evil-smartparens)
 
 ;;; Misc
 ;;;; Programming
 (package! lsp-origami)
-(package! emacs-python-pytest :disable t)
+;; (package! emacs-python-pytest :disable t)
 (package! imenu-list)
 (package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
 ;;;; Utilities

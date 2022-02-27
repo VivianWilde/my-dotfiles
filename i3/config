@@ -156,7 +156,7 @@ set $ws3 "3:R1B"
 set $ws4 "4:H53"
 set $ws5 "5:Hab"
 # Habitat
-set $ws6 "6:Conf"
+set $ws6 "6:Project"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"

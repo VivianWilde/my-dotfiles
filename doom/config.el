@@ -263,7 +263,7 @@
 ;;; Doom-specific config
 (set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
 (setq doom-scratch-initial-major-mode 'org-mode)
-(setq doom-font (font-spec :family "Overpass Mono" :size 14))
+(setq doom-font (font-spec :family "Source Code Pro" :size 14))
 
 (setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 13))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
@@ -288,8 +288,11 @@
 
 ;;; Org Config
 (after! org
+  (sp-local-pair '(org-mode) "`" "'")
+  (sp-local-pair '(org-mode) "``" "''")
   (setq org-pretty-entities t)
   (add-hook! 'org-mode-hook 'org-indent-mode)
+  (add-hook! 'org-mode-hook 'turn-off-smartparens-strict-mode)
   (setq org-list-demote-modify-bullet
         '(("+" . "-") ("-" . "+") ("*" . "+")))
   ;; (setq org-edit-src-auto-save-idle-delay 300)
@@ -404,7 +407,7 @@
 (add-hook! 'text-mode-hook #'hl-todo-mode)
 
 ;; (add-hook 'org-mode-hook #'wc-mode)
-(add-hook 'org-mode-hook #'org-indent-mode)
+;; (add-hook 'org-mode-hook #'org-indent-mode)
 
 (add-hook! 'markdown-mode-hook #'auto-save-visited-mode)
 (add-hook! 'markdown-mode-hook #'visual-line-mode)
@@ -427,10 +430,10 @@
 ;; (add-hook! 'emacs-lisp-mode-hook #'sotlisp-mode)
 
 ;;;; Smartparens
-(add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
+;; (add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
 (add-hook! 'smartparens-mode-hook #'evil-smartparens-mode)
 (add-hook! 'smartparens-disabled-hook (lambda () (evil-smartparens-mode -1)))
-(add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
+;; (add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
 
 
 
@@ -460,6 +463,7 @@
   "Searching for a number messes up evil for whatever reason. This worked to fix it now, at least"
   (interactive)
   (setq evil-ex-search-history (cdr evil-ex-search-history))
+  (setq evil-ex-history (cdr evil-ex-history))
   (setq evil-ex-search-pattern '("clean" t t)))
 
 (defun reset-mode (mode)
@@ -515,6 +519,6 @@ converted to PDF at the same location."
                 (format "Prepare local buffer environment for org source block (%s)."
                         (upcase ,lang))))))))
 (defvar org-babel-lang-list
-  '("go" "python" "ipython" "bash" "sh" "elixir"))
+  '("go" "python" "ipython" "bash" "sh" "elixir" "ruby"))
 (dolist (lang org-babel-lang-list)
   (eval `(lsp-org-babel-enable ,lang)))
