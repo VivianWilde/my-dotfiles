@@ -78,7 +78,7 @@
 (package! highlight-defined)
 (package! lisp-extra-font-lock)
 (package! nameless)
-(package! litex-mode)
+
 
 ;;; Prose/Org
 (package! pandoc)
@@ -97,17 +97,17 @@
 
 ;;; Misc
 ;;;; Programming
-(package! lsp-origami)
+
 ;; (package! emacs-python-pytest :disable t)
 (package! imenu-list)
-(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
+
 ;;;; Utilities
 (package! info-plus)
 (package! w3m)
-(package! counsel-spotify)
-(package! smudge)
-(package! zeitgeist)
-(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
+
+
+
+
 (package! nov.el)
 ;; (package! consult-spotify)
 
@@ -120,6 +120,3 @@
 
 
 ;;; D&D
-(package! org-d20)
-(package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
-(package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))

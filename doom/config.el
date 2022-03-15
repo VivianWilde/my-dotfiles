@@ -90,7 +90,7 @@
   (map! :nvieo "C-p" #'previous-line)
   (setq evil-want-keybinding  't)
   (setq +evil-want-o/O-to-continue-comments nil)
-  (setq evil-want-empty-ex-last-command nil)
+  (setq evil-want-empty-ex-last-command 't)
   )
 
 (map!
@@ -131,41 +131,8 @@
 ;; Make it easier to run make tasks
 
 ;;;; Custom Key Groups
-(map!
- :leader (:prefix-map ("a" . "Music")
-          :desc "Next Track" "l" #'counsel-spotify-next
-          :desc "Previous Track" "h" #'counsel-spotify-previous
-          :desc "Play/Pause" "/" #'counsel-spotify-toggle-play-pause
-          :desc "Playlist" "p" #'counsel-spotify-search-playlist
-          :desc "Album" "a" #'counsel-spotify-search-album
-          :desc "Track" "t" #'counsel-spotify-search-track
-          :desc "Tracks by Album" "A" #'counsel-spotify-search-tracks-by-album
-          :desc "Artist" "m" #'counsel-spotify-search-tracks-by-artist
-          :desc "My Playlists"))
-(map!
- :leader
- (:prefix-map ("d" . "D&D")
-  :desc "Lookup in PDFs" "l" #'org-lookup-dnd-at-point
-  :desc "Lookup in API" "a" #'dnd5e-api-search
-  :desc "Roll d20" "d" #'org-d20-d20
-  :desc "Roll dice" "r" #'org-d20-roll
-  :desc "Lookup in local SRD" "s" #'dnd-search-srd
-  )
- (:prefix-map ("l" . "Lookup in API")
-  :desc "Monsters" "m m" #'dnd5e-api-search-monsters
-  :desc "Spells" "s" #'dnd5e-api-search-spells
-  :desc "Races" "r a" #'dnd5e-api-search-races
-  :desc "Rules" "r u" #'dnd5e-api-search-rules
-  :desc "Features" "f" #'dnd5e-api-search-features
-  :desc "Traits" "t" #'dnd5e-api-search-traits
-  :desc "Classes" "c l" #'dnd5e-api-search-classes
-  :desc "Equipment" "e" #'dnd5e-api-search-equipment
-  :desc "Languages" "l" #'dnd5e-api-search-languages
-  :desc "Conditions" "c o" #'dnd5e-api-search-conditions
-  :desc "Magic Items" "m i" #'dnd5e-api-search-magic-items
-  :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
-  :desc "Generic" "RET" #'dnd5e-api-search)
- )
+
+
 
 
 
@@ -192,7 +159,6 @@
       python-shell-interpreter-args "--simple-prompt --pprint")
 ;; (setq helm-swoop-pre-input-function (lambda () ""))
 (setq history-delete-duplicates t)
-(setq smudge-transport 'connect)
 (setq ranger-override-dired 'ranger)
 
 
@@ -257,20 +223,12 @@
   (add-to-list 'LaTeX-section-list '("cvsubsection" 3))
   (add-to-list 'LaTeX-section-list '("cvsubsubsection" 4))
   )
-(after! litex-mode
-  (add-to-list 'litex-latex-functions 'sqrt)
-  (setq litex-math-brackets-end "\\right)"
-        litex-math-brackets-start "\\left("
-        litex-format-float-string "%.1f"
-        ))
 
-(use-package! zeitgeist)
-(setq zeitgeist-emacs-application "application://spacemacs.desktop")
 
 (sp-use-paredit-bindings)
 
 ;;; Doom-specific config
-(set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
+
 (setq doom-scratch-initial-major-mode 'org-mode)
 (setq doom-font (font-spec :family "Source Code Pro" :size 14))
 
@@ -291,9 +249,9 @@
 
 
                                         ; Enable folding
-(setq lsp-enable-folding t)
-(use-package! lsp-origami)
-(add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
+
+
+
 
 ;;; Org Config
 (after! org
@@ -351,49 +309,11 @@
 
 
 
-(after! org-lookup-dnd
-  (setq! completion-ignore-case t
-         org-lookup-dnd-sources
-         '(
-           ("/home/rohan/drive/RPG/5e/core/phb.pdf" 1 4 4 t)
-           ("/home/rohan/drive/RPG/5e/core/Monster Manual.pdf" 1 4 4 nil)
-           ("/home/rohan/drive/RPG/5e/core/dmg.pdf" 1 1 1 t)
-           ("/home/rohan/drive/RPG/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
-           ("/home/rohan/drive/RPG/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
-           ("/home/rohan/drive/RPG/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
 
-           ))
-  )
 ;;; Programming Language Config
 
 (map! :map java-mode-map ";" (cmd! (insert ";") (newline-and-indent)))
-(after! lsp-java
 
-  (dap-register-debug-template "Java Run Configuration"
-                               (list :type "java"
-                                     :request "launch"
-                                     :args ""
-                                     :vmArgs "--enable-preview"
-                                     :cwd nil
-                                     :stopOnEntry :json-false
-                                     :host "localhost"
-                                     :request "launch"
-                                     :modulePaths (vector)
-                                     :classPaths  (list "." ".." "../*" "/home/rohan/.config/doom-emacs/.local/etc/java-workspace/jdt.ls-java-project/bin" (expand-file-name  "~/d/cs/61b/cs61b-software/lib/*") "~/d/cs/61b/cs61b-software/lib/ucb.jar" "/usr/share/java")
-                                     :projectName nil
-                                     :mainClass nil))
-  (setq lsp-java-java-path (expand-file-name "~/bin/java"))
-  (setq dap-java-java-command (expand-file-name "~/bin/java"))
-  ;; (add-to-list 'lsp-java-9-args "--enable-preview")
-  ;; (add-to-list 'lsp-java-vmargs "--enable-preview")
-  ;; (add-to-list 'dap-java-test-additional-args "--enable-preview" 'append)
-  (setq! dap-java-args "--enable-preview")
-
-  (setq! dap-java-test-runner "/home/rohan/.config/emacs/.local/etc/lsp/eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar")
-  (setq! lsp-java-format-settings-url "file:///home/rohan/eclipse-workspace/sdvs/sdvs-cs-formatter.xml" )
-  (setq! lsp-java-format-settings-profile "CheckStyle-Generated sdvs")
-  (setq! dap-java-hot-reload 0)
-  )
 
 
 
@@ -407,8 +327,8 @@
 
 ;;; Hooks
 (add-hook! 'doom-init-ui-hook (lambda () (defalias 'doom/delete-frame-with-prompt 'delete-frame)))
-(add-hook! 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
-(add-hook! pdf-tools-enabled-hook #'hide-mode-line-mode)
+
+
 
 ;;;; Prose
 (add-hook! 'text-mode-hook #'auto-save-visited-mode)
@@ -451,21 +371,11 @@
 
 ;;; Custom Functions
 
-(defun dnd-search-srd ()
-  (interactive)
-  (let (
-        (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
-        )
-    (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
-  )
 
-(defun org-blockify-comment (region)
-  ;; Basically, take a bunch of # comments, and place them inside a block
-  ;; Process: Wrapped in save-excursion: Construct region, call uncomment on region, mark it, insert comment structure template.
-  )
 
-(defun find-commented-region (start comment-char)
-  )
+
+
+
 
 ;;; Hacky Fixes
 (defun my-evil-fix ()
@@ -505,32 +415,6 @@ converted to PDF at the same location."
   (message "Deleted %s" filename)
   (message "Wrote %s" (concat (file-name-sans-extension filename) ".pdf")))
 
-                                        ; From Tecosaur, allows LSP to work in source blocks
-(cl-defmacro lsp-org-babel-enable (lang)
-  "Support LANG in org source code block."
-  ;; (setq centaur-lsp 'lsp-mode)
-  (cl-check-type lang stringp)
-  (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
-         (intern-pre (intern (format "lsp--%s" (symbol-name edit-pre)))))
-    `(progn
-       (defun ,intern-pre (info)
-         (let ((file-name (->> info caddr (alist-get :file))))
-           (unless file-name
-             (setq file-name (make-temp-file "babel-lsp-")))
-           (setq buffer-file-name file-name)
-           (lsp-deferred)))
-       (put ',intern-pre 'function-documentation
-            (format "Enable lsp-mode in the buffer of org source block (%s)."
-                    (upcase ,lang)))
-       (if (fboundp ',edit-pre)
-           (advice-add ',edit-pre :after ',intern-pre)
-         (progn
-           (defun ,edit-pre (info)
-             (,intern-pre info))
-           (put ',edit-pre 'function-documentation
-                (format "Prepare local buffer environment for org source block (%s)."
-                        (upcase ,lang))))))))
+
 (defvar org-babel-lang-list
   '("go" "python" "ipython" "bash" "sh" "elixir" "ruby"))
-(dolist (lang org-babel-lang-list)
-  (eval `(lsp-org-babel-enable ,lang)))
