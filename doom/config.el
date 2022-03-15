@@ -84,9 +84,13 @@
 (map! :nvieo "C--" (cmd! (text-scale-decrease 1)))
 (map! :nvieo "C-+" (cmd! (text-scale-increase 1)))
 
+
 (after! evil
   (map! :nvieo "C-n" #'next-line)
   (map! :nvieo "C-p" #'previous-line)
+  (setq evil-want-keybinding  't)
+  (setq +evil-want-o/O-to-continue-comments nil)
+  (setq evil-want-empty-ex-last-command nil)
   )
 
 (map!
@@ -253,7 +257,12 @@
   (add-to-list 'LaTeX-section-list '("cvsubsection" 3))
   (add-to-list 'LaTeX-section-list '("cvsubsubsection" 4))
   )
-
+(after! litex-mode
+  (add-to-list 'litex-latex-functions 'sqrt)
+  (setq litex-math-brackets-end "\\right)"
+        litex-math-brackets-start "\\left("
+        litex-format-float-string "%.1f"
+        ))
 
 (use-package! zeitgeist)
 (setq zeitgeist-emacs-application "application://spacemacs.desktop")
@@ -463,8 +472,11 @@
   "Searching for a number messes up evil for whatever reason. This worked to fix it now, at least"
   (interactive)
   (setq evil-ex-search-history (cdr evil-ex-search-history))
-  (setq evil-ex-history (cdr evil-ex-history))
-  (setq evil-ex-search-pattern '("clean" t t)))
+  (setq evil-search-forward-history (cdr evil-ex-search-forward-history))
+  (setq evil-ex-history (cdr evil-ex-history)
+        )
+  (setq evil-ex-search-pattern '("clean" t t))
+  )
 
 (defun reset-mode (mode)
   "Mode is a function"

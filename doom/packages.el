@@ -61,10 +61,10 @@
 ;;; Language Support
 
 ;;;; Misc
-(package! bnf-mode)
-(package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
-(package! xonsh-mode)
-(package! spl :recipe (:local-repo "~/.config"))
+;; (package! bnf-mode)
+;; (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
+;; (package! xonsh-mode)
+;; (package! spl :recipe (:local-repo "~/.config"))
 
 ;;;; Web
 (package! coffee-mode)
@@ -78,6 +78,7 @@
 (package! highlight-defined)
 (package! lisp-extra-font-lock)
 (package! nameless)
+(package! litex-mode)
 
 ;;; Prose/Org
 (package! pandoc)
@@ -90,7 +91,7 @@
 ;;   :recipe (:local-repo "~/.config/doom/local-packages/org-panel"))
 
 ;;; Evil
-(package! evil-better-visual-line)
+;; (package! evil-better-visual-line)
 ;; (package! evil-cleverparens)
 (package! evil-smartparens)
 
