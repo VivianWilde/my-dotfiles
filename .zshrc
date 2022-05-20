@@ -340,6 +340,7 @@ export MASTERDIR=$HOME/d/cs/61b/cs61b-software
 export PATH=${PATH}:${MASTERDIR}/bin
 export CLASSPATH=${CLASSPATH:-.}
 export CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/*"
+export CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/ucb.jar"
 
 # For KDE connect, Xiaomi device id
 export palantir=$(kdeconnect-cli -a --id-only|head -n 1)

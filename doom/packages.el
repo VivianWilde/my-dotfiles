@@ -61,8 +61,8 @@
 ;;; Language Support
 
 ;;;; Misc
-;; (package! bnf-mode)
-;; (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
+(package! bnf-mode)
+(package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
 ;; (package! xonsh-mode)
 ;; (package! spl :recipe (:local-repo "~/.config"))
 
@@ -84,6 +84,8 @@
 (package! pandoc)
 (package! ox-pandoc)
 (package! htmlize)
+(package! org-transclusion)
+(package! fountain-mode)
 ;; (package! ox-reveal)
 ;;(package! lsp-grammarly)
 ;; (package! ox-latex)
@@ -109,6 +111,7 @@
 (package! zeitgeist)
 (package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
 (package! nov.el)
+;; (package! tumblesocks)
 ;; (package! consult-spotify)
 
 

@@ -1,6 +1,6 @@
 # XONSH WEBCONFIG START
 
-source-zsh --interactive True --login False "echo loading xonsh foreign shell"
+source-zsh "echo loading xonsh foreign shell"
 $PROMPT = '{CYAN}{cwd} {INTENSE_RED}❯{INTENSE_YELLOW}❯{INTENSE_GREEN}❯{RESET} '
 # $XONSH_COLOR_STYLE = 'inkpot'
 # XONSH WEBCONFIG END

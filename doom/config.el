@@ -80,6 +80,7 @@
 (map! :i "M-W" #'normal-copy)
 (map! :i "C-W" #'normal-cut)
 (map! :i "C-Y" #'normal-paste)
+(map! :nvieo "C-c 1" #'sp-unwrap-sexp)
 
 (map! :nvieo "C--" (cmd! (text-scale-decrease 1)))
 (map! :nvieo "C-+" (cmd! (text-scale-increase 1)))
@@ -90,7 +91,11 @@
   (map! :nvieo "C-p" #'previous-line)
   (setq evil-want-keybinding  't)
   (setq +evil-want-o/O-to-continue-comments nil)
-  (setq evil-want-empty-ex-last-command nil)
+  (setq evil-want-empty-ex-last-command t)
+  )
+
+(after! lispy
+  (map! :map lispy-mode-map "[" #'self-insert-command)
   )
 
 (map!
@@ -277,6 +282,9 @@
 (setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 13))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
 
+(after! tumblesocks
+  (setq oauth-nonce-function 'oauth-internal-make-nonce)
+  (setq tumblesocks-blog "arcanequark.tumblr.com"))
 
 ;;; Secrets
 (after! canvas-emacs
@@ -373,20 +381,20 @@
                                (list :type "java"
                                      :request "launch"
                                      :args ""
-                                     :vmArgs "--enable-preview"
+                                     :vmArgs "--enable-preview -cp .:/usr/share/java/*:../*:..:/home/rohan/d/cs/61b/cs61b-software/lib/ucb.jar"
                                      :cwd nil
                                      :stopOnEntry :json-false
                                      :host "localhost"
                                      :request "launch"
                                      :modulePaths (vector)
-                                     :classPaths  (list "." ".." "../*" "/home/rohan/.config/doom-emacs/.local/etc/java-workspace/jdt.ls-java-project/bin" (expand-file-name  "~/d/cs/61b/cs61b-software/lib/*") "~/d/cs/61b/cs61b-software/lib/ucb.jar" "/usr/share/java")
+                                     :classPaths  (list "." ".." "../*" "/home/rohan/.config/doom-emacs/.local/etc/java-workspace/jdt.ls-java-project/bin"  "/home/rohan/d/cs/61b/cs61b-software/lib/ucb.jar" "/usr/share/java")
                                      :projectName nil
                                      :mainClass nil))
-  (setq lsp-java-java-path (expand-file-name "~/bin/java"))
-  (setq dap-java-java-command (expand-file-name "~/bin/java"))
+  (setq lsp-java-java-path "/usr/bin/java")
+  (setq dap-java-java-command "java")
   ;; (add-to-list 'lsp-java-9-args "--enable-preview")
   ;; (add-to-list 'lsp-java-vmargs "--enable-preview")
-  ;; (add-to-list 'dap-java-test-additional-args "--enable-preview" 'append)
+  (add-to-list 'dap-java-test-additional-args "-cp .:/usr/share/java/*:../*:..:/home/rohan/d/cs/61b/cs61b-software/lib/* " 'append)
   (setq! dap-java-args "--enable-preview")
 
   (setq! dap-java-test-runner "/home/rohan/.config/emacs/.local/etc/lsp/eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar")
