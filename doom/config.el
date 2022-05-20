@@ -373,38 +373,6 @@
            ))
   )
 ;;; Programming Language Config
-
-(map! :map java-mode-map ";" (cmd! (insert ";") (newline-and-indent)))
-(after! lsp-java
-
-  (dap-register-debug-template "Java Run Configuration"
-                               (list :type "java"
-                                     :request "launch"
-                                     :args ""
-                                     :vmArgs "--enable-preview -cp .:/usr/share/java/*:../*:..:/home/rohan/d/cs/61b/cs61b-software/lib/ucb.jar"
-                                     :cwd nil
-                                     :stopOnEntry :json-false
-                                     :host "localhost"
-                                     :request "launch"
-                                     :modulePaths (vector)
-                                     :classPaths  (list "." ".." "../*" "/home/rohan/.config/doom-emacs/.local/etc/java-workspace/jdt.ls-java-project/bin"  "/home/rohan/d/cs/61b/cs61b-software/lib/ucb.jar" "/usr/share/java")
-                                     :projectName nil
-                                     :mainClass nil))
-  (setq lsp-java-java-path "/usr/bin/java")
-  (setq dap-java-java-command "java")
-  ;; (add-to-list 'lsp-java-9-args "--enable-preview")
-  ;; (add-to-list 'lsp-java-vmargs "--enable-preview")
-  (add-to-list 'dap-java-test-additional-args "-cp .:/usr/share/java/*:../*:..:/home/rohan/d/cs/61b/cs61b-software/lib/* " 'append)
-  (setq! dap-java-args "--enable-preview")
-
-  (setq! dap-java-test-runner "/home/rohan/.config/emacs/.local/etc/lsp/eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar")
-  (setq! lsp-java-format-settings-url "file:///home/rohan/eclipse-workspace/sdvs/sdvs-cs-formatter.xml" )
-  (setq! lsp-java-format-settings-profile "CheckStyle-Generated sdvs")
-  (setq! dap-java-hot-reload 0)
-  )
-
-
-
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
     '(company-yasnippet :with company-dabbrev)))
