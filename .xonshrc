@@ -61,3 +61,6 @@ $XONSH_COLOR_STYLE="mystyle"
 aliases['nemohere']="nautilus @($(pwd).strip()) . &"
 aliases['nemosu']="sudo nautilus @($(pwd).strip())"
 
+import sys
+import random
+from random import randint

@@ -277,9 +277,9 @@
 ;;; Doom-specific config
 (set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
 (setq doom-scratch-initial-major-mode 'org-mode)
-(setq doom-font (font-spec :family "Source Code Pro" :size 14))
+(setq doom-font (font-spec :family "Source Code Pro" :size 14)) ;; 14 if not monitr
 
-(setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 13))
+(setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 14))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
 
 (after! tumblesocks

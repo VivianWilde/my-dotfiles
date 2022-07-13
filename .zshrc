@@ -22,6 +22,7 @@ export PATH="$HOME/experiments/pythonia:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
 export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
 export PATH="$HOME/.config/doom-emacs/bin:$PATH"
+export PATH="$HOME/.idris2/bin:$PATH"
 
 export WINEARCH="win64"
 export WINEPATH="/usr/bin"

@@ -151,16 +151,16 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:D&D"
-set $ws2 "2:61B"
-set $ws3 "3:R1B"
-set $ws4 "4:H53"
-set $ws5 "5:Hab"
+set $ws2 "2:61AB"
+set $ws3 "3:LING"
+set $ws4 "4:CS70"
+set $ws5 "5:Idris"
 # Habitat
-set $ws6 "6:Project"
+set $ws6 "6:Reading"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-set $ws10 "10:Free"
+set $ws10 "10:Freedom"
 # Free Choice
 
 # switch to workspace
@@ -232,7 +232,7 @@ bindsym $mod+r mode "resize"
 exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
 exec --no-startup-id redshift-gtk
 exec_always --no-startup-id "~/bin/autosuspend"
-exec_always --no-startup-id "~/bin/monitor-1920.sh"
+exec_always --no-startup-id "~/bin/laptop.sh"
 exec_always --no-startup-id "feh --bg-scale /home/rohan/Pictures/Wallpapers/cyan_planets.jpg"
 exec --no-startup-id nm-applet
 exec volctl
