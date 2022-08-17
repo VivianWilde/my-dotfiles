@@ -29,7 +29,16 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-Iosvkem)
+;; (setq doom-theme 'doom-Iosvkem) Nope
+;; (setq doom-theme 'doom-moonlight) Nope
+;; (setq doom-theme 'doom-vibrant)
+;; (setq doom-theme 'doom-ir-black) NO
+(setq doom-theme 'doom-wilmersdorf)
+;; (setq doom-theme 'poet-dark)
+;; (setq doom-theme 'doom-homage-black) NO
+
+;; (setq doom-theme 'doom-tomorrow-night) NO
+
 (setq doom-Iosvkem-brighter-comments t)
 
 ;; If you use `org' and don't want your org files in the default location below,
@@ -121,6 +130,9 @@
         (:prefix-map ("f" . "file")
          :desc "Open File Externally"
          "o" #'consult-file-externally)
+        (:prefix-map ("f" . "file")
+         :desc "Open File in HOME"
+         "h" #'find-file-at-home)
         ("SPC" #'consult-buffer)
         ))
 
@@ -214,6 +226,11 @@
         (apply func args)
         )))
 
+  (defun find-file-home ()
+    (interactive)
+    (find-file (read-file-name "Find file: " "~/"))
+    )
+
   (defalias #'everywhere (lambda  (f) (in-folder "~" f)))
   (defalias #'consult-imenu-all (everywhere #'consult-imenu-multi))
   (defalias #'consult-ripgrep-all (everywhere #'consult-ripgrep))
@@ -305,12 +322,28 @@
 (use-package! lsp-origami)
 (add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
 
+
+;;; Undo-tree config
+;;;
+(after! undo-tree
+  (defun setup-undo-tree ()
+    (setq undo-outer-limit 24000000)
+    (setq undo-limit 160000)
+    (setq undo-strong-limit 240000)
+    )
+  (setup-undo-tree)
+  (add-hook 'org-mode-hook 'setup-undo-tree)
+  )
+
+
+
 ;;; Org Config
 (after! org
   (sp-local-pair '(org-mode) "`" "'")
   (sp-local-pair '(org-mode) "``" "''")
   (setq org-pretty-entities t)
   (add-hook! 'org-mode-hook 'org-indent-mode)
+  ;; (add-hook! 'org-mode-hook 'variable-pitch-mode)
   (add-hook! 'org-mode-hook 'turn-off-smartparens-strict-mode)
   (setq org-list-demote-modify-bullet
         '(("+" . "-") ("-" . "+") ("*" . "+")))
