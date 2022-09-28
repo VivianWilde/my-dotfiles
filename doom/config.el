@@ -107,7 +107,26 @@
 
 (after! lispy
   (map! :map lispy-mode-map "[" #'self-insert-command)
+  (map! "M-k" #'kill-sexp)
+  (map! "M-K" #'copy-sexp-as-kill)
   )
+
+(map! "M-K" #'copy-sexp-as-kill)
+(defun yank-sexp ()
+  (mark-sexp)
+  (kill-ring-save)
+  )
+
+(defun copy-sexp-as-kill (&optional arg)
+  "Save the sexp following point to the kill ring.
+ARG has the same meaning as for `kill-sexp'."
+  (interactive "p")
+  (save-excursion
+    (let ((orig-point (point)))
+      (forward-sexp (or arg 1))
+      (kill-ring-save orig-point (point)))))
+
+
 
 (map!
  :map org-mode-map
@@ -117,7 +136,7 @@
 (map! :nvieo "C-'" #'imenu-list-smart-toggle)
 
 ;;;; Vertico
-(when (featurep! :completion vertico)
+(when (modulep! :completion vertico)
   (map! :leader
         (:prefix-map ("b" . "buffer")
          :desc "Consult Buffer" "b" #'consult-buffer)
@@ -132,9 +151,41 @@
          "o" #'consult-file-externally)
         (:prefix-map ("f" . "file")
          :desc "Open File in HOME"
-         "h" #'find-file-at-home)
+         "h" #'find-file-home)
         ("SPC" #'consult-buffer)
-        ))
+        (:prefix-map ("i" . "insert")
+         :desc "Insert file path"
+         "P" #'insert-path)
+        )
+  )
+
+;;; Helm
+(when (modulep! :completion helm)
+  (map! :leader
+        (:prefix-map ("b" . "buffer")
+         :desc "Buffer" "b" #'helm-mini)
+        (:prefix-map ("s" . "search")
+         :desc "Imenu All"
+         "I" #'helm-imenu-in-all-buffers)
+        (:prefix-map ("s" . "search")
+         :desc "Consult Ripgrep"
+         "R" #'consult-ripgrep)
+        (:prefix-map ("f" . "file")
+         :desc "Consult ls"
+         "f" #'consult-ls-git)
+        (:prefix-map ("f" . "file")
+         :desc "Open File Externally"
+         "o" #'consult-file-externally)
+        (:prefix-map ("f" . "file")
+         :desc "Open File in HOME"
+         "h" #'find-file-at-home)
+        ("SPC" #'helm-mini)
+        (:prefix-map ("i" . "insert")
+         :desc "Insert file path"
+         "P" #'insert-path)
+        )
+
+  )
 
 
 (map! :leader
@@ -203,6 +254,7 @@
 
 
 ;;; Misc variable modifications
+(add-to-list 'Info-directory-list "/home/rohan/drive/books/nonfic/sicp-texinfo" t)
 (add-to-list 'load-path "/home/rohan/.config/doom/local-packages")
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
@@ -231,6 +283,18 @@
     (find-file (read-file-name "Find file: " "~/"))
     )
 
+
+
+  (defun consult-find-file (file)
+    "Open FILE."
+    (interactive "fFind File: ")
+    (follow-mode 1)
+    (find-file (expand-file-name file))
+    (follow-mode -1)
+    )
+
+
+
   (defalias #'everywhere (lambda  (f) (in-folder "~" f)))
   (defalias #'consult-imenu-all (everywhere #'consult-imenu-multi))
   (defalias #'consult-ripgrep-all (everywhere #'consult-ripgrep))
@@ -241,7 +305,12 @@
         (funcall (in-folder dir #'consult-ripgrep)))))
   (setq
    consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."
-   consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r ."))
+   consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r .")
+
+  (consult-customize consult-recent-file consult-find-file consult-buffer :preview-key 'any)
+
+  (consult-customize find-file :preview-key (list :debounce 0.2 'any))
+  )
 
 (after! vertico
   (setq! vertico-count 4))
@@ -251,6 +320,15 @@
         imenu-list-position 'left
         imenu-list-size 0.25)
   )
+
+
+(after! projectile
+
+  (setq projectile-project-root-files-bottom-up
+
+        (remove ".git" projectile-project-root-files-bottom-up)))
+
+
 
 (after! hl-todo
   (setq hl-todo-keyword-faces
@@ -278,6 +356,8 @@
 
 (after! latex
   (add-to-list 'LaTeX-section-list '("cvsection" 2))
+  (add-to-list 'LaTeX-section-list '("Question" 1))
+  (add-to-list 'LaTeX-section-list '("Part" 2))
   (add-to-list 'LaTeX-section-list '("cvsubsection" 3))
   (add-to-list 'LaTeX-section-list '("cvsubsubsection" 4))
   )
@@ -342,7 +422,9 @@
   (sp-local-pair '(org-mode) "`" "'")
   (sp-local-pair '(org-mode) "``" "''")
   (setq org-pretty-entities t)
+  (setq org-read-date-popup-calendar nil)
   (add-hook! 'org-mode-hook 'org-indent-mode)
+  (add-hook! 'org-mode-hook (lambda () (git-gutter-mode -1)))
   ;; (add-hook! 'org-mode-hook 'variable-pitch-mode)
   (add-hook! 'org-mode-hook 'turn-off-smartparens-strict-mode)
   (setq org-list-demote-modify-bullet
@@ -495,6 +577,12 @@
   (funcall mode 1)
   )
 
+
+(defun insert-path ()
+  (interactive)
+  (insert (read-file-name "File: "))
+  )
+
 (defun reset-visual-line ()
   (interactive)
   (reset-mode #'visual-line-mode))
@@ -545,3 +633,19 @@ converted to PDF at the same location."
   '("go" "python" "ipython" "bash" "sh" "elixir" "ruby"))
 (dolist (lang org-babel-lang-list)
   (eval `(lsp-org-babel-enable ,lang)))
+
+(defun update-alist ()
+  (interactive)
+  (let* (
+         (new-alist '(("\\R" . 8477)
+                      ("\\N" . 8469)
+                      ("\\Z" . 8484)
+                      ("\\C" . 8450)
+                      ("\\implies" . 8658)
+                      ("\\land" . 8743)
+                      ("\\lor" . 8744)
+                      ("\lnot" . 172))))
+    (TeX-add-to-alist 'prettify-symbols-alist new-alist)
+    )
+
+  )

@@ -83,7 +83,7 @@ bindsym $mod+Return exec tilix
 bindsym $mod+Shift+q kill
 
 # Start dmenu (a program launcher)
- bindsym $mod+d exec synapse
+bindsym $mod+d exec "synapse -s &"
  # unbind control+space
  # bindsym control+space exec albert toggle
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -151,15 +151,14 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:D&D"
-set $ws2 "2:61AB"
+set $ws2 "2:MATH"
 set $ws3 "3:LING"
 set $ws4 "4:CS70"
-set $ws5 "5:Idris"
-# Habitat
-set $ws6 "6:Reading"
-set $ws7 "7"
+set $ws5 "5:CELT"
+set $ws6 "6:Projects"
+set $ws7 "7:Writing"
 set $ws8 "8"
-set $ws9 "9"
+set $ws9 "9:Reading"
 set $ws10 "10:Freedom"
 # Free Choice
 
@@ -229,6 +228,8 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+
+# Autostarts
 exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
 exec --no-startup-id redshift-gtk
 exec_always --no-startup-id "~/bin/autosuspend"
@@ -236,15 +237,8 @@ exec_always --no-startup-id "~/bin/laptop.sh"
 exec_always --no-startup-id "feh --bg-scale /home/rohan/Pictures/Wallpapers/cyan_planets.jpg"
 exec --no-startup-id nm-applet
 exec volctl
-exec "systemctl start --user cronie"
-exec "systemctl start --user spotify-listener"
-exec "systemctl start --user onedrive"
-exec "systemctl start --user mopidy"
 exec_always --no-startup-id autotiling
-#exec /home/rohan/bin/vivaldi
-exec albert
 exec libinput-gestures
-exec "synapse -s"
 exec "ulauncher --no-window-shadow --hide-window"
 exec_always '/home/rohan/.config/polybar/launch.sh'
 exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
@@ -254,12 +248,23 @@ exec "killall -9 emacs"
 exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
 exec "systemctl start --user emacs"
 exec "cd ~/apps/5e-srd-api && docker-compose up --build" # Run the 5e API on startup
+
+# Systemd services
+exec "systemctl start --user cronie"
+exec "systemctl start --user spotify-listener"
+exec "systemctl start --user onedrive"
+exec "systemctl start --user mopidy"
+
+
+exec-always "synapse -s &"
+
 # Window focus
 #bindsym $mod+v [class="Vivaldi-stable"] focus
 bindsym $mod+Shft+v exec nextmatch Vivaldi
 bindsym $mod+v exec vivaldi
 bindsym $mod+Shift+e exec nextmatch Emacs
-bindsym $mod+e exec emacsclient -nc --eval "(consult-buffer)"
+bindsym $mod+e exec emacsclient -nc --eval "(progn (doom/switch-to-scratch-buffer) (consult-buffer))"
+bindsym $mod+x exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
 # bindsym $mod+\/ exec com.github.alainm23.planner.quick-add
 # bindsym $mod+n exec nextmatch Org.gnome.Nautilus
 # bindsym $mod+Shift+n exec emacsclient -nc --eval '(ranger "/home/rohan/drive/School")'

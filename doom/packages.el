@@ -89,6 +89,7 @@
 (package! poet-theme)
 (package! afternoon-theme)
 (package! olivetti)
+(package! org-ml)
 ;; (package! ox-reveal)
 ;;(package! lsp-grammarly)
 ;; (package! ox-latex)
@@ -111,12 +112,16 @@
 (package! w3m)
 (package! counsel-spotify)
 (package! smudge)
-(package! zeitgeist)
+(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
 (package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
+(package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
 (package! nov.el)
 ;; (package! tumblesocks)
 ;; (package! consult-spotify)
 
+;;; Consult
+(package! consult-ls-git)
+(package! consult-project-extra)
 
 
 ;;; Nano
@@ -129,3 +134,5 @@
 (package! org-d20)
 (package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
 (package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
+
+;;; Helm
