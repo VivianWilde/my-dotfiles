@@ -378,7 +378,7 @@ ARG has the same meaning as for `kill-sexp'."
 (setq doom-scratch-initial-major-mode 'org-mode)
 (setq doom-font (font-spec :family "Source Code Pro" :size 14)) ;; 14 if not monitr
 
-(setq doom-variable-pitch-font (font-spec :family "Merriweather" :size 14))
+(setq doom-variable-pitch-font (font-spec :family "Latin Modern Roman" :size 14))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
 
 (after! tumblesocks

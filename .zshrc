@@ -193,8 +193,8 @@ alias ka="killall"
 alias epubgrep="unzip -p '*.epub' | grep -a --color"
 alias enw="emacsclient -nw"
 alias sc="systemctl"
-alias nemosu="pwd|xargs sudo nautilus &"
-alias nemohere="pwd|xargs nautilus &" # Changed to nautilus for the moment
+alias nemosu="pwd|xargs sudo nemo &"
+alias nemohere="pwd|xargs nemo &" #
 alias r="ranger"
 alias ipy='ipython'
     #Spotify
@@ -334,14 +334,14 @@ export PATH="$HOME/bin:/usr/bin:$PATH"
 
 # CS61b
 #
-export CLASSPATH=".:/usr/share/java/*"
-export CLASSPATH="${CLASSPATH}:../*"
-export CLASSPATH="${CLASSPATH}:.."
-export MASTERDIR=$HOME/d/cs/61b/cs61b-software
-export PATH=${PATH}:${MASTERDIR}/bin
-export CLASSPATH=${CLASSPATH:-.}
-export CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/*"
-export CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/ucb.jar"
+# export CLASSPATH=".:/usr/share/java/*"
+# export CLASSPATH="${CLASSPATH}:../*"
+# export CLASSPATH="${CLASSPATH}:.."
+# export MASTERDIR=$HOME/d/cs/61b/cs61b-software
+# export PATH=${PATH}:${MASTERDIR}/bin
+# export CLASSPATH=${CLASSPATH:-.}
+# export CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/*"
+# export CLASSPATH="${CLASSPATH}:$MASTERDIR/lib/ucb.jar"
 
 # For KDE connect, Xiaomi device id
 export palantir=$(kdeconnect-cli -a --id-only|head -n 1)
