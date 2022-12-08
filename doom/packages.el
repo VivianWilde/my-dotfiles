@@ -73,7 +73,7 @@
 ;; (package! tide)
 
 ;;;; Lisp/Scheme
-(package! geiser-guile)
+;(package! geiser-guile)
 (package! sotlisp)
 (package! highlight-defined)
 (package! lisp-extra-font-lock)

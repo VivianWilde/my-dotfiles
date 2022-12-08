@@ -242,7 +242,7 @@ ARG has the same meaning as for `kill-sexp'."
                                         ;;; Mode declarations
 (lisp-extra-font-lock-global-mode 1)
 (global-hide-mode-line-mode 1)
-(nano-modeline-mode 1)
+;; (nanoodeline-mode 1)
 (auto-save-visited-mode 1)
 (global-visual-line-mode 1)
 (global-undo-tree-mode 1)
@@ -456,6 +456,13 @@ ARG has the same meaning as for `kill-sexp'."
                  ("\\section{%s}" . "\\cvsection*{%s}")
                  ("\\subsection{%s}" . "\\cvsubsection*{%s}")
                  ("\\subsubsection{%s}" . "\\cvsubsubsection*{%s}")))
+
+  (add-to-list 'org-latex-classes
+               '("dndbook"
+                 "\\documentclass{extarticle}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 
 
   (add-to-list 'org-latex-packages-alist '("" "minted"))
