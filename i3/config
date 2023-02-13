@@ -151,13 +151,13 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:D&D"
-set $ws2 "2:MATH"
-set $ws3 "3:LING"
-set $ws4 "4:CS70"
-set $ws5 "5:CELT"
-set $ws6 "6:Projects"
-set $ws7 "7:Writing"
-set $ws8 "8: Corp"
+set $ws2 "2:113"
+set $ws3 "3:128A"
+set $ws4 "4:61C"
+set $ws5 "5:170"
+set $ws6 "6:Spanish"
+set $ws7 "7:Personal"
+set $ws8 "8:Chores"
 set $ws9 "9:Reading"
 set $ws10 "10:Freedom"
 # Free Choice
@@ -231,6 +231,8 @@ bindsym $mod+r mode "resize"
 
 # Autostarts
 exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
+# exec --no-startup-id "export GTK_THEME=Nordic"
+# exec --no-startup-id "export GTK4_THEME=Nordic"
 exec --no-startup-id redshift-gtk
 exec_always --no-startup-id "~/bin/autosuspend"
 exec_always --no-startup-id "~/bin/laptop.sh"

@@ -58,8 +58,8 @@ $XONSH_COLOR_STYLE="mystyle"
 # if "eterm" not in $TERM:
 #	 xontrib load powerline
 
-aliases['nemohere']="nautilus @($(pwd).strip()) . &"
-aliases['nemosu']="sudo nautilus @($(pwd).strip())"
+aliases['nemohere']="nemo @($(pwd).strip()) . &"
+aliases['nemosu']="sudo nemo @($(pwd).strip())"
 
 import sys
 import random

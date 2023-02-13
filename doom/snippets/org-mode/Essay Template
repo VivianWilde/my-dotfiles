@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: Essay Template
+# key:
+# --
+* Thesis
+** Drafting
+** Actual
+* First
+** Drafting
+** Actual
+* Second
+** Drafting
+** Actual
+* Third
+** Drafting
+** Actual
+* Conclusions
+** Drafting
+** Actual
+* Crud

@@ -3,7 +3,6 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
 ;;; Primitive Setup
 ;; Some functionality uses this to identify you,
 ;;
@@ -97,6 +96,7 @@
 (map! :nvieo "C-+" (cmd! (text-scale-increase 1)))
 
 
+
 (after! evil
   (map! :nvieo "C-n" #'next-line)
   (map! :nvieo "C-p" #'previous-line)
@@ -112,21 +112,6 @@
   )
 
 (map! "M-K" #'copy-sexp-as-kill)
-(defun yank-sexp ()
-  (mark-sexp)
-  (kill-ring-save)
-  )
-
-(defun copy-sexp-as-kill (&optional arg)
-  "Save the sexp following point to the kill ring.
-ARG has the same meaning as for `kill-sexp'."
-  (interactive "p")
-  (save-excursion
-    (let ((orig-point (point)))
-      (forward-sexp (or arg 1))
-      (kill-ring-save orig-point (point)))))
-
-
 
 (map!
  :map org-mode-map
@@ -142,16 +127,13 @@ ARG has the same meaning as for `kill-sexp'."
          :desc "Consult Buffer" "b" #'consult-buffer)
         (:prefix-map ("s" . "search")
          :desc "Consult Imenu All"
-         "I" #'consult-imenu-all)
-        (:prefix-map ("s" . "search")
+         "I" #'consult-imenu-all
          :desc "Consult Ripgrep"
          "R" #'consult-ripgrep)
         (:prefix-map ("f" . "file")
-         :desc "Open File Externally"
-         "o" #'consult-file-externally)
-        (:prefix-map ("f" . "file")
-         :desc "Open File in HOME"
-         "h" #'find-file-home)
+         :desc "Open File Externally" "o" #'consult-file-externally
+         :desc "Open 61C File" "c" #'open-hive-file
+         :desc "Open File in HOME" "h" #'find-file-home)
         ("SPC" #'consult-buffer)
         (:prefix-map ("i" . "insert")
          :desc "Insert file path"
@@ -166,19 +148,13 @@ ARG has the same meaning as for `kill-sexp'."
          :desc "Buffer" "b" #'helm-mini)
         (:prefix-map ("s" . "search")
          :desc "Imenu All"
-         "I" #'helm-imenu-in-all-buffers)
-        (:prefix-map ("s" . "search")
+         "I" #'helm-imenu-in-all-buffers
          :desc "Consult Ripgrep"
          "R" #'consult-ripgrep)
         (:prefix-map ("f" . "file")
-         :desc "Consult ls"
-         "f" #'consult-ls-git)
-        (:prefix-map ("f" . "file")
-         :desc "Open File Externally"
-         "o" #'consult-file-externally)
-        (:prefix-map ("f" . "file")
-         :desc "Open File in HOME"
-         "h" #'find-file-at-home)
+         :desc "Consult ls" "f" #'consult-ls-git
+         :desc "Open File Externally" "o" #'consult-file-externally
+         :desc "Open File in HOME" "h" #'find-file-at-home)
         ("SPC" #'helm-mini)
         (:prefix-map ("i" . "insert")
          :desc "Insert file path"
@@ -198,7 +174,6 @@ ARG has the same meaning as for `kill-sexp'."
       "d" #'ranger)
 ;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
 
-;; Make it easier to run make tasks
 
 ;;;; Custom Key Groups
 (map!
@@ -242,7 +217,6 @@ ARG has the same meaning as for `kill-sexp'."
                                         ;;; Mode declarations
 (lisp-extra-font-lock-global-mode 1)
 (global-hide-mode-line-mode 1)
-;; (nanoodeline-mode 1)
 (auto-save-visited-mode 1)
 (global-visual-line-mode 1)
 (global-undo-tree-mode 1)
@@ -277,21 +251,6 @@ ARG has the same meaning as for `kill-sexp'."
       (let ((consult-project-root-function (lambda () (expand-file-name path))))
         (apply func args)
         )))
-
-  (defun find-file-home ()
-    (interactive)
-    (find-file (read-file-name "Find file: " "~/"))
-    )
-
-
-
-  (defun consult-find-file (file)
-    "Open FILE."
-    (interactive "fFind File: ")
-    (follow-mode 1)
-    (find-file (expand-file-name file))
-    (follow-mode -1)
-    )
 
 
 
@@ -411,6 +370,7 @@ ARG has the same meaning as for `kill-sexp'."
     (setq undo-limit 160000)
     (setq undo-strong-limit 240000)
     )
+
   (setup-undo-tree)
   (add-hook 'org-mode-hook 'setup-undo-tree)
   )
@@ -430,7 +390,15 @@ ARG has the same meaning as for `kill-sexp'."
   (setq org-list-demote-modify-bullet
         '(("+" . "-") ("-" . "+") ("*" . "+")))
   ;; (setq org-edit-src-auto-save-idle-delay 300)
-  (setq org-insert-heading-respect-content nil))
+  (setq org-insert-heading-respect-content nil)
+  (map! :map org-mode-map :localleader
+        (:prefix ("s" . "tree/subtree")
+         :desc "Copy Tree" "c" #'org-copy-subtree
+         :desc "Clone Tree" "C" #'org-clone-subtree-with-time-shift)
+        )
+  (use-package! org-pandoc-import)
+
+  )
 
 
 (after! ox-latex
@@ -484,17 +452,18 @@ ARG has the same meaning as for `kill-sexp'."
 
 
 (after! org-lookup-dnd
-  (setq! completion-ignore-case t
-         org-lookup-dnd-sources
-         '(
-           ("/home/rohan/drive/RPG/5e/core/phb.pdf" 1 4 4 t)
-           ("/home/rohan/drive/RPG/5e/core/Monster Manual.pdf" 1 4 4 nil)
-           ("/home/rohan/drive/RPG/5e/core/dmg.pdf" 1 1 1 t)
-           ("/home/rohan/drive/RPG/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
-           ("/home/rohan/drive/RPG/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
-           ("/home/rohan/drive/RPG/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
-
-           ))
+  (setq!
+   completion-ignore-case t
+   org-lookup-dnd-sources
+   '(
+     ("/home/rohan/drive/RPG/5e/core/phb.pdf" 1 4 4 t)
+     ("/home/rohan/drive/RPG/5e/core/Monster Manual.pdf" 1 4 4 nil)
+     ("/home/rohan/drive/RPG/5e/core/dmg.pdf" 1 1 1 t)
+     ("/home/rohan/drive/RPG/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
+     ("/home/rohan/drive/RPG/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
+     ("/home/rohan/drive/RPG/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
+     ("/home/rohan/OneDrive_Personal/RPG/5e/character options/COFSA The Compendium of Forgotten Secrets - Awakening (Abridged).pdf" 0 3 3 t)
+     ))
   )
 ;;; Programming Language Config
 (after! coffee-mode
@@ -504,6 +473,21 @@ ARG has the same meaning as for `kill-sexp'."
 (after! geiser
   (setq geiser-scheme-implementation 'mit)
   (add-hook! 'scheme-mode-hook #'run-geiser))
+
+(after! clojure-mode
+  (add-hook! 'clojure-mode-hook (lambda (cider-jack-in-clj nil))))
+
+(use-package! riscv-mode)
+(after! riscv-mode
+  ;; (setq! riscv-font-lock-keywords
+  ;;        (list (append (car riscv-font-lock-keywords) '("# .*\n" . font-lock-comment-face))) )
+  ;; (font-lock-add-keywords 'riscv-mode '(("#.+\n" . font-lock-comment-face)) 'end)
+  )
+
+(after! asm-mode
+  (modify-syntax-entry ?# "< b" asm-mode-syntax-table)
+  (modify-syntax-entry ?\n "> b" asm-mode-syntax-table)
+  )
 
 ;;; Hooks
 (add-hook! 'doom-init-ui-hook (lambda () (defalias 'doom/delete-frame-with-prompt 'delete-frame)))
@@ -551,6 +535,44 @@ ARG has the same meaning as for `kill-sexp'."
 
 ;;; Custom Functions
 
+(defun find-file-home ()
+  (interactive)
+  (find-file (read-file-name "Find file: " "~/"))
+  )
+
+
+
+(defun consult-find-file (file)
+  "Open FILE."
+  (interactive "fFind File: ")
+  (follow-mode 1)
+  (find-file (expand-file-name file))
+  (follow-mode -1)
+  )
+
+(defun open-hive-file ()
+  (interactive)
+  (find-file (read-file-name "File: " "/ssh:hive7.cs.berkeley.edu:/home/cc/cs61c/sp23/class/cs61c-afw/"))
+  )
+
+
+
+(defun yank-sexp ()
+  (mark-sexp)
+  (kill-ring-save)
+  )
+
+(defun copy-sexp-as-kill (&optional arg)
+  "Save the sexp following point to the kill ring.
+ARG has the same meaning as for `kill-sexp'."
+  (interactive "p")
+  (save-excursion
+    (let ((orig-point (point)))
+      (forward-sexp (or arg 1))
+      (kill-ring-save orig-point (point)))))
+
+
+
 (defun dnd-search-srd ()
   (interactive)
   (let (
@@ -583,6 +605,8 @@ ARG has the same meaning as for `kill-sexp'."
   (funcall mode -1)
   (funcall mode 1)
   )
+
+(reset-mode #'doom-modeline-mode)
 
 
 (defun insert-path ()

@@ -67,8 +67,8 @@
 ;; (package! spl :recipe (:local-repo "~/.config"))
 
 ;;;; Web
-(package! coffee-mode)
-(package! company-web)
+;;(package! coffee-mode)
+;;(package! company-web)
 ;; (package! typescript-mode)
 ;; (package! tide)
 
@@ -85,11 +85,15 @@
 (package! ox-pandoc)
 (package! htmlize)
 (package! org-transclusion)
-(package! fountain-mode)
+;;(package! fountain-mode)
 (package! poet-theme)
 (package! afternoon-theme)
 (package! olivetti)
 (package! org-ml)
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
 ;; (package! ox-reveal)
 ;;(package! lsp-grammarly)
 ;; (package! ox-latex)
@@ -104,30 +108,31 @@
 ;;; Misc
 ;;;; Programming
 (package! lsp-origami)
+(package! riscv-mode)
 ;; (package! emacs-python-pytest :disable t)
 (package! imenu-list)
-(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
+;;(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
 ;;;; Utilities
 (package! info-plus)
 (package! w3m)
 (package! counsel-spotify)
 (package! smudge)
 (package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
-(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
+;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
 (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
-(package! nov.el)
+;;(package! nov.el)
 ;; (package! tumblesocks)
 ;; (package! consult-spotify)
 
 ;;; Consult
-(package! consult-ls-git)
-(package! consult-project-extra)
+;;(package! consult-ls-git)
+;;(package! consult-project-extra)
 
 
 ;;; Nano
-(package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
-(package! nano-theme)
-(package! nano-modeline)
+;;(package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
+;;(package! nano-theme)
+;;(package! nano-modeline)
 
 
 ;;; D&D
@@ -136,3 +141,4 @@
 (package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
 
 ;;; Helm
+
