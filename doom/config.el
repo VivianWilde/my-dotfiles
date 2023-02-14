@@ -30,9 +30,9 @@
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-Iosvkem) Nope
 ;; (setq doom-theme 'doom-moonlight) Nope
-;; (setq doom-theme 'doom-vibrant)
+(setq doom-theme 'doom-vibrant)
 ;; (setq doom-theme 'doom-ir-black) NO
-(setq doom-theme 'doom-wilmersdorf)
+;; (setq doom-theme 'doom-wilmersdorf)
 ;; (setq doom-theme 'poet-dark)
 ;; (setq doom-theme 'doom-homage-black) NO
 
