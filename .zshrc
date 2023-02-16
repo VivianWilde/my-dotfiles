@@ -11,6 +11,7 @@ cdpath=($HOME/d $HOME/d/sp22 $HOME $HOME/drive $HOME/d/cs61b/repo)
 export LESSOPEN="| pygmentize -O style=monokai -g -f terminal256 %s"
 export ZSH="$HOME/.oh-my-zsh"
 
+export PATH="/home/rohan/.local/bin:$PATH"
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH="$HOME/.pub-cache/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -21,7 +22,7 @@ export PATH="/usr/racket:$PATH"
 export PATH="$HOME/experiments/pythonia:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
 export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
-export PATH="$HOME/.config/doom-emacs/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="$HOME/.idris2/bin:$PATH"
 
 export WINEARCH="win64"

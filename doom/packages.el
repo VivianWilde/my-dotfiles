@@ -49,6 +49,9 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 ;; (add-to-list 'load-path "~/build/doom-nano-testing")
+(package! transient :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440")
+(package! with-editor :pin "391e76a256aeec6b9e4cbd733088f30c677d965b")
+
 
 
 ;;; Libraries
@@ -64,7 +67,7 @@
 (package! bnf-mode)
 (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
 ;; (package! xonsh-mode)
-;; (package! spl :recipe (:local-repo "~/.config"))
+;;(package! spl :recipe (:local-repo "~/.config"))
 
 ;;;; Web
 ;;(package! coffee-mode)
@@ -117,7 +120,7 @@
 (package! w3m)
 (package! counsel-spotify)
 (package! smudge)
-(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
+;;(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
 ;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
 (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
 ;;(package! nov.el)

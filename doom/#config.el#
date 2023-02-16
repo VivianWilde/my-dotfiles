@@ -606,7 +606,7 @@ ARG has the same meaning as for `kill-sexp'."
   (funcall mode 1)
   )
 
-;;(reset-mode #'doom-modeline-mode)
+(reset-mode #'doom-modeline-mode)
 
 
 (defun insert-path ()
