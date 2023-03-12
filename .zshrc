@@ -167,6 +167,7 @@ export LANG=en_US.UTF-8
     #Java
 alias jcomp="javac -d out"
 alias junit="java org.junit.runner.JUnitCore"
+alias logisim="env _JAVA_AWT_WM_NONREPARENTING=1 java -jar ~/d/cs/61c/projects/61c-proj3/tools/logisim-evolution.jar"
 
     #Onedrive management
 alias monitor='onedrive --monitor'

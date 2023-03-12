@@ -49,8 +49,15 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 ;; (add-to-list 'load-path "~/build/doom-nano-testing")
-(package! transient :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440")
-(package! with-editor :pin "391e76a256aeec6b9e4cbd733088f30c677d965b")
+;; (package! transient :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440")
+;; (package! with-editor :pin "391e76a256aeec6b9e4cbd733088f30c677d965b")
+
+
+;;; EAF
+(package! emacs-application-framework
+:recipe (:host github :repo "manateelazycat/emacs-application-framework"
+:files ("eaf.el" "src/lisp/*.el")))
+
 
 
 
@@ -62,6 +69,7 @@
 (package! esxml)
 
 ;;; Language Support
+(package! sphinx-doc)
 
 ;;;; Misc
 (package! bnf-mode)
@@ -142,6 +150,8 @@
 (package! org-d20)
 (package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
 (package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
+(package! button-lock)
+(package! decide)
 
 ;;; Helm
 

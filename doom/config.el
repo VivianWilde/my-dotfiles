@@ -80,7 +80,8 @@
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
       scroll-margin 2)
 (display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1)
-(setq-default major-mode 'org-mode)
+;; (setq-default major-mode 'org-mode)
+(setq-default major-mode 'fundamental-mode)
 
 
 ;;; Keybindings
@@ -142,26 +143,26 @@
   )
 
 ;;; Helm
-(when (modulep! :completion helm)
-  (map! :leader
-        (:prefix-map ("b" . "buffer")
-         :desc "Buffer" "b" #'helm-mini)
-        (:prefix-map ("s" . "search")
-         :desc "Imenu All"
-         "I" #'helm-imenu-in-all-buffers
-         :desc "Consult Ripgrep"
-         "R" #'consult-ripgrep)
-        (:prefix-map ("f" . "file")
-         :desc "Consult ls" "f" #'consult-ls-git
-         :desc "Open File Externally" "o" #'consult-file-externally
-         :desc "Open File in HOME" "h" #'find-file-at-home)
-        ("SPC" #'helm-mini)
-        (:prefix-map ("i" . "insert")
-         :desc "Insert file path"
-         "P" #'insert-path)
-        )
+;; (when (modulep! :completion helm)
+;;   (map! :leader
+;;         (:prefix-map ("b" . "buffer")
+;;          :desc "Buffer" "b" #'helm-mini)
+;;         (:prefix-map ("s" . "search")
+;;          :desc "Imenu All"
+;;          "I" #'helm-imenu-in-all-buffers
+;;          :desc "Consult Ripgrep"
+;;          "R" #'consult-ripgrep)
+;;         (:prefix-map ("f" . "file")
+;;          :desc "Consult ls" "f" #'consult-ls-git
+;;          :desc "Open File Externally" "o" #'consult-file-externally
+;;          :desc "Open File in HOME" "h" #'find-file-at-home)
+;;         ("SPC" #'helm-mini)
+;;         (:prefix-map ("i" . "insert")
+;;          :desc "Insert file path"
+;;          "P" #'insert-path)
+;;         )
 
-  )
+;;   )
 
 
 (map! :leader
@@ -195,6 +196,7 @@
   :desc "Roll d20" "d" #'org-d20-d20
   :desc "Roll dice" "r" #'org-d20-roll
   :desc "Lookup in local SRD" "s" #'dnd-search-srd
+  :desc "Roll on the Wild Magic table" "w" #'dnd-wild-magic-roll
   )
  (:prefix-map ("l" . "Lookup in API")
   :desc "Monsters" "m m" #'dnd5e-api-search-monsters
@@ -210,6 +212,10 @@
   :desc "Magic Items" "m i" #'dnd5e-api-search-magic-items
   :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
   :desc "Generic" "RET" #'dnd5e-api-search)
+
+ (:prefix-map ("r" . "Recreation")
+  :desc "Display Fortune" "f" #'display-fortune)
+
  )
 
 
@@ -261,7 +267,9 @@
     (lambda ()
       (interactive)
       (let ((dir (read-file-name "Directory: ")))
-        (funcall (in-folder dir #'consult-ripgrep)))))
+        ;; (funcall (in-folder dir #'consult-ripgrep))
+        (consult-ripgrep dir)
+        )))
   (setq
    consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."
    consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r .")
@@ -527,7 +535,9 @@
 (add-hook! 'smartparens-mode-hook #'evil-smartparens-mode)
 (add-hook! 'smartparens-disabled-hook (lambda () (evil-smartparens-mode -1)))
 ;; (add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
-
+;;;; Python
+(use-package! sphinx-doc)
+(add-hook! 'python-mode-hook #'sphinx-doc-mode)
 
 
 
@@ -537,7 +547,7 @@
 
 (defun find-file-home ()
   (interactive)
-  (find-file (read-file-name "Find file: " "~/"))
+  (consult-find-file (read-file-name "Find file: " "~/"))
   )
 
 
@@ -549,6 +559,20 @@
   (find-file (expand-file-name file))
   (follow-mode -1)
   )
+
+(defun consult-file-externally (file)
+  "Open FILE using system's default application."
+  (interactive "fOpen: ")
+  (if (and (eq system-type 'windows-nt)
+           (fboundp 'w32-shell-execute))
+      (w32-shell-execute "open" target)
+    (call-process (pcase system-type
+                    ('darwin "open")
+                    ('cygwin "cygstart")
+                    (_ "xdg-open"))
+                  nil 0 nil
+                  (expand-file-name file))))
+
 
 (defun open-hive-file ()
   (interactive)
@@ -572,6 +596,10 @@ ARG has the same meaning as for `kill-sexp'."
       (kill-ring-save orig-point (point)))))
 
 
+(defun display-fortune ()
+  (interactive)
+  (message (shell-command-to-string "fortune"))
+  )
 
 (defun dnd-search-srd ()
   (interactive)
@@ -580,6 +608,30 @@ ARG has the same meaning as for `kill-sexp'."
         )
     (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
   )
+
+(defun dnd-wild-magic-roll ()
+  (interactive)
+  (let* ((l (+ 2 (random 249)))
+         (fname "~/drive/RPG/5e/5e-srd-split/wild-magic.md")
+         (cmd (format "sed '%dq;d' %s" l fname))
+         )
+    (message (shell-command-to-string cmd))))
+
+
+(defun set-lang-mode (lang)
+  (set-language-environment (s-capitalize lang))
+  (ispell-change-dictionary (s-downcase lang)))
+
+(defun set-english ()
+  "Set lang environment to english"
+  (interactive)
+  (set-lang-mode "english"))
+(defun set-spanish ()
+  "Set language environment to spanish"
+  (interactive)
+  (set-lang-mode "spanish"))
+
+
 
 (defun org-blockify-comment (region)
   ;; Basically, take a bunch of # comments, and place them inside a block
@@ -606,7 +658,7 @@ ARG has the same meaning as for `kill-sexp'."
   (funcall mode 1)
   )
 
-;;(reset-mode #'doom-modeline-mode)
+;; (reset-mode #'doom-modeline-mode)
 
 
 (defun insert-path ()

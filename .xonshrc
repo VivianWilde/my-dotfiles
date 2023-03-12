@@ -42,7 +42,10 @@ $XONSH_AUTOPAIR = True
 $XONSH_HISTORY_SIZE=131072
 
 
-xontrib load bashisms coreutils histcpy readable-traceback whole_word_jumping z pipeliner  output_search gitinfo jedi
+xontrib load bashisms coreutils histcpy readable-traceback whole_word_jumping z pipeliner  output_search gitinfo jedi vox autovox argcomplete django langenv
+
+xontrib load pyenv
+
 
 
 

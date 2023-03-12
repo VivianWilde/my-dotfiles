@@ -67,10 +67,10 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 
 # Use pactl to adjust volume in PulseAudio.
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
@@ -146,7 +146,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 #bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+bindsym $mod+w layout toggle tabbed
 bindsym $mod+s layout toggle split
 
 # toggle tiling / floating
@@ -243,7 +243,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Autostarts
-exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
+# exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
 # exec --no-startup-id "export GTK_THEME=Nordic"
 # exec --no-startup-id "export GTK4_THEME=Nordic"
 exec --no-startup-id redshift-gtk
@@ -295,12 +295,15 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
 #bindsym $mod+0 [class="Mailspring"] scratchpad show
-bindsym Mod1+3 [class="Tilix"] scratchpad show
+# bindsym Mod1+3 [class="Tilix"] scratchpad show
+bindsym Mod1+3 [app_id="tilix"] scratchpad show
+
+# bindsym $mod+3 [class="Tilix"] scratchpad show
 bindsym $mod+Shift+s [class="Spotify"] scratchpad show
-# bindsym $mod+Shift+d [title="Discord"] scratchpad show
+bindsym $mod+Shift+d [title="Discord"] scratchpad show
 bindsym $mod+n [class="Emacs"] scratchpad show
 bindsym $mod+b [class="Vivaldi-stable"] scratchpad show
-bindsym $mod+Shift+d [class="Vivaldi-stable" instance="discord.com__login"] scratchpad show
+# bindsym $mod+Shift+d [class="Vivaldi-stable" instance="discord.com__login"] scratchpad show
 
 
 for_window [instance="spotify"] sticky enable
@@ -320,6 +323,7 @@ for_window [floating] border pixel 0
 set $opacity 0.85
 for_window [class=".*"] opacity $opacity
 for_window [app_id=".*"] opacity $opacity
+# for_window [class="Emacs"] opacity 0.5
 
 
 # From default sway
@@ -335,7 +339,8 @@ exec swayidle -w\
 ## Lock Screen
     bindsym $mod+f1 exec ~/.config/sway/scripts/lockman.sh
 
-    bindsym print exec /usr/share/sway/scripts/grimshot --notify save output
+    bindsym print exec '/usr/share/sway/scripts/grimshot --notify save area'
+
     bindsym Shift+print exec ~/.config/sway/scripts/screenshot.sh
 
 set $laptop eDP-1
@@ -401,6 +406,9 @@ client.background       #F8F8F2
 # Read `man 5 sway-bar` for more information about this section.
 bar {
     swaybar_command waybar
+    position top
+    mode hide
+    modifier Mod4
 }
 
 #
