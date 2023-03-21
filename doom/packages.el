@@ -154,4 +154,7 @@
 (package! decide)
 
 ;;; Helm
-
+;;; Themes
+(package! autothemer)
+(package! TransSide :recipe (:type git :host github :repo "Harith163/TransSide-theme"))
+(package! rainbow-mode)

@@ -98,7 +98,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec ulauncher-toggle
 # unbind control+space
 # bindsym $mod+space exec ulauncher-toggle
-bindsym alt+space exec "synapse -s & --display=:0 "
+bindsym ctrl+shift+space exec "synapse -s & --display=:0 "
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed $mod+d exec --no-startup-id i3-dmenu-desktop
@@ -167,9 +167,9 @@ set $ws1 "1:D&D"
 set $ws2 "2:113"
 set $ws3 "3:128A"
 set $ws4 "4:61C"
-set $ws5 "5:170"
-set $ws6 "6:Spanish"
-set $ws7 "7:Personal"
+set $ws5 "5:Spanish"
+set $ws6 "6:Writing"
+set $ws7 "7:Research"
 set $ws8 "8:Chores"
 set $ws9 "9:Reading"
 set $ws10 "10:Freedom"
@@ -248,15 +248,16 @@ bindsym $mod+r mode "resize"
 # exec --no-startup-id "export GTK4_THEME=Nordic"
 exec --no-startup-id redshift-gtk
 exec_always --no-startup-id "~/bin/autosuspend"
+exec_always --no-startup-id "sudo updatedb"
 exec_always --no-startup-id "~/bin/laptop.sh"
 exec_always --no-startup-id "swaybg -i /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png"
 exec --no-startup-id nm-applet
 exec volctl
 exec_always --no-startup-id autotiling-rs
 exec libinput-gestures
-exec "ulauncher --no-window-shadow --hide-window"
+exec_always "ulauncher --no-window-shadow --hide-window"
 # exec_always '/home/rohan/.config/polybar/launch.sh'
-exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
+# exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
 # exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
 exec tilix
 exec "killall -9 emacs"

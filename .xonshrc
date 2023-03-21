@@ -1,7 +1,22 @@
 # XONSH WEBCONFIG START
+from xonsh.tools import register_custom_style
+mystyle = {
+    "BLUE": "#004CFF",
+    "CYAN": "#00FFFF",
+    # "NB_YELLOW": "#FCF434",
+    # "YELLOW": "#FCF434",
+    # "NB_PURPLE": "#9C59D1",
+    # "PURPLE": "#9C59D1",
+    # "BLACK": "#000000",
+    # "WHITE": "#FFFFFF"
+}
+register_custom_style("mystyle", mystyle, base="emacs")
+$XONSH_COLOR_STYLE="mystyle"
+
+
 
 source-zsh "echo loading xonsh foreign shell"
-$PROMPT = '{CYAN}{cwd} {INTENSE_RED}❯{INTENSE_YELLOW}❯{INTENSE_GREEN}❯{RESET} '
+$PROMPT = '{BOLD_INTENSE_PURPLE}{user}@A.R.T {CYAN}{cwd} {#FCF434}❯{#FFFFFF}❯{#9C59D1}❯{INTENSE_BLACK}❯{RESET}'
 # $XONSH_COLOR_STYLE = 'inkpot'
 # XONSH WEBCONFIG END
 $COMMANDS_CACHE_SIZE_WARNING='10000'
@@ -42,7 +57,9 @@ $XONSH_AUTOPAIR = True
 $XONSH_HISTORY_SIZE=131072
 
 
-xontrib load bashisms coreutils histcpy readable-traceback whole_word_jumping z pipeliner  output_search gitinfo jedi vox autovox argcomplete django langenv
+xontrib load bashisms coreutils readable-traceback whole_word_jumping z  gitinfo jedi vox autovox argcomplete django
+
+# xontrib load powerline2
 
 xontrib load pyenv
 
@@ -50,13 +67,6 @@ xontrib load pyenv
 
 
 # XONSH WIZARD END
-
-from xonsh.tools import register_custom_style
-mystyle = {
-    "BLUE": "#004CFF"
-}
-register_custom_style("mystyle", mystyle, base="emacs")
-$XONSH_COLOR_STYLE="mystyle"
 
 # if "eterm" not in $TERM:
 #	 xontrib load powerline
@@ -67,3 +77,4 @@ aliases['nemosu']="sudo nemo @($(pwd).strip())"
 import sys
 import random
 from random import randint
+fortune

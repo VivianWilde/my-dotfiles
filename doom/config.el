@@ -8,8 +8,9 @@
 ;;
 ;;e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Rohan Goyal "
-      user-mail-address "goyal.rohan.03@gmail.com")
+(setq user-full-name "Vivien Moriarty"
+      user-mail-address "goyal.rohan.03@gmail.com"
+      )
 
 ;;; Theming/Fonts
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -30,7 +31,8 @@
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-Iosvkem) Nope
 ;; (setq doom-theme 'doom-moonlight) Nope
-(setq doom-theme 'doom-vibrant)
+;; (setq doom-theme 'doom-vibrant)
+(setq doom-theme 'doom-genderfluid)
 ;; (setq doom-theme 'doom-ir-black) NO
 ;; (setq doom-theme 'doom-wilmersdorf)
 ;; (setq doom-theme 'poet-dark)
@@ -197,6 +199,7 @@
   :desc "Roll dice" "r" #'org-d20-roll
   :desc "Lookup in local SRD" "s" #'dnd-search-srd
   :desc "Roll on the Wild Magic table" "w" #'dnd-wild-magic-roll
+  :desc "Flip a Binary Coin" "f" #'coin-flip
   )
  (:prefix-map ("l" . "Lookup in API")
   :desc "Monsters" "m m" #'dnd5e-api-search-monsters
@@ -222,7 +225,7 @@
 
                                         ;;; Mode declarations
 (lisp-extra-font-lock-global-mode 1)
-(global-hide-mode-line-mode 1)
+;; (global-hide-mode-line-mode 1)
 (auto-save-visited-mode 1)
 (global-visual-line-mode 1)
 (global-undo-tree-mode 1)
@@ -287,6 +290,9 @@
         imenu-list-position 'left
         imenu-list-size 0.25)
   )
+
+(after! vterm
+  (setq vterm-shell "/bin/xonsh"))
 
 
 (after! projectile
@@ -617,6 +623,11 @@ ARG has the same meaning as for `kill-sexp'."
          )
     (message (shell-command-to-string cmd))))
 
+(defun coin-flip ()
+  (interactive)
+  (message (if (zerop (mod (random 10000) 2))
+               "Heads (1)" "Tails (0)")))
+
 
 (defun set-lang-mode (lang)
   (set-language-environment (s-capitalize lang))
@@ -658,8 +669,29 @@ ARG has the same meaning as for `kill-sexp'."
   (funcall mode 1)
   )
 
-;; (reset-mode #'doom-modeline-mode)
+(defun dup (str)
+  (list str str nil))
 
+(defun make-pride-flag (str path)
+  "STR must be distinct each call"
+  (propertize str 'display (create-image path 'svg  nil :scale 0.6)))
+
+(after! doom-modeline
+  (let* ((vi (propertize "      Vivien 🏳️‍🌈 "))
+        (flag-names (list "gender-queer" "nonbinary" "asexual" "pride" "transgender"))
+        (flags (-map (lambda (name) (make-pride-flag name (format "/home/vivien/Downloads/pride-emoji-flags/svg/%s-flag.svg" name))) flag-names)))
+    (setq doom-modeline-support-imenu t)
+    (setq doom-modeline-hud t)
+    (setq doom-modeline-unicode-fallback t)
+    (setq doom-modeline-enable-word-count t)
+    (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+    (setq doom-modeline-buffer-encoding nil)
+    (setq doom-modeline-env-version t)
+    (setq doom-modeline-project-detection 'auto)
+    (add-to-list 'mode-line-misc-info vi)
+    (-map (lambda (flag) (add-to-list 'mode-line-misc-info flag)) flags)
+    (doom-modeline-mode 1)
+    ))
 
 (defun insert-path ()
   (interactive)
