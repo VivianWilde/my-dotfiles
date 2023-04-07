@@ -70,6 +70,7 @@
 
 ;;; Language Support
 (package! sphinx-doc)
+(package! matlab-mode)
 
 ;;;; Misc
 (package! bnf-mode)
@@ -105,6 +106,7 @@
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
+(package! default-lang :recipe (:local-repo "~/experiments/elisp/default-lang") )
 ;; (package! ox-reveal)
 ;;(package! lsp-grammarly)
 ;; (package! ox-latex)

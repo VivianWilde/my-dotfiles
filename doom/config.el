@@ -12,6 +12,7 @@
       user-mail-address "goyal.rohan.03@gmail.com"
       )
 
+
 ;;; Theming/Fonts
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -32,7 +33,8 @@
 ;; (setq doom-theme 'doom-Iosvkem) Nope
 ;; (setq doom-theme 'doom-moonlight) Nope
 ;; (setq doom-theme 'doom-vibrant)
-(setq doom-theme 'doom-genderfluid)
+;; (setq doom-theme 'doom-genderfluid)
+(setq doom-theme 'doom-peacock)
 ;; (setq doom-theme 'doom-ir-black) NO
 ;; (setq doom-theme 'doom-wilmersdorf)
 ;; (setq doom-theme 'poet-dark)
@@ -50,6 +52,51 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
+(setq fancy-splash-image "/home/vivien/Downloads/resized-one.png")
+
+(defun one-one-quote ()
+  (let* ((path "/home/vivien/config/fortunes/one-one")
+         (oddnum (lambda (upper) (+ 1 (* 2 (random (/ upper 2))))))
+         (line (funcall oddnum 51))
+         (cmd (format "sed '%dq;d' %s" line path))
+         )
+    (shell-command-to-string cmd)
+    )
+  )
+
+(defun message-one-one ()
+  "Display a One-One quote in the minibuffer"
+  (interactive)
+  (message (one-one-quote)))
+
+(defun dashboardify (fn)
+  "Call TXTFN, and wrap the result in a func that displays it nicely in doom-dashboard"
+  (lambda () (insert (+doom-dashboard--center (- +doom-dashboard--width 1) (propertize (funcall fn) 'face 'bold-italic 'align 'center))) (insert hard-newline))
+  )
+
+
+(defun get-good-fortune ()
+  (let* ((possibles (list "calvin" "discworld" "hitchhiker" "montypython"))
+         (choice (nth (random (length possibles)) possibles))
+         (command (format "fortune %s" choice))
+         (txt (shell-command-to-string command)))
+    txt
+
+    )
+  )
+
+(defun dashboard-fortune ()
+  (insert (+doom-dashboard--center (- +doom-dashboard--width 1) (get-good-fortune) ))
+  (insert hard-newline)
+  )
+
+(setq +doom-dashboard-functions `(
+                                  doom-dashboard-widget-banner
+                                  ,(dashboardify #'one-one-quote)
+                                  dashboard-fortune
+                                  doom-dashboard-widget-shortmenu
+                                  doom-dashboard-widget-footer))
+;; TODO List of best one-one quotes, have it display a random one
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -136,12 +183,19 @@
         (:prefix-map ("f" . "file")
          :desc "Open File Externally" "o" #'consult-file-externally
          :desc "Open 61C File" "c" #'open-hive-file
-         :desc "Open File in HOME" "h" #'find-file-home)
+         :desc "Open File in HOME" "h" #'find-file-home
+         :desc "Open File Manager Here" "." #'filemanager-here
+         )
         ("SPC" #'consult-buffer)
         (:prefix-map ("i" . "insert")
          :desc "Insert file path"
          "P" #'insert-path)
         )
+  )
+
+(defun filemanager-here ()
+  (interactive)
+  (start-process "nemo" nil "nemo" (file-name-directory buffer-file-name))
   )
 
 ;;; Helm
@@ -217,7 +271,9 @@
   :desc "Generic" "RET" #'dnd5e-api-search)
 
  (:prefix-map ("r" . "Recreation")
-  :desc "Display Fortune" "f" #'display-fortune)
+  :desc "Display Fortune" "f" #'display-fortune
+  :desc "Display One-One Quote" "o" #'message-one-one
+  )
 
  )
 
@@ -409,8 +465,41 @@
         (:prefix ("s" . "tree/subtree")
          :desc "Copy Tree" "c" #'org-copy-subtree
          :desc "Clone Tree" "C" #'org-clone-subtree-with-time-shift)
+        (:prefix ("l" . "links" )
+         :desc "Insert Link to Heading" "h" #'my/org-insert-heading-link
+
+         )
+        "&" #'org-mark-ring-goto
         )
+
   (use-package! org-pandoc-import)
+
+  (defun my/org-headings ()
+    "Get the list of headings in an org buffer. Keys are full paths, vals are plain strings"
+    (let* (
+           (paths (--map  (s-chop-right 1 (org-no-properties it)) ( consult-org--headings nil nil 'file)))
+           (table (ht-create))
+           )
+      (--map (ht-set! table it (car (last (s-split "/" it)))) paths)
+      table
+      )
+    ;; (last (s-split "/" (s-chop-right 1 (org-no-properties it))))
+    )
+
+  (defun my/org-insert-heading-link ()
+    (interactive)
+    "Let user select a heading from the buffer, insert a link to it at point"
+    (let* (
+           (file (buffer-name))
+           (heading-table (my/org-headings))
+           (heading (completing-read "Select a heading: " heading-table  nil nil))
+           (simplified-heading (ht-get heading-table heading))
+           (link (format "[[file:%s::*%s]]" file simplified-heading))
+           )
+      (insert link)
+
+      )
+    )
 
   )
 
@@ -491,6 +580,9 @@
 (after! clojure-mode
   (add-hook! 'clojure-mode-hook (lambda (cider-jack-in-clj nil))))
 
+(after! matlab-mode
+  (defun matlab-mode-vf-functionname (&optional fast) ()))
+
 (use-package! riscv-mode)
 (after! riscv-mode
   ;; (setq! riscv-font-lock-keywords
@@ -552,6 +644,7 @@
 ;;; Custom Functions
 
 (defun find-file-home ()
+  "Find a file starting at the home directory"
   (interactive)
   (consult-find-file (read-file-name "Find file: " "~/"))
   )
@@ -604,8 +697,9 @@ ARG has the same meaning as for `kill-sexp'."
 
 (defun display-fortune ()
   (interactive)
-  (message (shell-command-to-string "fortune"))
+  (message (get-good-fortune))
   )
+
 
 (defun dnd-search-srd ()
   (interactive)
@@ -670,27 +764,27 @@ ARG has the same meaning as for `kill-sexp'."
   )
 
 (defun dup (str)
+  "Used in some themes for convenience"
   (list str str nil))
 
 (defun make-pride-flag (str path)
   "STR must be distinct each call"
-  (propertize str 'display (create-image path 'svg  nil :scale 0.6)))
+  (propertize str 'display (create-image path 'png nil :scale 0.06)))
 
 (after! doom-modeline
-  (let* ((vi (propertize "      Vivien 🏳️‍🌈 "))
-        (flag-names (list "gender-queer" "nonbinary" "asexual" "pride" "transgender"))
-        (flags (-map (lambda (name) (make-pride-flag name (format "/home/vivien/Downloads/pride-emoji-flags/svg/%s-flag.svg" name))) flag-names)))
-    (setq doom-modeline-support-imenu t)
-    (setq doom-modeline-hud t)
-    (setq doom-modeline-unicode-fallback t)
-    (setq doom-modeline-enable-word-count t)
-    (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
-    (setq doom-modeline-buffer-encoding nil)
-    (setq doom-modeline-env-version t)
-    (setq doom-modeline-project-detection 'auto)
+  (setq doom-modeline-support-imenu t)
+  (setq doom-modeline-hud t)
+  (setq doom-modeline-unicode-fallback t)
+  (setq doom-modeline-enable-word-count t)
+  (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+  (setq doom-modeline-buffer-encoding nil)
+  (setq doom-modeline-env-version t)
+  (setq doom-modeline-project-detection 'auto)
+  (let* ((vi (propertize " Vivien 🏳️‍🌈 " 'face 'bold-italic))
+         (flag-names (reverse (list "asexual" "nonbinary" "gender-queer" "transgender" "pride")))
+         (flags (-map (lambda (name) (make-pride-flag name (format "/home/vivien/Downloads/pride-emoji-flags/png/%s-flag.png" name))) flag-names)))
     (add-to-list 'mode-line-misc-info vi)
-    (-map (lambda (flag) (add-to-list 'mode-line-misc-info flag)) flags)
-    (doom-modeline-mode 1)
+    (-map (lambda (flag) (add-to-list 'mode-line-misc-info flag) (add-to-list 'mode-line-misc-info " " nil (lambda (x y) nil))) flags)
     ))
 
 (defun insert-path ()

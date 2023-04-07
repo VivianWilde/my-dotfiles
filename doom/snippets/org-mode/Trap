@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: Complex Trap
+# key: trigger-key
+# condition: t
+# --
+* Complex Trap:
+** Level and Threat
+** Trigger
+** Initiative
+** Dynamic Elements
+** Static Elements
+** Countermeasures
