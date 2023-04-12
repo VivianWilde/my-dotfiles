@@ -1,57 +1,60 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
+                                        ; Place your private configuration here! Remember, you do not need to run 'doom
+                                        ; sync' after modifying this file!
 
-;;; Primitive Setup
-;; Some functionality uses this to identify you,
-;;
-;;e.g. GPG configuration, email
-;; clients, file templates and snippets.
+;;; Name
+                                        ; Some functionality uses this to identify you,
+                                        ;
+                                        ;e.g. GPG configuration, email
+                                        ; clients, file templates and snippets.
 (setq user-full-name "Vivien Moriarty"
       user-mail-address "goyal.rohan.03@gmail.com"
       )
 
 
 ;;; Theming/Fonts
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+                                        ; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+                                        ; are the three important ones:
+                                        ;
+                                        ; + `doom-font'
+                                        ; + `doom-variable-pitch-font'
+                                        ; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+                                        ;   presentations or streaming.
+                                        ;
+                                        ; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+                                        ; font string. You generally only need these two:
+                                        ; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+                                        ;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-;; (setq doom-theme 'doom-Iosvkem) Nope
-;; (setq doom-theme 'doom-moonlight) Nope
-;; (setq doom-theme 'doom-vibrant)
-;; (setq doom-theme 'doom-genderfluid)
-(setq doom-theme 'doom-peacock)
-;; (setq doom-theme 'doom-ir-black) NO
-;; (setq doom-theme 'doom-wilmersdorf)
-;; (setq doom-theme 'poet-dark)
-;; (setq doom-theme 'doom-homage-black) NO
+                                        ; There are two ways to load a theme. Both assume the theme is installed and
+                                        ; available. You can either set `doom-theme' or manually load a theme with the
+                                        ; `load-theme' function. This is the default:
+(setq doom-theme 'doom-magnus)
+                                        ; (setq doom-theme 'doom-Iosvkem) Nope
+                                        ; (setq doom-theme 'doom-moonlight) Nope
+                                        ; (setq doom-theme 'doom-vibrant)
+                                        ; (setq doom-theme 'doom-genderfluid)
+(setq doom-theme 'doom-ir-black) NO
+                                        ; (setq doom-theme 'doom-wilmersdorf)
+                                        ; (setq doom-theme 'poet-dark)
+                                        ; (setq doom-theme 'doom-homage-black) NO
 
-;; (setq doom-theme 'doom-tomorrow-night) NO
+                                        ; (setq doom-theme 'doom-tomorrow-night) NO
 
 (setq doom-Iosvkem-brighter-comments t)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
+;;; Vars
+                                        ; If you use `org' and don't want your org files in the default location below,
+                                        ; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org")
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
+                                        ; This determines the style of line numbers in effect. If set to `nil', line
+                                        ; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
+
+;;; Dashboard Setup
 (setq fancy-splash-image "/home/vivien/Downloads/resized-one.png")
 
 (defun one-one-quote ()
@@ -96,27 +99,26 @@
                                   dashboard-fortune
                                   doom-dashboard-widget-shortmenu
                                   doom-dashboard-widget-footer))
-;; TODO List of best one-one quotes, have it display a random one
 
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
+                                        ; Here are some additional functions/macros that could help you configure Doom:
+                                        ;
+                                        ; - `load!' for loading external *.el files relative to this one
+                                        ; - `use-package!' for configuring packages
+                                        ; - `after!' for running code after a package has loaded
+                                        ; - `add-load-path!' for adding directories to the `load-path', relative to
+                                        ;   this file. Emacs searches the `load-path' when you load packages with
+                                        ;   `require' or `use-package'.
+                                        ; - `map!' for binding new keys
+                                        ;
+                                        ; To get information about any of these functions/macros, move the cursor over
+                                        ; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+                                        ; This will open documentation for it, including demos of how they are used.
+                                        ;
+                                        ; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+                                        ; they are implemented.
 
 
-;;; Probably Tecosaur
+;;;; Probably Tecosaur
 (setq-default
  delete-by-moving-to-trash t            ; Delete files to trash
  window-combination-resize t ; take new window space from all other windows (not just current)
@@ -129,7 +131,7 @@
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
       scroll-margin 2)
 (display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1)
-;; (setq-default major-mode 'org-mode)
+                                        ; (setq-default major-mode 'org-mode)
 (setq-default major-mode 'fundamental-mode)
 
 
@@ -170,6 +172,17 @@
 
 (map! :nvieo "C-'" #'imenu-list-smart-toggle)
 
+(map! :leader
+      (:prefix-map ("c" . "code")
+       :desc "Comment Lines" "l" #'comment-line
+       :desc "Run Make Task" "m" #'+make/run-last))
+
+
+(map! :map ctl-x-map
+      "d" #'ranger)
+;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
+
+
 ;;;; Vertico
 (when (modulep! :completion vertico)
   (map! :leader
@@ -193,46 +206,35 @@
         )
   )
 
-(defun filemanager-here ()
-  (interactive)
-  (start-process "nemo" nil "nemo" (file-name-directory buffer-file-name))
-  )
 
 ;;; Helm
-;; (when (modulep! :completion helm)
-;;   (map! :leader
-;;         (:prefix-map ("b" . "buffer")
-;;          :desc "Buffer" "b" #'helm-mini)
-;;         (:prefix-map ("s" . "search")
-;;          :desc "Imenu All"
-;;          "I" #'helm-imenu-in-all-buffers
-;;          :desc "Consult Ripgrep"
-;;          "R" #'consult-ripgrep)
-;;         (:prefix-map ("f" . "file")
-;;          :desc "Consult ls" "f" #'consult-ls-git
-;;          :desc "Open File Externally" "o" #'consult-file-externally
-;;          :desc "Open File in HOME" "h" #'find-file-at-home)
-;;         ("SPC" #'helm-mini)
-;;         (:prefix-map ("i" . "insert")
-;;          :desc "Insert file path"
-;;          "P" #'insert-path)
-;;         )
+                                        ; (when (modulep! :completion helm)
+                                        ;   (map! :leader
+                                        ;         (:prefix-map ("b" . "buffer")
+                                        ;          :desc "Buffer" "b" #'helm-mini)
+                                        ;         (:prefix-map ("s" . "search")
+                                        ;          :desc "Imenu All"
+                                        ;          "I" #'helm-imenu-in-all-buffers
+                                        ;          :desc "Consult Ripgrep"
+                                        ;          "R" #'consult-ripgrep)
+                                        ;         (:prefix-map ("f" . "file")
+                                        ;          :desc "Consult ls" "f" #'consult-ls-git
+                                        ;          :desc "Open File Externally" "o" #'consult-file-externally
+                                        ;          :desc "Open File in HOME" "h" #'find-file-at-home)
+                                        ;         ("SPC" #'helm-mini)
+                                        ;         (:prefix-map ("i" . "insert")
+                                        ;          :desc "Insert file path"
+                                        ;          "P" #'insert-path)
+                                        ;         )
 
-;;   )
-
-
-(map! :leader
-      (:prefix-map ("c" . "code")
-       :desc "Comment Lines" "l" #'comment-line
-       :desc "Run Make Task" "m" #'+make/run-last))
+                                        ;   )
 
 
-(map! :map ctl-x-map
-      "d" #'ranger)
-;; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
 
 
 ;;;; Custom Key Groups
+
+;;;;; Spotify
 (map!
  :leader (:prefix-map ("a" . "Music")
           :desc "Next Track" "l" #'counsel-spotify-next
@@ -244,6 +246,8 @@
           :desc "Tracks by Album" "A" #'counsel-spotify-search-tracks-by-album
           :desc "Artist" "m" #'counsel-spotify-search-tracks-by-artist
           :desc "My Playlists"))
+
+;;;;; D&D Keys
 (map!
  :leader
  (:prefix-map ("d" . "D&D")
@@ -279,9 +283,8 @@
 
 
 
-                                        ;;; Mode declarations
+;;; Mode declarations
 (lisp-extra-font-lock-global-mode 1)
-;; (global-hide-mode-line-mode 1)
 (auto-save-visited-mode 1)
 (global-visual-line-mode 1)
 (global-undo-tree-mode 1)
@@ -293,6 +296,7 @@
 
 
 ;;; Misc variable modifications
+(sp-use-paredit-bindings)
 (add-to-list 'Info-directory-list "/home/rohan/drive/books/nonfic/sicp-texinfo" t)
 (add-to-list 'load-path "/home/rohan/.config/doom/local-packages")
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
@@ -300,7 +304,7 @@
 (setq suggest-key-bindings nil)
 (setq python-shell-interpreter "ipython3"
       python-shell-interpreter-args "--simple-prompt --pprint")
-;; (setq helm-swoop-pre-input-function (lambda () ""))
+                                        ; (setq helm-swoop-pre-input-function (lambda () ""))
 (setq history-delete-duplicates t)
 (setq smudge-transport 'connect)
 (setq ranger-override-dired 'ranger)
@@ -308,7 +312,7 @@
 
 ;;; Package Configuration
 (after! consult
-  ;; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
+                                        ; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
   (defun in-folder (path func)
     "A wrapper which takes in a consult func which operates on a project root and makes it operate on the home folder."
     (lambda (&optional &rest args)
@@ -316,8 +320,6 @@
       (let ((consult-project-root-function (lambda () (expand-file-name path))))
         (apply func args)
         )))
-
-
 
   (defalias #'everywhere (lambda  (f) (in-folder "~" f)))
   (defalias #'consult-imenu-all (everywhere #'consult-imenu-multi))
@@ -352,9 +354,7 @@
 
 
 (after! projectile
-
   (setq projectile-project-root-files-bottom-up
-
         (remove ".git" projectile-project-root-files-bottom-up)))
 
 
@@ -397,10 +397,6 @@
         litex-format-float-string "%.1f"
         ))
 
-;; (use-package! zeitgeist)
-;; (setq zeitgeist-emacs-application "application://spacemacs.desktop")
-
-(sp-use-paredit-bindings)
 
 ;;; Doom-specific config
 (set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
@@ -857,4 +853,8 @@ converted to PDF at the same location."
     (TeX-add-to-alist 'prettify-symbols-alist new-alist)
     )
 
+  )
+(defun filemanager-here ()
+  (interactive)
+  (start-process "nemo" nil "nemo" (file-name-directory buffer-file-name))
   )

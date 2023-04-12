@@ -51,7 +51,7 @@ determine the exact padding."
 
   ;; name        default   256       16
   ((bg         '("#072017" nil       nil            ))
-   (bg-alt     '("#1F1E1D" nil       nil            ))
+   (bg-alt     '("#1a211f" nil       nil            ))
    (base0      '("#2b2a27" "black"   "black"        ))
    (base1      '("#1c1f24" "#1e1e1e" "brightblack"  ))
    (base2      '("#202328" "#2e2e2e" "brightblack"  ))
@@ -129,7 +129,7 @@ determine the exact padding."
   ;;;; Base theme face overrides
   ((font-lock-comment-face
     :foreground comments
-    :background (if doom-peacock-comment-bg (doom-lighten bg 0.05)))
+    :background (if doom-magnus-comment-bg (doom-lighten bg 0.05)))
    (font-lock-doc-face
     :inherit 'font-lock-comment-face
     :foreground doc-comments)
