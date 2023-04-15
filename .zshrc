@@ -11,6 +11,7 @@ cdpath=($HOME/d $HOME/d/sp22 $HOME $HOME/drive $HOME/d/cs61b/repo)
 export LESSOPEN="| pygmentize -O style=monokai -g -f terminal256 %s"
 export ZSH="$HOME/.oh-my-zsh"
 
+export PATH="/home/vivien/go/bin:$PATH"
 export PATH="/home/rohan/.local/bin:$PATH"
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH="$HOME/.pub-cache/bin:$PATH"

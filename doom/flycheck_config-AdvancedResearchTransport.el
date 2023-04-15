@@ -35,7 +35,7 @@
                                         ; (setq doom-theme 'doom-moonlight) Nope
                                         ; (setq doom-theme 'doom-vibrant)
                                         ; (setq doom-theme 'doom-genderfluid)
-                                        ; (setq doom-theme 'doom-ir-black)
+(setq doom-theme 'doom-ir-black) NO
                                         ; (setq doom-theme 'doom-wilmersdorf)
                                         ; (setq doom-theme 'poet-dark)
                                         ; (setq doom-theme 'doom-homage-black) NO
@@ -132,7 +132,7 @@
       scroll-margin 2)
 (display-time-mode 1) (display-battery-mode 0) (global-subword-mode 1)
                                         ; (setq-default major-mode 'org-mode)
-(setq-default major-mode 'text-mode)
+(setq-default major-mode 'fundamental-mode)
 
 
 ;;; Keybindings
@@ -180,7 +180,7 @@
 
 (map! :map ctl-x-map
       "d" #'ranger)
-                                        ; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
+; (global-set-key [remap doom/delete-frame-with-prompt] #'delete-frame)
 
 
 ;;;; Vertico
@@ -277,9 +277,8 @@
  (:prefix-map ("r" . "Recreation")
   :desc "Display Fortune" "f" #'display-fortune
   :desc "Display One-One Quote" "o" #'message-one-one
-  :desc "Read A Statement" "m" #'read-magnus
-  :desc "Browse Song Lyrics" "l" #'lyric-search
   )
+
  )
 
 
@@ -310,303 +309,11 @@
 (setq smudge-transport 'connect)
 (setq ranger-override-dired 'ranger)
 
-;;; Custom Functions
-
-;;;; Consult
-(defun find-file-home ()
-  "Find a file starting at the home directory"
-  (interactive)
-  (consult-find-file (read-file-name "Find file: " "~/"))
-  )
-
-
-
-(defun consult-find-file (file)
-  "Open FILE."
-  (interactive "fFind File: ")
-  (follow-mode 1)
-  (find-file (expand-file-name file))
-  (follow-mode -1)
-  )
-
-(defun consult-file-externally (file)
-  "Open FILE using system's default application."
-  (interactive "fOpen: ")
-  (if (and (eq system-type 'windows-nt)
-           (fboundp 'w32-shell-execute))
-      (w32-shell-execute "open" target)
-    (call-process (pcase system-type
-                    ('darwin "open")
-                    ('cygwin "cygstart")
-                    (_ "xdg-open"))
-                  nil 0 nil
-                  (expand-file-name file))))
-
-(defun in-folder (path func)
-  "A wrapper which takes in a consult func which operates on a project root and makes it operate on the home folder."
-  (lambda (&optional &rest args)
-    (interactive)
-    (let ((consult-project-root-function (lambda () (expand-file-name path))))
-      (apply func args)
-      )))
-
-(defalias #'everywhere (lambda  (f) (in-folder "~" f)))
-(defalias #'consult-imenu-all (everywhere #'consult-imenu-multi))
-(defalias #'consult-ripgrep-all (everywhere #'consult-ripgrep))
-
-(defalias #'consult-ripgrep-in
-  (lambda ()
-    (interactive)
-    (let ((dir (read-file-name "Directory: ")))
-                                        ; (funcall (in-folder dir #'consult-ripgrep))
-      (consult-ripgrep dir)
-      )))
-
-
-
-
-(defun open-hive-file ()
-  "Open file stored on 61C Hive Machine"
-  (interactive)
-  (find-file (read-file-name "File: " "/ssh:hive7.cs.berkeley.edu:/home/cc/cs61c/sp23/class/cs61c-afw/"))
-  )
-
-
-;;;; S-Expressions
-(defun yank-sexp ()
-  "Copy sexp at point"
-  (mark-sexp)
-  (kill-ring-save)
-  )
-
-(defun copy-sexp-as-kill (&optional arg)
-  "Save the sexp following point to the kill ring.
-ARG has the same meaning as for `kill-sexp'."
-  (interactive "p")
-  (save-excursion
-    (let ((orig-point (point)))
-      (forward-sexp (or arg 1))
-      (kill-ring-save orig-point (point)))))
-
-
-
-
-
-;;;; D&D
-(defun dnd-search-srd ()
-  "Search markdown SRD"
-  (interactive)
-  (let (
-        (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
-        )
-    (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
-  )
-
-(defun dnd-wild-magic-roll ()
-  "Roll on Wild Magic table, report result in echo area"
-  (interactive)
-  (let* ((l (+ 2 (random 249)))
-         (fname "~/drive/RPG/5e/5e-srd-split/wild-magic.md")
-         (cmd (format "sed '%dq;d' %s" l fname))
-         )
-    (message (shell-command-to-string cmd))))
-
-(defun coin-flip ()
-  (interactive)
-  (message (if (zerop (mod (random 10000) 2))
-               "Heads (1)" "Tails (0)")))
-
-
-(defun read-magnus ()
-  (interactive)
-  (let* (
-         (path "/home/vivien/drive/books/magnus_archives/")
-         )
-    (consult-find-file (read-file-name "Statement: " path))
-    (variable-pitch-mode)
-    )
-  )
-
-(defun search-magnus ()
-  "TODO"
-  (cons 1 nil))
-
-
-(after! savehist
-
-  (defvar lyric-history '())
-  (add-to-list 'savehist-additional-variables 'lyric-history)
-  )
-(defun lyric-search ()
-  "Search for lyrics using Clyrics, display in popup."
-  (interactive)
-  (let* (
-         (lines (s-split "\n" (f-read "/home/vivien/Music/database.txt")))
-         (options (append lyric-history lines))
-         (choice (completing-read "Search for Lyrics: " options (lambda (v) v) nil "" 'lyric-history))
-         (response (shell-command-to-string (concat "clyrics "  "\"" choice "\""  )))
-         )
-    (output-to-screen response)
-
-    )
-  )
-
-(defun output-to-screen (result)
-  "Create a popup and display RESULT in it."
-  (with-current-buffer (get-buffer-create "*clyrics*")
-    (visual-line-mode 1)
-    (erase-buffer)
-    (insert result)
-    (display-buffer (current-buffer))))
-
-
-
-(defun set-lang-mode (lang)
-  "Set language mode to the specified LANG"
-  (set-language-environment (s-capitalize lang))
-  (ispell-change-dictionary (s-downcase lang)))
-
-(defun set-english ()
-  "Set lang environment to english"
-  (interactive)
-  (set-lang-mode "english"))
-(defun set-spanish ()
-  "Set language environment to spanish"
-  (interactive)
-  (set-lang-mode "spanish"))
-
-;;;; Fun
-(defun display-fortune ()
-  (interactive)
-  (message (get-good-fortune))
-  )
-
-(defun dup (str)
-  "Used in some themes for convenience, to specify colors in GUI/CLI modes"
-  (list str str nil))
-
-(defun make-pride-flag (str path)
-  "STR must be distinct each call"
-  (propertize str 'display (create-image path 'png nil :scale 0.06)))
-
-
-
-
-(defun org-blockify-comment (region)
-  ;; Basically, take a bunch of # comments, and place them inside a block
-  ;; Process: Wrapped in save-excursion: Construct region, call uncomment on region, mark it, insert comment structure template.
-  )
-
-(defun find-commented-region (start comment-char)
-  )
-
-
-(defun latex-update-alist ()
-  "Configure the list of symbols that should be pretty-printed/rendered in Org/Latex modes"
-  (interactive)
-  (let* (
-         (new-alist '(("\\R" . 8477)
-                      ("\\N" . 8469)
-                      ("\\Z" . 8484)
-                      ("\\C" . 8450)
-                      ("\\implies" . 8658)
-                      ("\\land" . 8743)
-                      ("\\lor" . 8744)
-                      ("\lnot" . 172))))
-    (TeX-add-to-alist 'prettify-symbols-alist new-alist)
-    )
-
-  )
-(defun filemanager-here ()
-  "Start filemanager process in current dir"
-  (interactive)
-  (start-process "nemo" nil "nemo" (file-name-directory buffer-file-name))
-  )
-
-;;;; Org Functions
-(defun my/org-headings ()
-  "Get the list of headings in an org buffer. Keys are full paths, vals are plain strings"
-  (let* (
-         (paths (--map  (s-chop-right 1 (org-no-properties it)) ( consult-org--headings nil nil 'file)))
-         (table (ht-create))
-         )
-    (--map (ht-set! table it (car (last (s-split "/" it)))) paths)
-    table
-    )
-                                        ; (last (s-split "/" (s-chop-right 1 (org-no-properties it))))
-  )
-
-(defun my/org-insert-heading-link ()
-  (interactive)
-  "Let user select a heading from the buffer, insert a link to it at point"
-  (let* (
-         (file (buffer-name))
-         (heading-table (my/org-headings))
-         (heading (completing-read "Select a heading: " heading-table  nil nil))
-         (simplified-heading (ht-get heading-table heading))
-         (link (format "[[file:%s::*%s]]" file simplified-heading))
-         )
-    (insert link)
-
-    )
-  )
-
-(defun insert-path ()
-  (interactive)
-  (insert (read-file-name "File: "))
-  )
-
-(defun reset-visual-line ()
-  (interactive)
-  (reset-mode #'visual-line-mode))
-
-(defun pdf-print-buffer-with-faces (&optional filename)
-  "Print file in the current buffer as pdf, including font, color, and
-underline information.  This command works only if you are using a window system,
-so it has a way to determine color values.
-
-C-u COMMAND prompts user where to save the Postscript file (which is then
-converted to PDF at the same location."
-  (interactive (list (if current-prefix-arg
-                         (ps-print-preprint 4)
-                       (concat (file-name-sans-extension (buffer-file-name))
-                               ".ps"))))
-  (ps-print-with-faces (point-min) (point-max) filename)
-  (shell-command (concat "ps2pdf " filename))
-  (delete-file filename)
-  (message "Deleted %s" filename)
-  (message "Wrote %s" (concat (file-name-sans-extension filename) ".pdf")))
-
-
-
-
-
-
-;;; Hacky Fixes
-
-
-(defun my-evil-fix ()
-  "Searching for a number messes up evil for whatever reason. This worked to fix it now, at least"
-  (interactive)
-  (setq evil-ex-search-history (cdr evil-ex-search-history))
-  (setq evil-search-forward-history (cdr evil-ex-search-forward-history))
-  (setq evil-ex-history (cdr evil-ex-history)
-        )
-  (setq evil-ex-search-pattern '("clean" t t))
-  )
-
-(defun reset-mode (mode)
-  "Mode is a function"
-  (funcall mode -1)
-  (funcall mode 1)
-  )
-
-
 
 ;;; Package Configuration
 (after! consult
                                         ; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
-  (setq
+    (setq
    consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."
    consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r .")
 
@@ -673,11 +380,6 @@ converted to PDF at the same location."
         ))
 
 (after! undo-tree
-  (defun setup-undo-tree ()
-    (setq undo-outer-limit 24000000)
-    (setq undo-limit 160000)
-    (setq undo-strong-limit 240000)
-    )
 
 
   (setup-undo-tree)
@@ -692,11 +394,11 @@ converted to PDF at the same location."
   (setq org-read-date-popup-calendar nil)
   (add-hook! 'org-mode-hook 'org-indent-mode)
   (add-hook! 'org-mode-hook (lambda () (git-gutter-mode -1)))
-                                        ; (add-hook! 'org-mode-hook 'variable-pitch-mode)
+  ; (add-hook! 'org-mode-hook 'variable-pitch-mode)
   (add-hook! 'org-mode-hook 'turn-off-smartparens-strict-mode)
   (setq org-list-demote-modify-bullet
         '(("+" . "-") ("-" . "+") ("*" . "+")))
-                                        ; (setq org-edit-src-auto-save-idle-delay 300)
+  ; (setq org-edit-src-auto-save-idle-delay 300)
   (setq org-insert-heading-respect-content nil)
   (map! :map org-mode-map :localleader
         (:prefix ("s" . "tree/subtree")
@@ -794,7 +496,6 @@ converted to PDF at the same location."
 
 ;;; Doom-specific config
 (set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
-(set-popup-rule! (rx bol "*clyrics") :size 0.3 :quit t :select t :ttl nil)
 (setq doom-scratch-initial-major-mode 'org-mode)
 (setq doom-font (font-spec :family "Source Code Pro" :size 14)) ;; 14 if not monitr
 
@@ -847,8 +548,8 @@ converted to PDF at the same location."
 (add-hook! 'text-mode-hook #'visual-line-mode)
 (add-hook! 'text-mode-hook #'hl-todo-mode)
 
-                                        ; (add-hook 'org-mode-hook #'wc-mode)
-                                        ; (add-hook 'org-mode-hook #'org-indent-mode)
+; (add-hook 'org-mode-hook #'wc-mode)
+; (add-hook 'org-mode-hook #'org-indent-mode)
 
 (add-hook! 'markdown-mode-hook #'auto-save-visited-mode)
 (add-hook! 'markdown-mode-hook #'visual-line-mode)
@@ -868,13 +569,13 @@ converted to PDF at the same location."
 
 (add-hook! 'lisp-interaction-mode-hook #'eldoc-mode)
 (add-hook! 'ielm-mode-hook #'eldoc-mode)
-                                        ; (add-hook! 'emacs-lisp-mode-hook #'sotlisp-mode)
+; (add-hook! 'emacs-lisp-mode-hook #'sotlisp-mode)
 
 ;;;; Smartparens
-                                        ; (add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
+; (add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
 (add-hook! 'smartparens-mode-hook #'evil-smartparens-mode)
 (add-hook! 'smartparens-disabled-hook (lambda () (evil-smartparens-mode -1)))
-                                        ; (add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
+; (add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
 
 ;;;; Python
 (use-package! sphinx-doc)
@@ -884,8 +585,253 @@ converted to PDF at the same location."
 
 
 
+;;; Custom Functions
+
+;;;; Consult
+(defun find-file-home ()
+  "Find a file starting at the home directory"
+  (interactive)
+  (consult-find-file (read-file-name "Find file: " "~/"))
+  )
 
 
+
+(defun consult-find-file (file)
+  "Open FILE."
+  (interactive "fFind File: ")
+  (follow-mode 1)
+  (find-file (expand-file-name file))
+  (follow-mode -1)
+  )
+
+(defun consult-file-externally (file)
+  "Open FILE using system's default application."
+  (interactive "fOpen: ")
+  (if (and (eq system-type 'windows-nt)
+           (fboundp 'w32-shell-execute))
+      (w32-shell-execute "open" target)
+    (call-process (pcase system-type
+                    ('darwin "open")
+                    ('cygwin "cygstart")
+                    (_ "xdg-open"))
+                  nil 0 nil
+                  (expand-file-name file))))
+
+(defun in-folder (path func)
+    "A wrapper which takes in a consult func which operates on a project root and makes it operate on the home folder."
+    (lambda (&optional &rest args)
+      (interactive)
+      (let ((consult-project-root-function (lambda () (expand-file-name path))))
+        (apply func args)
+        )))
+
+  (defalias #'everywhere (lambda  (f) (in-folder "~" f)))
+  (defalias #'consult-imenu-all (everywhere #'consult-imenu-multi))
+  (defalias #'consult-ripgrep-all (everywhere #'consult-ripgrep))
+
+  (defalias #'consult-ripgrep-in
+    (lambda ()
+      (interactive)
+      (let ((dir (read-file-name "Directory: ")))
+        ; (funcall (in-folder dir #'consult-ripgrep))
+        (consult-ripgrep dir)
+        )))
+
+
+
+
+(defun open-hive-file ()
+  "Open file stored on 61C Hive Machine"
+  (interactive)
+  (find-file (read-file-name "File: " "/ssh:hive7.cs.berkeley.edu:/home/cc/cs61c/sp23/class/cs61c-afw/"))
+  )
+
+
+;;;; S-Expressions
+(defun yank-sexp ()
+  "Copy sexp at point"
+  (mark-sexp)
+  (kill-ring-save)
+  )
+
+(defun copy-sexp-as-kill (&optional arg)
+  "Save the sexp following point to the kill ring.
+ARG has the same meaning as for `kill-sexp'."
+  (interactive "p")
+  (save-excursion
+    (let ((orig-point (point)))
+      (forward-sexp (or arg 1))
+      (kill-ring-save orig-point (point)))))
+
+
+
+
+
+;;;; D&D
+(defun dnd-search-srd ()
+  "Search markdown SRD"
+  (interactive)
+  (let (
+        (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+        )
+    (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
+  )
+
+(defun dnd-wild-magic-roll ()
+  "Roll on Wild Magic table, report result in echo area"
+  (interactive)
+  (let* ((l (+ 2 (random 249)))
+         (fname "~/drive/RPG/5e/5e-srd-split/wild-magic.md")
+         (cmd (format "sed '%dq;d' %s" l fname))
+         )
+    (message (shell-command-to-string cmd))))
+
+(defun coin-flip ()
+  (interactive)
+  (message (if (zerop (mod (random 10000) 2))
+               "Heads (1)" "Tails (0)")))
+
+
+
+(defun set-lang-mode (lang)
+  "Set language mode to the specified LANG"
+  (set-language-environment (s-capitalize lang))
+  (ispell-change-dictionary (s-downcase lang)))
+
+(defun set-english ()
+  "Set lang environment to english"
+  (interactive)
+  (set-lang-mode "english"))
+(defun set-spanish ()
+  "Set language environment to spanish"
+  (interactive)
+  (set-lang-mode "spanish"))
+
+;;;; Fun
+(defun display-fortune ()
+  (interactive)
+  (message (get-good-fortune))
+  )
+
+(defun dup (str)
+  "Used in some themes for convenience"
+  (list str str nil))
+
+(defun make-pride-flag (str path)
+  "STR must be distinct each call"
+  (propertize str 'display (create-image path 'png nil :scale 0.06)))
+
+
+
+
+(defun org-blockify-comment (region)
+  ;; Basically, take a bunch of # comments, and place them inside a block
+  ;; Process: Wrapped in save-excursion: Construct region, call uncomment on region, mark it, insert comment structure template.
+  )
+
+(defun find-commented-region (start comment-char)
+  )
+
+
+(defun update-alist ()
+  (interactive)
+  (let* (
+         (new-alist '(("\\R" . 8477)
+                      ("\\N" . 8469)
+                      ("\\Z" . 8484)
+                      ("\\C" . 8450)
+                      ("\\implies" . 8658)
+                      ("\\land" . 8743)
+                      ("\\lor" . 8744)
+                      ("\lnot" . 172))))
+    (TeX-add-to-alist 'prettify-symbols-alist new-alist)
+    )
+
+  )
+(defun filemanager-here ()
+  (interactive)
+  (start-process "nemo" nil "nemo" (file-name-directory buffer-file-name))
+  )
+
+  (defun my/org-headings ()
+    "Get the list of headings in an org buffer. Keys are full paths, vals are plain strings"
+    (let* (
+           (paths (--map  (s-chop-right 1 (org-no-properties it)) ( consult-org--headings nil nil 'file)))
+           (table (ht-create))
+           )
+      (--map (ht-set! table it (car (last (s-split "/" it)))) paths)
+      table
+      )
+    ; (last (s-split "/" (s-chop-right 1 (org-no-properties it))))
+    )
+
+  (defun my/org-insert-heading-link ()
+    (interactive)
+    "Let user select a heading from the buffer, insert a link to it at point"
+    (let* (
+           (file (buffer-name))
+           (heading-table (my/org-headings))
+           (heading (completing-read "Select a heading: " heading-table  nil nil))
+           (simplified-heading (ht-get heading-table heading))
+           (link (format "[[file:%s::*%s]]" file simplified-heading))
+           )
+      (insert link)
+
+      )
+    )
+
+(defun setup-undo-tree ()
+    (setq undo-outer-limit 24000000)
+    (setq undo-limit 160000)
+    (setq undo-strong-limit 240000)
+    )
+
+
+;;; Hacky Fixes
+(defun my-evil-fix ()
+  "Searching for a number messes up evil for whatever reason. This worked to fix it now, at least"
+  (interactive)
+  (setq evil-ex-search-history (cdr evil-ex-search-history))
+  (setq evil-search-forward-history (cdr evil-ex-search-forward-history))
+  (setq evil-ex-history (cdr evil-ex-history)
+        )
+  (setq evil-ex-search-pattern '("clean" t t))
+  )
+
+(defun reset-mode (mode)
+  "Mode is a function"
+  (funcall mode -1)
+  (funcall mode 1)
+  )
+
+
+
+
+(defun insert-path ()
+  (interactive)
+  (insert (read-file-name "File: "))
+  )
+
+(defun reset-visual-line ()
+  (interactive)
+  (reset-mode #'visual-line-mode))
+
+(defun pdf-print-buffer-with-faces (&optional filename)
+  "Print file in the current buffer as pdf, including font, color, and
+underline information.  This command works only if you are using a window system,
+so it has a way to determine color values.
+
+C-u COMMAND prompts user where to save the Postscript file (which is then
+converted to PDF at the same location."
+  (interactive (list (if current-prefix-arg
+                         (ps-print-preprint 4)
+                       (concat (file-name-sans-extension (buffer-file-name))
+                               ".ps"))))
+  (ps-print-with-faces (point-min) (point-max) filename)
+  (shell-command (concat "ps2pdf " filename))
+  (delete-file filename)
+  (message "Deleted %s" filename)
+  (message "Wrote %s" (concat (file-name-sans-extension filename) ".pdf")))
 
                                         ; From Tecosaur, allows LSP to work in source blocks
 (cl-defmacro lsp-org-babel-enable (lang)
@@ -916,3 +862,4 @@ converted to PDF at the same location."
   '("go" "python" "ipython" "bash" "sh" "elixir" "ruby"))
 (dolist (lang org-babel-lang-list)
   (eval `(lsp-org-babel-enable ,lang)))
+
