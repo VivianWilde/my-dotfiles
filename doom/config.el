@@ -57,49 +57,6 @@
 ;;; Dashboard Setup
 (setq fancy-splash-image "/home/vivien/Downloads/resized-one.png")
 
-(defun one-one-quote ()
-  (let* ((path "/home/vivien/config/fortunes/one-one")
-         (oddnum (lambda (upper) (+ 1 (* 2 (random (/ upper 2))))))
-         (line (funcall oddnum 51))
-         (cmd (format "sed '%dq;d' %s" line path))
-         )
-    (shell-command-to-string cmd)
-    )
-  )
-
-(defun message-one-one ()
-  "Display a One-One quote in the minibuffer"
-  (interactive)
-  (message (one-one-quote)))
-
-(defun dashboardify (fn)
-  "Call TXTFN, and wrap the result in a func that displays it nicely in doom-dashboard"
-  (lambda () (insert (+doom-dashboard--center (- +doom-dashboard--width 1) (propertize (funcall fn) 'face 'bold-italic 'align 'center))) (insert hard-newline))
-  )
-
-
-(defun get-good-fortune ()
-  (let* ((possibles (list "calvin" "discworld" "hitchhiker" "montypython"))
-         (choice (nth (random (length possibles)) possibles))
-         (command (format "fortune %s" choice))
-         (txt (shell-command-to-string command)))
-    txt
-
-    )
-  )
-
-(defun dashboard-fortune ()
-  (insert (+doom-dashboard--center (- +doom-dashboard--width 1) (get-good-fortune) ))
-  (insert hard-newline)
-  )
-
-(setq +doom-dashboard-functions `(
-                                  doom-dashboard-widget-banner
-                                  ,(dashboardify #'one-one-quote)
-                                  dashboard-fortune
-                                  doom-dashboard-widget-shortmenu
-                                  doom-dashboard-widget-footer))
-
                                         ; Here are some additional functions/macros that could help you configure Doom:
                                         ;
                                         ; - `load!' for loading external *.el files relative to this one
@@ -195,7 +152,6 @@
          "R" #'consult-ripgrep)
         (:prefix-map ("f" . "file")
          :desc "Open File Externally" "o" #'consult-file-externally
-         :desc "Open 61C File" "c" #'open-hive-file
          :desc "Open File in HOME" "h" #'find-file-home
          :desc "Open File Manager Here" "." #'filemanager-here
          )
@@ -233,54 +189,6 @@
 
 
 ;;;; Custom Key Groups
-
-;;;;; Spotify
-(map!
- :leader (:prefix-map ("a" . "Music")
-          :desc "Next Track" "l" #'counsel-spotify-next
-          :desc "Previous Track" "h" #'counsel-spotify-previous
-          :desc "Play/Pause" "/" #'counsel-spotify-toggle-play-pause
-          :desc "Playlist" "p" #'counsel-spotify-search-playlist
-          :desc "Album" "a" #'counsel-spotify-search-album
-          :desc "Track" "t" #'counsel-spotify-search-track
-          :desc "Tracks by Album" "A" #'counsel-spotify-search-tracks-by-album
-          :desc "Artist" "m" #'counsel-spotify-search-tracks-by-artist
-          :desc "My Playlists"))
-
-;;;;; D&D Keys
-(map!
- :leader
- (:prefix-map ("d" . "D&D")
-  :desc "Lookup in PDFs" "l" #'org-lookup-dnd-at-point
-  :desc "Lookup in API" "a" #'dnd5e-api-search
-  :desc "Roll d20" "d" #'org-d20-d20
-  :desc "Roll dice" "r" #'org-d20-roll
-  :desc "Lookup in local SRD" "s" #'dnd-search-srd
-  :desc "Roll on the Wild Magic table" "w" #'dnd-wild-magic-roll
-  :desc "Flip a Binary Coin" "f" #'coin-flip
-  )
- (:prefix-map ("l" . "Lookup in API")
-  :desc "Monsters" "m m" #'dnd5e-api-search-monsters
-  :desc "Spells" "s" #'dnd5e-api-search-spells
-  :desc "Races" "r a" #'dnd5e-api-search-races
-  :desc "Rules" "r u" #'dnd5e-api-search-rules
-  :desc "Features" "f" #'dnd5e-api-search-features
-  :desc "Traits" "t" #'dnd5e-api-search-traits
-  :desc "Classes" "c l" #'dnd5e-api-search-classes
-  :desc "Equipment" "e" #'dnd5e-api-search-equipment
-  :desc "Languages" "l" #'dnd5e-api-search-languages
-  :desc "Conditions" "c o" #'dnd5e-api-search-conditions
-  :desc "Magic Items" "m i" #'dnd5e-api-search-magic-items
-  :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
-  :desc "Generic" "RET" #'dnd5e-api-search)
-
- (:prefix-map ("r" . "Recreation")
-  :desc "Display Fortune" "f" #'display-fortune
-  :desc "Display One-One Quote" "o" #'message-one-one
-  :desc "Read A Statement" "m" #'read-magnus
-  :desc "Browse Song Lyrics" "l" #'lyric-search
-  )
- )
 
 
 
@@ -365,12 +273,6 @@
 
 
 
-(defun open-hive-file ()
-  "Open file stored on 61C Hive Machine"
-  (interactive)
-  (find-file (read-file-name "File: " "/ssh:hive7.cs.berkeley.edu:/home/cc/cs61c/sp23/class/cs61c-afw/"))
-  )
-
 
 ;;;; S-Expressions
 (defun yank-sexp ()
@@ -392,95 +294,8 @@ ARG has the same meaning as for `kill-sexp'."
 
 
 
-;;;; D&D
-(defun dnd-search-srd ()
-  "Search markdown SRD"
-  (interactive)
-  (let (
-        (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
-        )
-    (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
-  )
-
-(defun dnd-wild-magic-roll ()
-  "Roll on Wild Magic table, report result in echo area"
-  (interactive)
-  (let* ((l (+ 2 (random 249)))
-         (fname "~/drive/RPG/5e/5e-srd-split/wild-magic.md")
-         (cmd (format "sed '%dq;d' %s" l fname))
-         )
-    (message (shell-command-to-string cmd))))
-
-(defun coin-flip ()
-  (interactive)
-  (message (if (zerop (mod (random 10000) 2))
-               "Heads (1)" "Tails (0)")))
-
-
-(defun read-magnus ()
-  (interactive)
-  (let* (
-         (path "/home/vivien/drive/books/magnus_archives/")
-         )
-    (consult-find-file (read-file-name "Statement: " path))
-    (variable-pitch-mode)
-    )
-  )
-
-(defun search-magnus ()
-  "TODO"
-  (cons 1 nil))
-
-
-(after! savehist
-
-  (defvar lyric-history '())
-  (add-to-list 'savehist-additional-variables 'lyric-history)
-  )
-(defun lyric-search ()
-  "Search for lyrics using Clyrics, display in popup."
-  (interactive)
-  (let* (
-         (lines (s-split "\n" (f-read "/home/vivien/Music/database.txt")))
-         (options (append lyric-history lines))
-         (choice (completing-read "Search for Lyrics: " options (lambda (v) v) nil "" 'lyric-history))
-         (response (shell-command-to-string (concat "clyrics "  "\"" choice "\""  )))
-         )
-    (output-to-screen response)
-
-    )
-  )
-
-(defun output-to-screen (result)
-  "Create a popup and display RESULT in it."
-  (with-current-buffer (get-buffer-create "*clyrics*")
-    (visual-line-mode 1)
-    (erase-buffer)
-    (insert result)
-    (display-buffer (current-buffer))))
-
-
-
-(defun set-lang-mode (lang)
-  "Set language mode to the specified LANG"
-  (set-language-environment (s-capitalize lang))
-  (ispell-change-dictionary (s-downcase lang)))
-
-(defun set-english ()
-  "Set lang environment to english"
-  (interactive)
-  (set-lang-mode "english"))
-(defun set-spanish ()
-  "Set language environment to spanish"
-  (interactive)
-  (set-lang-mode "spanish"))
 
 ;;;; Fun
-(defun display-fortune ()
-  (interactive)
-  (message (get-good-fortune))
-  )
-
 (defun dup (str)
   "Used in some themes for convenience, to specify colors in GUI/CLI modes"
   (list str str nil))
@@ -488,8 +303,6 @@ ARG has the same meaning as for `kill-sexp'."
 (defun make-pride-flag (str path)
   "STR must be distinct each call"
   (propertize str 'display (create-image path 'png nil :scale 0.06)))
-
-
 
 
 (defun org-blockify-comment (region)
@@ -501,22 +314,7 @@ ARG has the same meaning as for `kill-sexp'."
   )
 
 
-(defun latex-update-alist ()
-  "Configure the list of symbols that should be pretty-printed/rendered in Org/Latex modes"
-  (interactive)
-  (let* (
-         (new-alist '(("\\R" . 8477)
-                      ("\\N" . 8469)
-                      ("\\Z" . 8484)
-                      ("\\C" . 8450)
-                      ("\\implies" . 8658)
-                      ("\\land" . 8743)
-                      ("\\lor" . 8744)
-                      ("\lnot" . 172))))
-    (TeX-add-to-alist 'prettify-symbols-alist new-alist)
-    )
 
-  )
 (defun filemanager-here ()
   "Start filemanager process in current dir"
   (interactive)
@@ -761,20 +559,7 @@ converted to PDF at the same location."
 
 
 
-(after! org-lookup-dnd
-  (setq!
-   completion-ignore-case t
-   org-lookup-dnd-sources
-   '(
-     ("/home/rohan/drive/RPG/5e/core/phb.pdf" 1 4 4 t)
-     ("/home/rohan/drive/RPG/5e/core/Monster Manual.pdf" 1 4 4 nil)
-     ("/home/rohan/drive/RPG/5e/core/dmg.pdf" 1 1 1 t)
-     ("/home/rohan/drive/RPG/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
-     ("/home/rohan/drive/RPG/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
-     ("/home/rohan/drive/RPG/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
-     ("/home/rohan/OneDrive_Personal/RPG/5e/character options/COFSA The Compendium of Forgotten Secrets - Awakening (Abridged).pdf" 0 3 3 t)
-     ))
-  )
+
 ;;;; Programming Language Config
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
