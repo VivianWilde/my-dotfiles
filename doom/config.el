@@ -55,10 +55,10 @@
 
 
 ;;; Dashboard Setup
-(setq fancy-splash-image "/home/vivien/Downloads/resized-one.png")
+(setq fancy-splash-image "/home/vivien/.config/doom/assets/resized-one.png")
 
 (defun one-one-quote ()
-  (let* ((path "/home/vivien/config/fortunes/one-one")
+  (let* ((path "/home/vivien/.config/doom/fortunes/one-one")
          (oddnum (lambda (upper) (+ 1 (* 2 (random (/ upper 2))))))
          (line (funcall oddnum 51))
          (cmd (format "sed '%dq;d' %s" line path))
@@ -299,7 +299,7 @@
 ;;; Misc variable modifications
 (sp-use-paredit-bindings)
 (add-to-list 'Info-directory-list "/home/rohan/drive/books/nonfic/sicp-texinfo" t)
-(add-to-list 'load-path "/home/rohan/.config/doom/local-packages")
+(add-to-list 'load-path "/home/vivien/.config/doom/local-packages")
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (setq suggest-key-bindings nil)
@@ -364,12 +364,6 @@
 
 
 
-
-(defun open-hive-file ()
-  "Open file stored on 61C Hive Machine"
-  (interactive)
-  (find-file (read-file-name "File: " "/ssh:hive7.cs.berkeley.edu:/home/cc/cs61c/sp23/class/cs61c-afw/"))
-  )
 
 
 ;;;; S-Expressions
@@ -766,13 +760,13 @@ converted to PDF at the same location."
    completion-ignore-case t
    org-lookup-dnd-sources
    '(
-     ("/home/rohan/drive/RPG/5e/core/phb.pdf" 1 4 4 t)
-     ("/home/rohan/drive/RPG/5e/core/Monster Manual.pdf" 1 4 4 nil)
-     ("/home/rohan/drive/RPG/5e/core/dmg.pdf" 1 1 1 t)
-     ("/home/rohan/drive/RPG/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
-     ("/home/rohan/drive/RPG/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
-     ("/home/rohan/drive/RPG/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
-     ("/home/rohan/OneDrive_Personal/RPG/5e/character options/COFSA The Compendium of Forgotten Secrets - Awakening (Abridged).pdf" 0 3 3 t)
+     ("/home/vivien/drive/RPG/5e/core/phb.pdf" 1 4 4 t)
+     ("/home/vivien/drive/RPG/5e/core/Monster Manual.pdf" 1 4 4 nil)
+     ("/home/vivien/drive/RPG/5e/core/dmg.pdf" 1 1 1 t)
+     ("/home/vivien/drive/RPG/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
+     ("/home/vivien/drive/RPG/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
+     ("/home/vivien/drive/RPG/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
+     ("/home/vivien/OneDrive_Personal/RPG/5e/character options/COFSA The Compendium of Forgotten Secrets - Awakening (Abridged).pdf" 0 3 3 t)
      ))
   )
 ;;;; Programming Language Config
@@ -812,7 +806,7 @@ converted to PDF at the same location."
   (setq doom-modeline-project-detection 'auto)
   (let* ((vi (propertize " Vivien 🏳️‍🌈 " 'face 'bold-italic))
          (flag-names (reverse (list "asexual" "nonbinary" "gender-queer" "transgender" "pride")))
-         (flags (-map (lambda (name) (make-pride-flag name (format "/home/vivien/Downloads/pride-emoji-flags/png/%s-flag.png" name))) flag-names)))
+         (flags (-map (lambda (name) (make-pride-flag name (format "/home/vivien/.config/doom/assets/pride-emoji-flags/png/%s-flag.png" name))) flag-names)))
     (add-to-list 'mode-line-misc-info vi)
     (-map (lambda (flag) (add-to-list 'mode-line-misc-info flag) (add-to-list 'mode-line-misc-info " " nil (lambda (x y) nil))) flags)
     ))
