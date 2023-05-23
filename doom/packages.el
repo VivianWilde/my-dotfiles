@@ -54,9 +54,9 @@
 
 
 ;;; EAF
-(package! emacs-application-framework
-:recipe (:host github :repo "manateelazycat/emacs-application-framework"
-:files ("eaf.el" "src/lisp/*.el")))
+;; (package! emacs-application-framework
+;; :recipe (:host github :repo "manateelazycat/emacs-application-framework"
+;; :files ("eaf.el" "src/lisp/*.el")))
 
 
 
@@ -70,11 +70,11 @@
 
 ;;; Language Support
 (package! sphinx-doc)
-(package! matlab-mode)
+;; (package! matlab-mode)
 
 ;;;; Misc
-(package! bnf-mode)
-(package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
+;; (package! bnf-mode)
+;; (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
 ;; (package! xonsh-mode)
 ;;(package! spl :recipe (:local-repo "~/.config"))
 
@@ -86,11 +86,11 @@
 
 ;;;; Lisp/Scheme
 ;(package! geiser-guile)
-(package! sotlisp)
-(package! highlight-defined)
-(package! lisp-extra-font-lock)
-(package! nameless)
-(package! litex-mode)
+;; (package! sotlisp)
+;; (package! highlight-defined)
+;; (package! lisp-extra-font-lock)
+;; (package! nameless)
+;; (package! litex-mode)
 
 ;;; Prose/Org
 (package! pandoc)
@@ -102,11 +102,11 @@
 (package! afternoon-theme)
 (package! olivetti)
 (package! org-ml)
-(package! org-pandoc-import
-  :recipe (:host github
-           :repo "tecosaur/org-pandoc-import"
-           :files ("*.el" "filters" "preprocessors")))
-(package! default-lang :recipe (:local-repo "~/experiments/elisp/default-lang") )
+;; (package! org-pandoc-import
+;;   :recipe (:host github
+;;            :repo "tecosaur/org-pandoc-import"
+;;            :files ("*.el" "filters" "preprocessors")))
+;; (package! default-lang :recipe (:local-repo "~/experiments/elisp/default-lang") )
 ;; (package! ox-reveal)
 ;;(package! lsp-grammarly)
 ;; (package! ox-latex)
@@ -121,18 +121,18 @@
 ;;; Misc
 ;;;; Programming
 (package! lsp-origami)
-(package! riscv-mode)
+;; (package! riscv-mode)
 ;; (package! emacs-python-pytest :disable t)
 (package! imenu-list)
 ;;(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
 ;;;; Utilities
 (package! info-plus)
 (package! w3m)
-(package! counsel-spotify)
+;; (package! counsel-spotify)
 (package! smudge)
 ;;(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
 ;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
-(package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
+;; (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
 ;;(package! nov.el)
 ;; (package! tumblesocks)
 ;; (package! consult-spotify)
@@ -149,11 +149,11 @@
 
 
 ;;; D&D
-(package! org-d20)
-(package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
-(package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
-(package! button-lock)
-(package! decide)
+;; (package! org-d20)
+;; (package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
+;; (package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
+;; (package! button-lock)
+;; (package! decide)
 
 ;;; Helm
 ;;; Themes

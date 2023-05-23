@@ -114,7 +114,7 @@
        ;;agda              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
        cc                 ; C > C++ == 1
-       (clojure +lsp)          ; java with a lisp
+       ;; (clojure +lsp)          ; java with a lisp
        common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
@@ -122,7 +122,7 @@
        data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
        ;;dhall
-       (elixir +lsp)            ; erlang done right
+       ;; (elixir +lsp)            ; erlang done right
        ;;elm               ; care for a cup of TEA?
        emacs-lisp        ; drown in parentheses
        ;;erlang            ; an elegant language for a more civilized age
@@ -139,9 +139,9 @@
        json              ; At least it ain't XML
 ;;       (java +lsp) ; the poster child for carpal tunnel syndrome
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
-       (julia +lsp)             ; a better, faster MATLAB
+       ;; (julia +lsp)             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       (latex +fold +lsp)             ; writing papers in Emacs has never been so fun
+       ;; (latex +fold +lsp)             ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
        ;;lua               ; one-based indices? one-based indices
@@ -155,14 +155,14 @@
        ;;purescript        ; javascript, but functional
        (python +lsp +pyright)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
-       (racket +lsp)         ; a DSL for DSLs
+       ;; (racket +lsp)         ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;(ruby +lsp)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        ;(rust +lsp)              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
-       (scheme +guile +mit)   ; a fully conniving family of lisps
+       ;; (scheme +guile +mit)   ; a fully conniving family of lisps
        sh                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
@@ -178,8 +178,8 @@
        ;;(wanderlust +gmail)
 
        :app
-       calendar
-       emms
+       ;; calendar
+       ;; emms
        everywhere        ; *leave* Emacs!? You must be joking
        ;; irc               ; how neckbeards socialize
        ;; (rss +org)        ; emacs as an RSS reader
