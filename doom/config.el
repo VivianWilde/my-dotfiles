@@ -55,7 +55,50 @@
 
 
 ;;; Dashboard Setup
-(setq fancy-splash-image "/home/vivien/Downloads/resized-one.png")
+(setq fancy-splash-image "/home/vivien/.config/doom/assets/resized-one.png")
+
+(defun one-one-quote ()
+  (let* ((path "/home/vivien/.config/doom/fortunes/one-one")
+         (oddnum (lambda (upper) (+ 1 (* 2 (random (/ upper 2))))))
+         (line (funcall oddnum 51))
+         (cmd (format "sed '%dq;d' %s" line path))
+         )
+    (shell-command-to-string cmd)
+    )
+  )
+
+(defun message-one-one ()
+  "Display a One-One quote in the minibuffer"
+  (interactive)
+  (message (one-one-quote)))
+
+(defun dashboardify (fn)
+  "Call TXTFN, and wrap the result in a func that displays it nicely in doom-dashboard"
+  (lambda () (insert (+doom-dashboard--center (- +doom-dashboard--width 1) (propertize (funcall fn) 'face 'bold-italic 'align 'center))) (insert hard-newline))
+  )
+
+
+(defun get-good-fortune ()
+  (let* ((possibles (list "calvin" "discworld" "hitchhiker" "montypython"))
+         (choice (nth (random (length possibles)) possibles))
+         (command (format "fortune %s" choice))
+         (txt (shell-command-to-string command)))
+    txt
+
+    )
+  )
+
+(defun dashboard-fortune ()
+  (insert (+doom-dashboard--center (- +doom-dashboard--width 1) (get-good-fortune) ))
+  (insert hard-newline)
+  )
+
+(setq +doom-dashboard-functions `(
+                                  doom-dashboard-widget-banner
+                                  ,(dashboardify #'one-one-quote)
+                                  dashboard-fortune
+                                  doom-dashboard-widget-shortmenu
+                                  doom-dashboard-widget-footer))
 
                                         ; Here are some additional functions/macros that could help you configure Doom:
                                         ;
@@ -207,7 +250,7 @@
 ;;; Misc variable modifications
 (sp-use-paredit-bindings)
 (add-to-list 'Info-directory-list "/home/rohan/drive/books/nonfic/sicp-texinfo" t)
-(add-to-list 'load-path "/home/rohan/.config/doom/local-packages")
+(add-to-list 'load-path "/home/vivien/.config/doom/local-packages")
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (setq suggest-key-bindings nil)
@@ -559,7 +602,6 @@ converted to PDF at the same location."
 
 
 
-
 ;;;; Programming Language Config
 (after! coffee-mode
   (set-company-backend! 'coffee-mode
@@ -597,7 +639,7 @@ converted to PDF at the same location."
   (setq doom-modeline-project-detection 'auto)
   (let* ((vi (propertize " Vivien 🏳️‍🌈 " 'face 'bold-italic))
          (flag-names (reverse (list "asexual" "nonbinary" "gender-queer" "transgender" "pride")))
-         (flags (-map (lambda (name) (make-pride-flag name (format "/home/vivien/Downloads/pride-emoji-flags/png/%s-flag.png" name))) flag-names)))
+         (flags (-map (lambda (name) (make-pride-flag name (format "/home/vivien/.config/doom/assets/pride-emoji-flags/png/%s-flag.png" name))) flag-names)))
     (add-to-list 'mode-line-misc-info vi)
     (-map (lambda (flag) (add-to-list 'mode-line-misc-info flag) (add-to-list 'mode-line-misc-info " " nil (lambda (x y) nil))) flags)
     ))
