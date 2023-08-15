@@ -63,6 +63,7 @@ xontrib load bashisms coreutils readable-traceback whole_word_jumping z  gitinfo
 
 xontrib load pyenv
 
+cd ~/apps/5e-srd-api && docker compose up --build -d
 
 
 

@@ -9,30 +9,67 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+
+# SwayFX Aesthetics
+corner_radius 20
+# blur on
+blur on
+# blur_passes
+blur_radius 1
+
+shadows on
+shadows_on_csd on
+shadow_color #0000007F
+shadow_blur_radius 50
+default_dim_inactive 0.2
+
+titlebar_separator disable
+
+
 # Important startup stuff
-exec-always "export QT_QPA_PLATFORMTHEME=qt5ct"
+exec_always "export QT_QPA_PLATFORMTHEME=qt5ct"
+exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Fantasma-GTK"'
+exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"'
+# exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Midnight-Green"'
+# exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Midnight-Green"'
+exec_always 'gsettings set org.gnome.desktop.interface cursor-theme "Qogir'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
+
 exec --no-startup-id "~/bin/laptop.sh"
-exec_always setxkbmap -option parens:swap_brackets
+# exec_always setxkbmap -option parens:swap_brackets
+input * {
+xkb_options parens:swap_brackets
+}
+
+output HDMI-A-1 pos 0 0 res 3840x2160
+output eDP-1 pos 3840 0 res 1920x1080
+workspace 1 output HDMI-A-1
+
+
 # -option compose:rctrl
 set $mod Mod4
 set $refresh_i3status killall -SIGUSR1 i3status
 
 # Gap setup
-new_window pixel 0
-default_border pixel 0
-new_float none
+# new_window pixel 0
+# default_border pixel 0
+# new_float none
+default_floating_border none
+# default_border pixel 1
+default_border pixel 1
+# TODO Borders
 
 # border pixel 5
-gaps inner 5
-gaps outer 0
+gaps inner 10
+gaps outer 5
 # smart_borders on
 smart_gaps on
 
-# class                 border  bground text    indicator child_border
-client.focused #859900 #987ac4 ##6c71c4
+# # class                 border  bground text    indicator child_border
+# client.focused #859900 #987ac4 #6c71c4
 
-# class                 border  bground text    indicator child_border
-# client.focused #0088CC #0088CC #ffffff #dddddd
+# # class                 border  bground text    indicator child_border
+# # client.focused #0088CC #0088CC #ffffff #dddddd
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -71,21 +108,23 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl sset 5%-
 
 
 # Screenshots
-bindsym Print exec --no-startup-id i3-maim -s
+# bindsym Print exec --no-startup-id i3-maim -s
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec tilix
+# bindsym $mod+Return exec xfce4-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # Start dmenu (a program launcher)
-bindsym $mod+d exec "synapse -s &"
- # unbind control+space
- # bindsym control+space exec albert toggle
+bindsym $mod+d exec ulauncher-toggle
+# unbind control+space
+# bindsym $mod+space exec ulauncher-toggle
+bindsym ctrl+shift+space exec "synapse -s & --display=:0 "
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed $mod+d exec --no-startup-id i3-dmenu-desktop
@@ -93,6 +132,10 @@ bindsym $mod+d exec "synapse -s &"
 bindsym $mod+m move workspace to output left
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
+
+bindgesture swipe:right workspace prev
+bindgesture swipe:left workspace next
+
 
 
 
@@ -133,7 +176,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 #bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+bindsym $mod+w layout toggle tabbed
 bindsym $mod+s layout toggle split
 
 # toggle tiling / floating
@@ -142,7 +185,7 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 # bindsym $mod+space focus mode_toggle
 
-# focus the parent container
+#  focus the parent container
 bindsym $mod+a focus parent
 
 # focus the child container
@@ -154,10 +197,10 @@ set $ws1 "1:D&D"
 set $ws2 "2:113"
 set $ws3 "3:128A"
 set $ws4 "4:61C"
-set $ws5 "5:170"
-set $ws6 "6:Spanish"
-set $ws7 "7:Personal"
-set $ws8 "8:Chores"
+set $ws5 "5:Superset"
+set $ws6 "6:Coding"
+set $ws7 "7:Research"
+set $ws8 "8:Writing"
 set $ws9 "9:Reading"
 set $ws10 "10:Freedom"
 # Free Choice
@@ -230,26 +273,30 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Autostarts
-exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
+# exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
 # exec --no-startup-id "export GTK_THEME=Nordic"
 # exec --no-startup-id "export GTK4_THEME=Nordic"
 exec --no-startup-id redshift-gtk
 exec_always --no-startup-id "~/bin/autosuspend"
+exec_always --no-startup-id "sudo updatedb"
 exec_always --no-startup-id "~/bin/laptop.sh"
-exec_always --no-startup-id "feh --bg-scale /home/rohan/Pictures/Wallpapers/cyan_planets.jpg"
+exec_always --no-startup-id "swaybg -i ~/Pictures/panopticon.jpg"
+set $background "/home/vivien/Pictures/panopticon.png"
+exec_always --no-startup-id "feh --bg-scale ~/Pictures/panopticon.jpg"
+output "*" bg "/home/vivien/Pictures/panopticon.jpg" fill
 exec --no-startup-id nm-applet
 exec volctl
-exec_always --no-startup-id autotiling
+exec_always --no-startup-id autotiling-rs
 exec libinput-gestures
-exec "ulauncher --no-window-shadow --hide-window"
-exec_always '/home/rohan/.config/polybar/launch.sh'
-exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
-exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
+exec_always "ulauncher --no-window-shadow --hide-window"
+# exec_always '/home/rohan/.config/polybar/launch.sh'
+# exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
+# exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
 exec tilix
 exec "killall -9 emacs"
 exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
 exec "systemctl start --user emacs"
-exec "cd ~/apps/5e-srd-api && docker-compose up --build" # Run the 5e API on startup
+exec_always "cd ~/apps/5e-srd-api && docker-compose up --build" # Run the 5e API on startup
 
 # Systemd services
 exec "systemctl start --user cronie"
@@ -258,12 +305,12 @@ exec "systemctl start --user onedrive"
 exec "systemctl start --user mopidy"
 
 
-exec-always "synapse -s &"
+exec "synapse -s &"
 
 # Window focus
 #bindsym $mod+v [class="Vivaldi-stable"] focus
-bindsym $mod+Shft+v exec nextmatch Vivaldi
-bindsym $mod+v exec vivaldi
+bindsym $mod+Shift+v exec nextmatch Vivaldi
+bindsym $mod+v exec "~/bin/vivaldi"
 bindsym $mod+Shift+e exec nextmatch Emacs
 bindsym $mod+e exec emacsclient -nc --eval "(progn (doom/switch-to-scratch-buffer) (consult-buffer))"
 bindsym $mod+x exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
@@ -282,27 +329,132 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
 #bindsym $mod+0 [class="Mailspring"] scratchpad show
-bindsym Mod1+3 [class="Tilix"] scratchpad show
+# bindsym Mod1+3 [class="Tilix"] scratchpad show
+bindsym Mod1+3 [app_id="tilix"] scratchpad show
+
+# bindsym $mod+3 [class="Tilix"] scratchpad show
 bindsym $mod+Shift+s [class="Spotify"] scratchpad show
-# bindsym $mod+Shift+d [title="Discord"] scratchpad show
+bindsym $mod+Shift+d [title="Discord"] scratchpad show
 bindsym $mod+n [class="Emacs"] scratchpad show
 bindsym $mod+b [class="Vivaldi-stable"] scratchpad show
-bindsym $mod+Shift+d [class="Vivaldi-stable" instance="discord.com__login"] scratchpad show
+# bindsym $mod+Shift+d [class="Vivaldi-stable" instance="discord.com__login"] scratchpad show
 
 
 for_window [instance="spotify"] sticky enable
+
+# SwayFX Aesthetics
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 # exec_always --no-startup-id ~/apps/i3scripts/bar.sh
 
 # Rules, because teams sucks
-for_window [class="^.*"] border pixel 4
+# for_window [class="^.*"] border pixel 4
 for_window [title="Microsoft Teams Notification"] floating enable
 no_focus [title="Microsoft Teams Notification"]
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Synapse"] border pixel 0
 for_window [floating] border pixel 0
 # for window [title="Grade 9A"] floating enable
+
+set $opacity 0.7
+for_window [class=".*"] opacity $opacity
+for_window [app_id=".*"] opacity $opacity
+# for_window [class="Emacs"] opacity 0.5
+
+
+# From default sway
+exec swayidle -w\
+    timeout 1070 'swaylock -f -C ~/.config/swaylock/config'\
+    timeout 770 'swaymsg "output * power off"' \
+    resume 'swaymsg "output * power on"' \
+    before-sleep 'swaylock -C ~/.config/swaylock/config'
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+## Lock Screen
+    bindsym $mod+f1 exec ~/.config/sway/scripts/lockman.sh
+
+    bindsym print exec '/usr//grimshot --notify save area'
+
+    bindsym Shift+print exec ~/.config/sway/scripts/screenshot.sh
+
+set $laptop eDP-1
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+
+exec_always ~/.config/sway/scripts/clamshell.sh
+## Autostarts
+# Auth with polkit-gnome:
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# Desktop notifications
+exec mako
+
+# Network Applet
+exec nm-applet --indicator
+
+# GTK3 applications take a long time to start
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+
+# Welcome App
+exec dex -a -s /etc/xdg/autostart/:~/.config/autostart/
+
+# Sway Fader
+exec python3 ~/.config/sway/scripts/swayfader.py
+
+
+exec "killall teams"
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [window_role="About"] floating enable
+for_window [title="File Operation Progress"] floating enable, border pixel 3, sticky enable, resize set width 40 ppt height 30 ppt
+for_window [app_id="firefox" title="^Library$"] floating enable, border pixel 1, sticky enable, resize set width 40 ppt height 30 ppt
+for_window [app_id="floating_shell_portrait"] floating enable, border pixel 1, sticky enable, resize set width 30 ppt height 40 ppt
+for_window [title="Picture in picture"] floating enable, sticky enable
+for_window [title="nmtui"] floating enable,  resize set width 50 ppt height 70 ppt
+for_window [title="htop"] floating enable, resize set width 50 ppt height 70 ppt
+for_window [app_id="xsensors"] floating enable
+for_window [title="Save File"] floating enable
+for_window [app_id="firefox" title="Firefox — Sharing Indicator"] kill
+
+# Inhibit idle
+for_window [app_id="firefox"] inhibit_idle fullscreen
+for_window [app_id="Chromium"] inhibit_idle fullscreen
+
+
+## New Coloring (Endeavor)
+# class                 border  bground text    indicator child_border
+client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
+# client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+# client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+# client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+client.background       #F8F8F2
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar {
+    swaybar_command waybar
+    position top
+    mode hide
+    modifier Mod4
+}
+
+#
+# Keybindings List
+#
+    # bindsym $mod+t exec xed ~/.config/sway/cheatsheet
 
 
 #bar {

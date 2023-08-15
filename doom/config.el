@@ -30,14 +30,26 @@
                                         ; There are two ways to load a theme. Both assume the theme is installed and
                                         ; available. You can either set `doom-theme' or manually load a theme with the
                                         ; `load-theme' function. This is the default:
-(setq doom-theme 'doom-magnus)
+;; (setq doom-theme 'doom-magnus)
+(setq doom-theme 'doom-henna-vi)
+;;(load-theme 'doom-magnus)
+;; (setq doom-theme 'doom-nano-dark)
+;; (load-theme 'doom-nano-dark)
+;; (after! doom-themes
+;;   (load-theme 'doom-nano-dark t))
+;; (setq doom-theme 'doom-nano-dark )
+
+;; (after! nano-emacs
+;;   (setq nano-theme-var "dark")
+;;   )
+
                                         ; (setq doom-theme 'doom-Iosvkem) Nope
                                         ; (setq doom-theme 'doom-moonlight) Nope
                                         ; (setq doom-theme 'doom-vibrant)
                                         ; (setq doom-theme 'doom-genderfluid)
                                         ; (setq doom-theme 'doom-ir-black)
                                         ; (setq doom-theme 'doom-wilmersdorf)
-                                        ; (setq doom-theme 'poet-dark)
+;; (setq doom-theme 'poet-dark)
                                         ; (setq doom-theme 'doom-homage-black) NO
 
                                         ; (setq doom-theme 'doom-tomorrow-night) NO
@@ -184,20 +196,39 @@
 
 
 ;;;; Vertico
+
+(after! vertico
+  (setq! vertico-count 4)
+  )
+(after! orderless
+  ;; (add-to-list 'orderless-matching-styles 'orderless-flex)
+  (add-to-list 'completion-styles 'orderless)
+  )
+
+;; (after! prescient
+;;   (setq vertico-prescient-mode t)
+;;   (setq prescient-sort-full-matches-first t)
+;;   (setq prescient-sort-full-matches-first t)
+;;   (setq vertico-prescient-enable-filtering t)
+;;   (setq vertico-prescient-enable-sorting t)
+;;   (add-to-list 'completion-styles 'prescient ))
+
 (when (modulep! :completion vertico)
   (map! :leader
         (:prefix-map ("b" . "buffer")
-         :desc "Consult Buffer" "b" #'consult-buffer)
+         :desc "Consult Buffer" "b" #'consult-buffer
+         :desc "Brotab" "t" #'brotab
+         )
         (:prefix-map ("s" . "search")
-         :desc "Consult Imenu All"
-         "I" #'consult-imenu-all
-         :desc "Consult Ripgrep"
-         "R" #'consult-ripgrep)
+         :desc "Consult Imenu All" "I" #'consult-imenu-all
+         :desc "Consult Ripgrep" "R" #'consult-ripgrep
+         )
         (:prefix-map ("f" . "file")
          :desc "Open File Externally" "o" #'consult-file-externally
          :desc "Open 61C File" "c" #'open-hive-file
          :desc "Open File in HOME" "h" #'find-file-home
          :desc "Open File Manager Here" "." #'filemanager-here
+         :desc "Annotate File" "a" #'my/enhanced-annotate
          )
         ("SPC" #'consult-buffer)
         (:prefix-map ("i" . "insert")
@@ -206,6 +237,36 @@
         )
   )
 
+;;; Ivy Alexandria
+;; TODO
+(after! ivy
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-file-preview-mode t)
+  )
+
+(when (modulep! :completion ivy)
+  (map! :leader
+        (:prefix-map ("b" . "buffer")
+         :desc "Consult Buffer" "b" #'counsel-switch-buffer)
+        (:prefix-map ("s" . "search")
+         :desc "Consult Imenu All"
+         "I" #'counsel-imenu            ; TODO
+         :desc "Consult Ripgrep"
+         "R" #'counsel-rg
+         "v" #'counsel-set-variable
+         :desc "Set Variable"
+         )
+        (:prefix-map ("f" . "file")
+         :desc "Open File Externally" "o" #'counsel-locate-action-extern
+         :desc "Open File in HOME" "h" #'counsel-find-home
+         :desc "Open File Manager Here" "." #'filemanager-here
+         )
+        ("SPC" #'counsel-switch-buffer)
+        (:prefix-map ("i" . "insert")
+         :desc "Insert file path"
+         "P" #'insert-path)
+        )
+  )
 
 ;;; Helm
                                         ; (when (modulep! :completion helm)
@@ -357,12 +418,17 @@
 (defalias #'consult-ripgrep-in
   (lambda ()
     (interactive)
-    (let ((dir (read-file-name "Directory: ")))
+    (let ((dir (read-file-name "Directory: " default-directory default-directory)))
                                         ; (funcall (in-folder dir #'consult-ripgrep))
       (consult-ripgrep dir)
       )))
 
-
+;;; Counsel
+(defun counsel-find-home ()
+  (interactive)
+  (counsel-find-file "~/" (expand-file-name "~/"))
+  )
+;;;
 
 
 
@@ -415,15 +481,39 @@ ARG has the same meaning as for `kill-sexp'."
   (interactive)
   (let* (
          (path "/home/vivien/drive/books/magnus_archives/")
+         (selected (read-file-name "Statement: " path))
          )
-    (consult-find-file (read-file-name "Statement: " path))
-    (variable-pitch-mode)
+    (consult-find-file selected)
+    (print selected)
+    (with-current-buffer (find-buffer-visiting (expand-file-name selected) )
+      (set-buffer-font "Nimbus Mono PS")
+      ;; (face-remap-add-relative 'default '(:family "Nimbus Mono PS" ) )
+      ;; (overlay-put (make-overlay (point-min) (point-max) nil nil t)
+      ;;              'face '(:family "Nimbus Mono PS"))
+      )
+
     )
   )
 
+(defun set-buffer-font (family)
+  (interactive
+   (let* (
+          (cmd "fc-list '' 'family'")
+          (families (s-split hard-newline (shell-command-to-string cmd)))
+          (chosen (completing-read "Font Family:" families nil t))
+          )
+     (list chosen)
+     )
+   )
+
+  (buffer-face-set `(:family ,family ))
+  )
+
+
+
 (defun search-magnus ()
-  "TODO"
-  (cons 1 nil))
+  (interactive)
+  (consult-ripgrep-in "/home/vivien/drive/books/magnus_archives/"))
 
 
 (after! savehist
@@ -452,6 +542,14 @@ ARG has the same meaning as for `kill-sexp'."
     (erase-buffer)
     (insert result)
     (display-buffer (current-buffer))))
+
+
+;; (after! ispell
+;;   (setq ispell-dictionary "en_US")
+;;   (setq ispell-alternate-dictionary "en_US")
+;;   ;; (setq ispell-alternate-dictionary "/usr/lib/ispell/english.hash")
+;;   (setq company-ispell-dictionary ispell-dictionary)
+;; )
 
 
 
@@ -518,6 +616,22 @@ ARG has the same meaning as for `kill-sexp'."
   )
 
 ;;;; Org Functions
+(defun my/enhanced-annotate ()
+  "Open annotations in other window"
+  (interactive)
+  (unless (buffer-file-name)
+    (error "This buffer has no associated file!"))
+  (switch-to-buffer-other-window
+   (org-annotate-file-show-section org-annotate-file-storage-file))
+  (+evil/window-move-left)
+  (evil-window-set-width 40)
+
+  )
+
+
+
+
+
 (defun my/org-headings ()
   "Get the list of headings in an org buffer. Keys are full paths, vals are plain strings"
   (let* (
@@ -544,6 +658,8 @@ ARG has the same meaning as for `kill-sexp'."
 
     )
   )
+
+
 
 (defun insert-path ()
   (interactive)
@@ -609,8 +725,6 @@ converted to PDF at the same location."
   (consult-customize find-file :preview-key (list :debounce 0.2 'any))
   )
 
-(after! vertico
-  (setq! vertico-count 4))
 
 (after! imenu-list
   (setq imenu-list-focus-after-activation t
@@ -628,29 +742,29 @@ converted to PDF at the same location."
 
 
 
-(after! hl-todo
-  (setq hl-todo-keyword-faces
-        '(
-          ("TODO" . "#dc752f")
-          ("NEXT" . "#dc752f")
-          ("THEM" . "#2d9574")
-          ("PROG" . "#4f97d7")
-          ("OKAY" . "#4f97d7")
-          ("DONT" . "#f2241f")
-          ("FAIL" . "#f2241f")
-          ("DONE" . "#86dc2f")
-          ("NOTE" . "#b1951d")
-          ("KLUDGE" . "#b1951d")
-          ("HACK" . "#b1951d")
-          ("TEMP" . "#b1951d")
-          ("FIXME" . "#dc752f")
-          ("XXX+" . "#dc752f")
-          ("\\?\\?\\?+" . "#dc752f")
-          ("IDEA" . "#2d9574")
-          ("CITE" . "#dc752f")
-          ("OBVIOUS" . "#dc752f")
-          ("PHRASING" . "#dc752f")
-          ("LACKING" . "#dc752f"))))
+;; (after! hl-todo
+;; (setq hl-todo-keyword-faces
+;;       '(
+;;         ("TODO" . "#dc752f")
+;;         ("NEXT" . "#dc752f")
+;;         ("THEM" . "#2d9574")
+;;         ("PROG" . "#4f97d7")
+;;         ("OKAY" . "#4f97d7")
+;;         ("DONT" . "#f2241f")
+;;         ("FAIL" . "#f2241f")
+;;         ("DONE" . "#86dc2f")
+;;         ("NOTE" . "#b1951d")
+;;         ("KLUDGE" . "#b1951d")
+;;         ("HACK" . "#b1951d")
+;;         ("TEMP" . "#b1951d")
+;;         ("FIXME" . "#dc752f")
+;;         ("XXX+" . "#dc752f")
+;;         ("\\?\\?\\?+" . "#dc752f")
+;;         ("IDEA" . "#2d9574")
+;;         ("CITE" . "#dc752f")
+;;         ("OBVIOUS" . "#dc752f")
+;;         ("PHRASING" . "#dc752f")
+;;         ("LACKING" . "#dc752f"))))
 
 (after! latex
   (add-to-list 'LaTeX-section-list '("cvsection" 2))
@@ -680,8 +794,8 @@ converted to PDF at the same location."
 
 ;;;; Org Config
 (after! org
-  (sp-local-pair '(org-mode) "`" "'")
-  (sp-local-pair '(org-mode) "``" "''")
+  ;; (sp-local-pair '(org-mode) "`" "'")
+  ;; (sp-local-pair '(org-mode) "``" "''")
   (setq org-pretty-entities t)
   (setq org-read-date-popup-calendar nil)
   (add-hook! 'org-mode-hook 'org-indent-mode)
@@ -692,17 +806,52 @@ converted to PDF at the same location."
         '(("+" . "-") ("-" . "+") ("*" . "+")))
                                         ; (setq org-edit-src-auto-save-idle-delay 300)
   (setq org-insert-heading-respect-content nil)
+
   (map! :map org-mode-map :localleader
         (:prefix ("s" . "tree/subtree")
          :desc "Copy Tree" "c" #'org-copy-subtree
          :desc "Clone Tree" "C" #'org-clone-subtree-with-time-shift)
         (:prefix ("l" . "links" )
          :desc "Insert Link to Heading" "h" #'my/org-insert-heading-link
-
          )
-        "&" #'org-mark-ring-goto
+        :desc "Mark Ring Goto" "&" #'org-mark-ring-goto
         )
   (use-package! org-pandoc-import)
+
+
+  )
+
+
+
+;;; Markdown
+;; Optimised for doom-henna
+(after! markdown-mode
+  ;; (let* (
+  ;;        (red "e74c3c")
+  ;;        (teal "1abc9c")
+  ;;        (green "53df83")
+  ;;        )
+  ;;   (custom-set-faces!
+  ;;     `(markdown-header-delimiter-face :foreground "#616161" :height 0.9)
+  ;;     `(markdown-header-face-1 :foreground ,red :weight extra-bold )
+  ;;     `(markdown-header-face-2 :foreground ,teal :weight extra-bold)
+  ;;     `(markdown-header-face-3 :foreground ,green :weight extra-bold )
+  ;;     `(markdown-header-face-4 :foreground ,(doom-lighten red 0.25) :weight bold )
+  ;;     `(markdown-header-face-5 :foreground ,(doom-lighten teal 0.25) :weight bold )
+  ;;     `(markdown-header-face-6 :foreground ,(doom-lighten green 0.25) :weight bold )
+  ;;     )
+  ;;   )
+
+  (setq! markdown-header-scaling t)
+  (setq! markdown-fontify-whole-heading-line t)
+  (setq! markdown-marginalize-headers t)
+  (setq! markdown-nested-imenu-heading-index t)
+  (setq! markdown-hide-markup t)
+
+  )
+(after! json
+  (map! :map json-mode-map :localleader
+        (:desc "counsel-jq" "q" #'counsel-jq))
   )
 
 
@@ -770,9 +919,9 @@ converted to PDF at the same location."
      ))
   )
 ;;;; Programming Language Config
-(after! coffee-mode
-  (set-company-backend! 'coffee-mode
-    '(company-yasnippet :with company-dabbrev)))
+;; (after! coffee-mode
+;;   (set-company-backend! 'coffee-mode
+;;     '(company-yasnippet :with company-dabbrev)))
 
 (after! geiser
   (setq geiser-scheme-implementation 'mit)
@@ -790,9 +939,15 @@ converted to PDF at the same location."
 (set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
 (set-popup-rule! (rx bol "*clyrics") :size 0.3 :quit t :select t :ttl nil)
 (setq doom-scratch-initial-major-mode 'org-mode)
-(setq doom-font (font-spec :family "Source Code Pro" :size 14)) ;; 14 if not monitr
-
-(setq doom-variable-pitch-font (font-spec :family "Latin Modern Roman" :size 14))
+;; (setq doom-font (font-spec :family "Source Code Pro" :size 14)) ;; 14 if not monitr
+(setq doom-font (font-spec :family "Roboto Mono Nerd Font" :size 15))
+;; (setq doom-variable-pitch-font (font-spec :family "Latin Modern Roman" :size 14))
+;; (setq doom-variable-pitch-font (font-spec :family "FairyDustB" :size 14))
+(setq doom-variable-pitch-font (font-spec :family "Montserrat Alternates" :size 14))
+;; (setq doom-variable-pitch-font (font-spec :family "Metamorphous" :size 14))
+;; (setq doom-variable-pitch-font (font-spec :family "Nimbus Roman" :size 14))
+;; (setq doom-variable-pitch-font (font-spec :family "Foglihten" :size 14))
+;; (setq doom-variable-pitch-font (font-spec :family "Z003" :size 14))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
 
 (after! doom-modeline
@@ -874,6 +1029,12 @@ converted to PDF at the same location."
 (use-package! sphinx-doc)
 (add-hook! 'python-mode-hook #'sphinx-doc-mode)
 
+;;; Nano
+;; (use-package! nano)
+(use-package! doom-nano-modeline
+  :config
+  (doom-nano-modeline-mode 1)
+  (global-hide-mode-line-mode 1))
 
 
 

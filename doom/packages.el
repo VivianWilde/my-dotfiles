@@ -54,9 +54,9 @@
 
 
 ;;; EAF
-(package! emacs-application-framework
-:recipe (:host github :repo "manateelazycat/emacs-application-framework"
-:files ("eaf.el" "src/lisp/*.el")))
+;; (package! emacs-application-framework
+;; :recipe (:host github :repo "manateelazycat/emacs-application-framework"
+;; :files ("eaf.el" "src/lisp/*.el")))
 
 
 
@@ -70,7 +70,7 @@
 
 ;;; Language Support
 (package! sphinx-doc)
-(package! matlab-mode)
+;; (package! matlab-mode)
 
 ;;;; Misc
 (package! bnf-mode)
@@ -124,15 +124,22 @@
 (package! riscv-mode)
 ;; (package! emacs-python-pytest :disable t)
 (package! imenu-list)
+(package! counsel-jq)
+
+(straight-use-package
+  '(app-launcher :type git :host github :repo "SebastienWae/app-launcher"))
+
 ;;(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
 ;;;; Utilities
 (package! info-plus)
+(package! google-this)
 (package! w3m)
 (package! counsel-spotify)
 (package! smudge)
 ;;(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
 ;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
 (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
+(package! brotab :recipe (:local-repo "~/experiments/elisp/brotab"))
 ;;(package! nov.el)
 ;; (package! tumblesocks)
 ;; (package! consult-spotify)
@@ -141,18 +148,25 @@
 ;;(package! consult-ls-git)
 ;;(package! consult-project-extra)
 
+;; Ivy
+(package! ivy-file-preview)
+
 
 ;;; Nano
-;;(package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
-;;(package! nano-theme)
-;;(package! nano-modeline)
+;; (package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
+(package! nano-theme)
+;; (package! nano-modeline)
+(package! doom-nano-modeline
+  :recipe (:host github
+  :repo "ronisbr/doom-nano-modeline"))
+
 
 
 ;;; D&D
 (package! org-d20)
 (package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
 (package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
-(package! button-lock)
+;; (package! button-lock)
 (package! decide)
 
 ;;; Helm
@@ -160,3 +174,5 @@
 (package! autothemer)
 (package! TransSide :recipe (:type git :host github :repo "Harith163/TransSide-theme"))
 (package! rainbow-mode)
+(package! poet)
+(package! tron-legacy-theme)

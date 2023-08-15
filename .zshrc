@@ -25,6 +25,7 @@ export PATH="$HOME/usr/local/bin:$PATH"
 export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
 export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="$HOME/.idris2/bin:$PATH"
+export PATH="$HOME/.yarn/bin:$PATH"
 
 export WINEARCH="win64"
 export WINEPATH="/usr/bin"
@@ -221,8 +222,8 @@ alias aptinfo="apt-cache show"
 
     #Manjaro
 
-alias pac='/usr/bin/pacmatic'
-alias summon="sudo --preserve-env pac -S"
+alias pac='/usr/bin/pacman'
+alias summon="sudo --preserve-env=pacman_program pac -S"
 alias exterminate="sudo --preserve-env=pacman_program pac -Rs"
 alias purge="sudo --preserve-env=pacman_program pac -Qdtq"
 alias update="pac -Qu"
@@ -231,7 +232,7 @@ alias pacinfo="pac -Si"
 alias pacsearch="pac -Ss"
 alias rosettav="o ~/Downloads/pacrosetta.html"
 alias rosettaw="w3m ~/Downloads/pacrosetta.html"
-alias ypac='env pacman_program="/usr/bin/yay" pacmatic'
+alias ypac='env pacman_program="/usr/bin/pacman" yay'
 alias ysummon="ypac -S"
 alias yupgrade="ypac -Syu"
 alias yinfo="ypac -Si"
