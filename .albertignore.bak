@@ -30,10 +30,3 @@ tmp
 emacs-git
 *.bak
 node_modules
-site_packages
-
-Trash
-node_modules
-site-packages
-.steam/**
-.local/**

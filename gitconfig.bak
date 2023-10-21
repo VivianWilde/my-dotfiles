@@ -1,0 +1,20 @@
+[user]
+	name = Rohan Goyal
+	email = rohan.goyal@berkeley.edu
+[credential]
+	helper = store
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[core]
+	excludesFile = /home/rohan/.gitignore
+[push]
+	default = simple
+[init]
+	defaultBranch = main
+[sendpack]
+	sideband = false
+[pull]
+	rebase = false

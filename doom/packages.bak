@@ -75,7 +75,6 @@
 ;;;; Misc
 (package! bnf-mode)
 (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
-(package! journalctl-mode)
 ;; (package! xonsh-mode)
 ;;(package! spl :recipe (:local-repo "~/.config"))
 
@@ -94,8 +93,6 @@
 (package! litex-mode)
 
 ;;; Prose/Org
-(package! org-jira)
-(package! org-modern)
 (package! pandoc)
 (package! ox-pandoc)
 (package! htmlize)
@@ -126,40 +123,25 @@
 (package! lsp-origami)
 (package! riscv-mode)
 ;; (package! emacs-python-pytest :disable t)
-(package! pydoc)
 (package! imenu-list)
 (package! counsel-jq)
 
-
-;;; Random toys
-;; TODO investigate these
-(package! lentic)
-(package! symbol-overlay)
-(package! workgroups2)
-
 (straight-use-package
- '(app-launcher :type git :host github :repo "SebastienWae/app-launcher"))
+  '(app-launcher :type git :host github :repo "SebastienWae/app-launcher"))
 
 ;;(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
 ;;;; Utilities
-(package! inherit-org :recipe (:host github :repo "chenyanming/inherit-org"))
-(package! tldr)
-(package! hyperbole)
 (package! info-plus)
-(package! google-this)
 (package! w3m)
 (package! counsel-spotify)
 (package! smudge)
-(package! fzf)
 ;;(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
 ;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
 (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
-(package! brotab :recipe (:local-repo "~/experiments/elisp/brotab"))
 ;;(package! nov.el)
 ;; (package! tumblesocks)
 ;; (package! consult-spotify)
-;;;; Search
-(package! blink-search)
+
 ;;; Consult
 ;;(package! consult-ls-git)
 ;;(package! consult-project-extra)
@@ -169,13 +151,9 @@
 
 
 ;;; Nano
-;; (package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
-(package! nano-theme)
-;; (package! nano-modeline)
-(package! doom-nano-modeline
-  :recipe (:host github
-  :repo "ronisbr/doom-nano-modeline"))
-
+;;(package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
+;;(package! nano-theme)
+;;(package! nano-modeline)
 
 
 ;;; D&D

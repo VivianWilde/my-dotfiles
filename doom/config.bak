@@ -8,7 +8,7 @@
                                         ;
                                         ;e.g. GPG configuration, email
                                         ; clients, file templates and snippets.
-(setq user-full-name "Vivien Goyal"
+(setq user-full-name "Vivien Moriarty"
       user-mail-address "goyal.rohan.03@gmail.com"
       )
 
@@ -30,27 +30,14 @@
                                         ; There are two ways to load a theme. Both assume the theme is installed and
                                         ; available. You can either set `doom-theme' or manually load a theme with the
                                         ; `load-theme' function. This is the default:
-;; (setq doom-theme 'doom-magnus)
-(setq doom-theme 'doom-henna-vi)
-;; (setq doom-theme 'doom-henna)
-;;(load-theme 'doom-magnus)
-;; (setq doom-theme 'doom-nano-dark)
-;; (load-theme 'doom-nano-dark)
-;; (after! doom-themes
-;;   (load-theme 'doom-nano-dark t))
-;; (setq doom-theme 'doom-nano-dark )
-
-;; (after! nano-emacs
-;;   (setq nano-theme-var "dark")
-;;   )
-
+(setq doom-theme 'doom-magnus)
                                         ; (setq doom-theme 'doom-Iosvkem) Nope
                                         ; (setq doom-theme 'doom-moonlight) Nope
                                         ; (setq doom-theme 'doom-vibrant)
                                         ; (setq doom-theme 'doom-genderfluid)
                                         ; (setq doom-theme 'doom-ir-black)
                                         ; (setq doom-theme 'doom-wilmersdorf)
-;; (setq doom-theme 'poet-dark)
+                                        ;; (setq doom-theme 'poet-dark)
                                         ; (setq doom-theme 'doom-homage-black) NO
 
                                         ; (setq doom-theme 'doom-tomorrow-night) NO
@@ -64,11 +51,11 @@
 
                                         ; This determines the style of line numbers in effect. If set to `nil', line
                                         ; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq! display-line-numbers-type nil)
+(setq display-line-numbers-type 'relative)
 
 
 ;;; Dashboard Setup
-(setq fancy-splash-image "/home/vivien/.config/doom/assets/exaltiora-resized.jpg")
+(setq fancy-splash-image "/home/vivien/.config/doom/assets/resized-one.png")
 
 (defun one-one-quote ()
   (let* ((path "/home/vivien/.config/doom/fortunes/one-one")
@@ -108,9 +95,8 @@
 
 (setq +doom-dashboard-functions `(
                                   doom-dashboard-widget-banner
-                                  ;; ,(dashboardify #'one-one-quote)
-                                  ,(dashboardify (lambda () "Audio. Opperior. Vigilo." ))
-                                  ;; dashboard-fortune
+                                  ,(dashboardify #'one-one-quote)
+                                  dashboard-fortune
                                   doom-dashboard-widget-shortmenu
                                   doom-dashboard-widget-footer))
 
@@ -200,38 +186,22 @@
 ;;;; Vertico
 
 (after! vertico
-  (setq! vertico-count 4)
-  )
-(after! orderless
-  ;; (add-to-list 'orderless-matching-styles 'orderless-flex)
-  (add-to-list 'completion-styles 'orderless)
-  )
-
-;; (after! prescient
-;;   (setq vertico-prescient-mode t)
-;;   (setq prescient-sort-full-matches-first t)
-;;   (setq prescient-sort-full-matches-first t)
-;;   (setq vertico-prescient-enable-filtering t)
-;;   (setq vertico-prescient-enable-sorting t)
-;;   (add-to-list 'completion-styles 'prescient ))
+  (setq! vertico-count 4))
 
 (when (modulep! :completion vertico)
   (map! :leader
         (:prefix-map ("b" . "buffer")
-         :desc "Consult Buffer" "b" #'consult-buffer
-         :desc "Brotab" "t" #'brotab
-         )
+         :desc "Consult Buffer" "b" #'consult-buffer)
         (:prefix-map ("s" . "search")
-         :desc "Consult Imenu All" "I" #'consult-imenu-all
-         :desc "Consult Ripgrep" "R" #'consult-ripgrep
-         )
+         :desc "Consult Imenu All"
+         "I" #'consult-imenu-all
+         :desc "Consult Ripgrep"
+         "R" #'consult-ripgrep)
         (:prefix-map ("f" . "file")
          :desc "Open File Externally" "o" #'consult-file-externally
          :desc "Open 61C File" "c" #'open-hive-file
          :desc "Open File in HOME" "h" #'find-file-home
          :desc "Open File Manager Here" "." #'filemanager-here
-         :desc "Annotate File" "a" #'my/enhanced-annotate
-         :desc "Search Globally" "g" #'global-hunt
          )
         ("SPC" #'consult-buffer)
         (:prefix-map ("i" . "insert")
@@ -338,46 +308,13 @@
   :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
   :desc "Generic" "RET" #'dnd5e-api-search)
 
- (:prefix-map ("v" . "Vivien")
+ (:prefix-map ("r" . "Recreation")
   :desc "Display Fortune" "f" #'display-fortune
   :desc "Display One-One Quote" "o" #'message-one-one
   :desc "Read A Statement" "m" #'read-magnus
   :desc "Browse Song Lyrics" "l" #'lyric-search
-  :desc "Search the Archives" "s" #'search-magnus
-  :desc "Search the Web" "w" #'w3m-search-new-session
-  )
-
- (:prefix-map ("j" . "Jira")
-  :desc "Get Issues" "g" #'my/view-all-issues
-  :desc "Create Issue" "c" #'my/create-concise-issue
-  :desc "Refresh Issues" "r" #'org-jira-refresh-issues-in-buffer
-  ;; TODO: Progress issue commands
-
   )
  )
-
-
-
-;;; FZF
-;;;
-(use-package! fzf)
-(defun fzf-external-file (&optional directory)
-  "Find file in projectile project (if used), current or specified DIRECTORY."
-  (interactive)
-  (let ((fzf--target-validator (fzf--use-validator
-                                (function fzf--validate-filename)))
-        (d (fzf--resolve-directory directory)))
-    (fzf--start d
-                (lambda (x)
-                  (let ((f (expand-file-name x d)))
-                    (when (file-exists-p f)
-                      (consult-file-externally f)))))))
-
-(defun global-hunt ()
-  (interactive)
-  (fzf-external-file "~")
-  )
-
 
 
 
@@ -394,18 +331,14 @@
 
 
 ;;; Misc variable modifications
-;;;; Frequently update recentf
-(run-at-time "5 min" 300 'recentf-save-list)
 (sp-use-paredit-bindings)
 (add-to-list 'Info-directory-list "/home/rohan/drive/books/nonfic/sicp-texinfo" t)
 (add-to-list 'load-path "/home/vivien/.config/doom/local-packages")
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (setq suggest-key-bindings nil)
-;; (setq python-shell-interpreter "ipython3"
-;;       python-shell-interpreter-args "--simple-prompt --pprint")
-(setq python-shell-interpreter "ptpython"
-      python-shell-interpreter-args "--dark-bg")
+(setq python-shell-interpreter "ipython3"
+      python-shell-interpreter-args "--simple-prompt --pprint")
                                         ; (setq helm-swoop-pre-input-function (lambda () ""))
 (setq history-delete-duplicates t)
 (setq smudge-transport 'connect)
@@ -458,7 +391,7 @@
 (defalias #'consult-ripgrep-in
   (lambda ()
     (interactive)
-    (let ((dir (read-file-name "Directory: " default-directory default-directory)))
+    (let ((dir (read-file-name "Directory: ")))
                                         ; (funcall (in-folder dir #'consult-ripgrep))
       (consult-ripgrep dir)
       )))
@@ -487,6 +420,7 @@ ARG has the same meaning as for `kill-sexp'."
     (let ((orig-point (point)))
       (forward-sexp (or arg 1))
       (kill-ring-save orig-point (point)))))
+
 
 
 
@@ -520,63 +454,15 @@ ARG has the same meaning as for `kill-sexp'."
   (interactive)
   (let* (
          (path "/home/vivien/drive/books/magnus_archives/")
-         (selected (read-file-name "Statement: " path))
          )
-    (consult-find-file selected)
-    (print selected)
-    (with-current-buffer (find-buffer-visiting (expand-file-name selected) )
-      (set-buffer-font "Nimbus Mono PS")
-      ;; (face-remap-add-relative 'default '(:family "Nimbus Mono PS" ) )
-      ;; (overlay-put (make-overlay (point-min) (point-max) nil nil t)
-      ;;              'face '(:family "Nimbus Mono PS"))
-      )
-
+    (consult-find-file (read-file-name "Statement: " path))
+    (variable-pitch-mode)
     )
   )
 
-(defun set-buffer-font (family)
-  (interactive
-   (let* (
-          (cmd "fc-list '' 'family'")
-          (families (s-split hard-newline (shell-command-to-string cmd)))
-          (chosen (completing-read "Font Family:" families nil t))
-          )
-     (list chosen)
-     )
-   )
-
-  (buffer-face-set `(:family ,family ))
-  )
-
-
-(use-package! brotab)
-
 (defun search-magnus ()
-  (interactive)
-  (consult-ripgrep "/home/vivien/drive/books/magnus_archives/"))
-
-
-(use-package! inherit-org)
-(after! inherit-org
-  (add-hook! 'inherit-org-mode-hook  (org-indent-mode -1))
-  (add-hook! 'inherit-org-mode-hook (lambda () (org-indent-mode -1)))
-  (add-hook! 'inherit-org-mode-hook (setq! org-indent-agentized-buffers nil) )
-  (add-hook! 'inherit-org (lambda! () (org-indent-mode -1)))
-  )
-
-(after! info
-  (add-hook! 'Info-mode-hook 'inherit-org-mode)
-  )
-;; (after! helpful (add-hook! 'helpful-mode-hook 'inherit-org-mode))
-(after! w3m
-  (add-hook! 'w3m-fontify-before-hook 'inherit-org-w3m-headline-fontify) ;only one level is supported
-  (add-hook! 'w3m-fontify-after-hook 'inherit-org-mode)
-  (add-hook! 'w3m-fontify-after-hook 'writeroom-mode)
-  (add-hook! 'w3m-display-hook (lambda! () (org-indent-mode -1)))
-  (add-hook! 'w3m-fontify-after-hook (lambda! () (org-indent-mode -1)))
-  )
-
-
+  "TODO"
+  (cons 1 nil))
 
 
 (after! savehist
@@ -612,7 +498,7 @@ ARG has the same meaning as for `kill-sexp'."
 ;;   (setq ispell-alternate-dictionary "en_US")
 ;;   ;; (setq ispell-alternate-dictionary "/usr/lib/ispell/english.hash")
 ;;   (setq company-ispell-dictionary ispell-dictionary)
-;; )
+  ;; )
 
 
 
@@ -679,22 +565,6 @@ ARG has the same meaning as for `kill-sexp'."
   )
 
 ;;;; Org Functions
-(defun my/enhanced-annotate ()
-  "Open annotations in other window"
-  (interactive)
-  (unless (buffer-file-name)
-    (error "This buffer has no associated file!"))
-  (switch-to-buffer-other-window
-   (org-annotate-file-show-section org-annotate-file-storage-file))
-  (+evil/window-move-left)
-  (evil-window-set-width 40)
-
-  )
-
-
-
-
-
 (defun my/org-headings ()
   "Get the list of headings in an org buffer. Keys are full paths, vals are plain strings"
   (let* (
@@ -721,8 +591,6 @@ ARG has the same meaning as for `kill-sexp'."
 
     )
   )
-
-
 
 (defun insert-path ()
   (interactive)
@@ -804,110 +672,30 @@ converted to PDF at the same location."
         (remove ".git" projectile-project-root-files-bottom-up)))
 
 
-(use-package! org-jira)
-(after! org-jira
-  (setq jiralib-url "https://arcanequark.atlassian.net")
-  (setq my-jira-project "ARC")
-  (setq my-jira-user "Vivien Wilde")
-  (setq my-jira-board (cons "Consolidated"  9))
-  (add-to-list 'auth-sources "~/.authinfo")
-
-  (add-hook! 'org-jira--render-issue 'save-buffer)
-  (add-hook! 'org-jira--render-issues-from-issue-list 'save-buffer)
-
-  (defun my/create-concise-issue (project type summary)
-    "Create an issue in PROJECT, of type TYPE, with given SUMMARY and DESCRIPTION."
-    (interactive
-     (let* (
-            (project (org-jira-read-project))
-            (type (org-jira-read-issue-type project))
-            (summary (read-string "Summary: "))
-            )
-       (list project type summary )))
-    (if (or
-         (equal type "")
-         (equal summary ""))
-        (error "Must provide all information!"))
-    (let* (
-           (description "")
-           (parent-id nil)
-           (ticket-struct (my/get-issue-struct project type summary description)))
-      (jiralib-create-issue ticket-struct)))
-  )
-
-(defun my/get-issue-struct (project type summary description &optional parent-id)
-  "Create an issue struct for PROJECT, of TYPE, with SUMMARY and DESCRIPTION."
-  (if (or (equal project "")
-          (equal type "")
-          (equal summary ""))
-      (error "Must provide all information!"))
-  (let* ((project-components (jiralib-get-components project))
-         ;; (priority (car (rassoc (org-jira-read-priority) (jiralib-get-priorities))))
-         (ticket-struct
-          `((fields
-             (project (key . ,project))
-             (parent (key . ,parent-id))
-             (issuetype (id . ,(car (rassoc type (if (and (boundp 'parent-id) parent-id)
-                                                     (jiralib-get-subtask-types)
-                                                   (jiralib-get-issue-types-by-project project))))))
-             (summary . ,(format "%s%s" summary
-                                 (if (and (boundp 'parent-id) parent-id)
-                                     (format " (subtask of [jira:%s])" parent-id)
-                                   "")))
-             (description . ,description)
-             ;; (priority (id . ,priority))
-             ;; accountId should be nil if Unassigned, not the key slot.
-             ))))
-    ticket-struct))
-
-
-(defun my/view-all-issues ()
-  (interactive)
-  (let (switch-to-buffer #'ignore) (org-jira-get-issues (org-jira-get-issue-list org-jira-get-issue-list-callback)))
-  (org-save-all-org-buffers)
-  (let* ((dir org-jira-working-dir)
-         (all-issues-file "all-issues.org")
-         (all-issues-path (f-join dir all-issues-file))
-         (project-files (f-files dir (lambda (filepath) (s-uppercase? (f-base filepath)) )))
-         (command (apply #'s-concat `("cat " ,@(lispy-interleave " " project-files) ">" ,all-issues-path)))
-         )
-    (shell-command command)
-    (-each project-files (lambda (file) (kill-buffer (find-buffer-visiting (expand-file-name file)))  ))
-    (find-file all-issues-path)
-    )
-  )
-
-
-
-
-
 
 (after! hl-todo
-;; (setq hl-todo-keyword-faces
-;;       '(
-;;         ("TODO" . "#dc752f")
-;;         ("NEXT" . "#dc752f")
-;;         ("THEM" . "#2d9574")
-;;         ("PROG" . "#4f97d7")
-;;         ("OKAY" . "#4f97d7")
-;;         ("DONT" . "#f2241f")
-;;         ("FAIL" . "#f2241f")
-;;         ("DONE" . "#86dc2f")
-;;         ("NOTE" . "#b1951d")
-;;         ("KLUDGE" . "#b1951d")
-;;         ("HACK" . "#b1951d")
-;;         ("TEMP" . "#b1951d")
-;;         ("FIXME" . "#dc752f")
-;;         ("XXX+" . "#dc752f")
-;;         ("\\?\\?\\?+" . "#dc752f")
-;;         ("IDEA" . "#2d9574")
-;;         ("CITE" . "#dc752f")
-;;         ("OBVIOUS" . "#dc752f")
-;;         ("PHRASING" . "#dc752f")
-;;         ("LACKING" . "#dc752f")))
-  (add-to-list 'hl-todo-keyword-faces '("IDEA"  success bold))
-  (add-to-list 'hl-todo-keyword-faces '("DONE"  error bold))
-        )
+  (setq hl-todo-keyword-faces
+        '(
+          ("TODO" . "#dc752f")
+          ("NEXT" . "#dc752f")
+          ("THEM" . "#2d9574")
+          ("PROG" . "#4f97d7")
+          ("OKAY" . "#4f97d7")
+          ("DONT" . "#f2241f")
+          ("FAIL" . "#f2241f")
+          ("DONE" . "#86dc2f")
+          ("NOTE" . "#b1951d")
+          ("KLUDGE" . "#b1951d")
+          ("HACK" . "#b1951d")
+          ("TEMP" . "#b1951d")
+          ("FIXME" . "#dc752f")
+          ("XXX+" . "#dc752f")
+          ("\\?\\?\\?+" . "#dc752f")
+          ("IDEA" . "#2d9574")
+          ("CITE" . "#dc752f")
+          ("OBVIOUS" . "#dc752f")
+          ("PHRASING" . "#dc752f")
+          ("LACKING" . "#dc752f"))))
 
 (after! latex
   (add-to-list 'LaTeX-section-list '("cvsection" 2))
@@ -937,20 +725,9 @@ converted to PDF at the same location."
 
 ;;;; Org Config
 (after! org
-  (setq org-startup-indented t)
   (sp-local-pair '(org-mode) "`" "'")
   (sp-local-pair '(org-mode) "``" "''")
-
-  ;; (add-hook! 'writeroom-mode-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
-  ;; (add-hook! 'writeroom-mode-enable-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
-  (add-hook 'org-mode-hook #'writeroom-mode )
-  (add-hook! 'org-mode-hook 'org-hide-drawer-all)
-  ;; (add-hook! 'org-mode-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
-  (global-org-modern-mode)
   (setq org-pretty-entities t)
-
-  (setq org-agenda-files (list "~/docs/Writing/Phone/todo.org"))
-
   (setq org-read-date-popup-calendar nil)
   (add-hook! 'org-mode-hook 'org-indent-mode)
   (add-hook! 'org-mode-hook (lambda () (git-gutter-mode -1)))
@@ -960,49 +737,19 @@ converted to PDF at the same location."
         '(("+" . "-") ("-" . "+") ("*" . "+")))
                                         ; (setq org-edit-src-auto-save-idle-delay 300)
   (setq org-insert-heading-respect-content nil)
-
   (map! :map org-mode-map :localleader
         (:prefix ("s" . "tree/subtree")
          :desc "Copy Tree" "c" #'org-copy-subtree
          :desc "Clone Tree" "C" #'org-clone-subtree-with-time-shift)
         (:prefix ("l" . "links" )
          :desc "Insert Link to Heading" "h" #'my/org-insert-heading-link
+
          )
-        :desc "Mark Ring Goto" "&" #'org-mark-ring-goto
+        "&" #'org-mark-ring-goto
         )
   (use-package! org-pandoc-import)
-
-
   )
 
-
-
-;;; Markdown
-;; Optimised for doom-henna
-(after! markdown-mode
-  ;; (let* (
-  ;;        (red "e74c3c")
-  ;;        (teal "1abc9c")
-  ;;        (green "53df83")
-  ;;        )
-  ;;   (custom-set-faces!
-  ;;     `(markdown-header-delimiter-face :foreground "#616161" :height 0.9)
-  ;;     `(markdown-header-face-1 :foreground ,red :weight extra-bold )
-  ;;     `(markdown-header-face-2 :foreground ,teal :weight extra-bold)
-  ;;     `(markdown-header-face-3 :foreground ,green :weight extra-bold )
-  ;;     `(markdown-header-face-4 :foreground ,(doom-lighten red 0.25) :weight bold )
-  ;;     `(markdown-header-face-5 :foreground ,(doom-lighten teal 0.25) :weight bold )
-  ;;     `(markdown-header-face-6 :foreground ,(doom-lighten green 0.25) :weight bold )
-  ;;     )
-  ;;   )
-
-  (setq! markdown-header-scaling t)
-  (setq! markdown-fontify-whole-heading-line t)
-  (setq! markdown-marginalize-headers t)
-  (setq! markdown-nested-imenu-heading-index t)
-  (setq! markdown-hide-markup t)
-
-  )
 (after! json
   (map! :map json-mode-map :localleader
         (:desc "counsel-jq" "q" #'counsel-jq))
@@ -1093,15 +840,10 @@ converted to PDF at the same location."
 (set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
 (set-popup-rule! (rx bol "*clyrics") :size 0.3 :quit t :select t :ttl nil)
 (setq doom-scratch-initial-major-mode 'org-mode)
-;; (setq doom-font (font-spec :family "Source Code Pro" :size 14)) ;; 14 if not monitr
-(setq doom-font (font-spec :family "Roboto Mono Nerd Font" :size 15))
+(setq doom-font (font-spec :family "Source Code Pro" :size 14)) ;; 14 if not monitr
 ;; (setq doom-variable-pitch-font (font-spec :family "Latin Modern Roman" :size 14))
-;; (setq doom-variable-pitch-font (font-spec :family "FairyDustB" :size 14))
-(setq doom-variable-pitch-font (font-spec :family "Montserrat" :size 14))
-;; (setq doom-variable-pitch-font (font-spec :family "Metamorphous" :size 14))
-;; (setq doom-variable-pitch-font (font-spec :family "Nimbus Roman" :size 14))
+(setq doom-variable-pitch-font (font-spec :family "FairyDustB" :size 14))
 ;; (setq doom-variable-pitch-font (font-spec :family "Foglihten" :size 14))
-;; (setq doom-variable-pitch-font (font-spec :family "Z003" :size 14))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
 
 (after! doom-modeline
@@ -1150,6 +892,8 @@ converted to PDF at the same location."
 (add-hook! 'text-mode-hook #'visual-line-mode)
 (add-hook! 'text-mode-hook #'hl-todo-mode)
 
+                                        ; (add-hook 'org-mode-hook #'wc-mode)
+                                        ; (add-hook 'org-mode-hook #'org-indent-mode)
 
 (add-hook! 'markdown-mode-hook #'auto-save-visited-mode)
 (add-hook! 'markdown-mode-hook #'visual-line-mode)
@@ -1181,12 +925,6 @@ converted to PDF at the same location."
 (use-package! sphinx-doc)
 (add-hook! 'python-mode-hook #'sphinx-doc-mode)
 
-;;; Nano
-;; (use-package! nano)
-(use-package! doom-nano-modeline
-  :config
-  (doom-nano-modeline-mode 1)
-  (global-hide-mode-line-mode 1))
 
 
 

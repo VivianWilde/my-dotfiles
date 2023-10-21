@@ -9,30 +9,28 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-# Important startup stuff
-exec-always "export QT_QPA_PLATFORMTHEME=qt5ct"
-exec --no-startup-id "~/bin/laptop.sh"
-exec_always setxkbmap -option parens:swap_brackets
-# -option compose:rctrl
+# Important stuff
+exec --no-startup-id "~/bin/monitor.sh"
+exec_always setxkbmap -option caps:swapescape -option parens:swap_brackets -option compose:rctrl
 set $mod Mod4
 set $refresh_i3status killall -SIGUSR1 i3status
 
 # Gap setup
 new_window pixel 0
-default_border pixel 0
-new_float none
-
 # border pixel 5
-gaps inner 5
+gaps inner 0
 gaps outer 0
 # smart_borders on
 smart_gaps on
 
 # class                 border  bground text    indicator child_border
-client.focused #859900 #987ac4 ##6c71c4
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 
-# class                 border  bground text    indicator child_border
-# client.focused #0088CC #0088CC #ffffff #dddddd
+client.background       #F8F8F2
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -54,6 +52,9 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 
+exec --no-startup-id nm-applet
+exec --no-startup-id compton -cb --config ~/.config/picom/picom.conf
+exec --no-startup-id feh --bg-scale '/home/rohan/Pictures/Wallpapers/TomeofFoes.jpg'
 
 # Use pactl to adjust volume in PulseAudio.
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -64,15 +65,8 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
 
-# Brightness
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl sset 5%+
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl sset 5%-
-
-
-
 # Screenshots
 bindsym Print exec --no-startup-id i3-maim -s
-
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -83,16 +77,12 @@ bindsym $mod+Return exec tilix
 bindsym $mod+Shift+q kill
 
 # Start dmenu (a program launcher)
-bindsym $mod+d exec "synapse -s &"
- # unbind control+space
- # bindsym control+space exec albert toggle
+ bindsym $mod+d exec synapse
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed $mod+d exec --no-startup-id i3-dmenu-desktop
 
 bindsym $mod+m move workspace to output left
-bindsym $mod+Tab workspace next
-bindsym $mod+Shift+Tab workspace prev
 
 
 
@@ -126,13 +116,11 @@ bindsym $mod+Shift+Right move right
 # split in vertical orientation
 #bindsym $mod+v split v
 
-bindsym $mod+t split toggle
-
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
+bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+s layout toggle split
 
@@ -140,7 +128,7 @@ bindsym $mod+s layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
+bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -150,17 +138,16 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:D&D"
-set $ws2 "2:113"
-set $ws3 "3:128A"
-set $ws4 "4:61C"
-set $ws5 "5:170"
-set $ws6 "6:Spanish"
-set $ws7 "7:Personal"
-set $ws8 "8:Chores"
-set $ws9 "9:Reading"
-set $ws10 "10:Freedom"
-# Free Choice
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -172,7 +159,7 @@ bindsym $mod+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
+#bindsym $mod+0 workspace number $ws10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -213,13 +200,13 @@ mode "resize" {
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym k resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize shrink height 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize grow height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Right resize shrink width 10 px or 10 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -229,79 +216,50 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Autostarts
-exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
-# exec --no-startup-id "export GTK_THEME=Nordic"
-# exec --no-startup-id "export GTK4_THEME=Nordic"
-exec --no-startup-id redshift-gtk
-exec_always --no-startup-id "~/bin/autosuspend"
-exec_always --no-startup-id "~/bin/laptop.sh"
-exec_always --no-startup-id "feh --bg-scale /home/rohan/Pictures/Wallpapers/cyan_planets.jpg"
-exec --no-startup-id nm-applet
-exec volctl
-exec_always --no-startup-id autotiling
-exec libinput-gestures
-exec "ulauncher --no-window-shadow --hide-window"
-exec_always '/home/rohan/.config/polybar/launch.sh'
-exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
-exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
-exec tilix
-exec "killall -9 emacs"
-exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
-exec "systemctl start --user emacs"
-exec "cd ~/apps/5e-srd-api && docker-compose up --build" # Run the 5e API on startup
-
-# Systemd services
 exec "systemctl start --user cronie"
 exec "systemctl start --user spotify-listener"
 exec "systemctl start --user onedrive"
-exec "systemctl start --user mopidy"
-
-
-exec-always "synapse -s &"
-
+exec_always --no-startup-id autotiling
+exec /home/rohan/bin/vivaldi
+exec "systemctl start --user emacs"
+exec albert
+exec libinput-gestures
+exec synapse -s
+exec '/home/rohan/.config/polybar/launch.sh'
 # Window focus
 #bindsym $mod+v [class="Vivaldi-stable"] focus
-bindsym $mod+Shft+v exec nextmatch Vivaldi
-bindsym $mod+v exec vivaldi
-bindsym $mod+Shift+e exec nextmatch Emacs
-bindsym $mod+e exec emacsclient -nc --eval "(progn (doom/switch-to-scratch-buffer) (consult-buffer))"
-bindsym $mod+x exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
-# bindsym $mod+\/ exec com.github.alainm23.planner.quick-add
-# bindsym $mod+n exec nextmatch Org.gnome.Nautilus
-# bindsym $mod+Shift+n exec emacsclient -nc --eval '(ranger "/home/rohan/drive/School")'
-bindsym $mod+Shift+n exec nemo
+bindsym $mod+v exec nextmatch Vivaldi
+bindsym $mod+Shift+v exec vivaldi
+bindsym $mod+e exec raiseorlaunch -c Emacs -e "emacsclient -nc"
+bindsym $mod+Shift+e exec emacsclient -nc
+bindsym $mod+\ exec com.github.alainm23.planner.quick-add
+
 # scratchpad handling
+exec mailspring
 #for_window [class="Mailspring"] move window to scratchpad
 
+exec nautilus
 #for_window [class="Org.gnome.Nautilus"] move window to scratchpad
 
+exec tilix
 #for_window [class="Tilix"] move window to scratchpad
 
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
-#bindsym $mod+0 [class="Mailspring"] scratchpad show
+
+bindsym $mod+0 [class="Mailspring"] scratchpad show
+bindsym $mod+shift+t [title="Grade 9A"] scratchpad show
 bindsym Mod1+3 [class="Tilix"] scratchpad show
-bindsym $mod+Shift+s [class="Spotify"] scratchpad show
-# bindsym $mod+Shift+d [title="Discord"] scratchpad show
-bindsym $mod+n [class="Emacs"] scratchpad show
-bindsym $mod+b [class="Vivaldi-stable"] scratchpad show
-bindsym $mod+Shift+d [class="Vivaldi-stable" instance="discord.com__login"] scratchpad show
-
-
-for_window [instance="spotify"] sticky enable
+bindsym $mod+n [class="Org.gnome.Nautilus"] scratchpad show
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 # exec_always --no-startup-id ~/apps/i3scripts/bar.sh
 
 # Rules, because teams sucks
-for_window [class="^.*"] border pixel 4
 for_window [title="Microsoft Teams Notification"] floating enable
 no_focus [title="Microsoft Teams Notification"]
 for_window [class="Pavucontrol"] floating enable
-for_window [class="Synapse"] border pixel 0
-for_window [floating] border pixel 0
 # for window [title="Grade 9A"] floating enable
 
 
@@ -313,27 +271,3 @@ for_window [floating] border pixel 0
 #}
 
 # KDE config
-# Plasma compatibility improvements
-# for_window [window_role="pop-up"] floating enable
-# for_window [window_role="task_dialog"] floating enable
-
-# for_window [class="yakuake"] floating enable
-# for_window [class="systemsettings"] floating enable
-# for_window [class="plasmashell"] floating enable;
-# for_window [class="Plasma"] floating enable; border none
-# for_window [title="plasma-desktop"] floating enable; border none
-# for_window [title="win7"] floating enable; border none
-# for_window [class="krunner"] floating enable; border none; move position center
-# for_window [class="Kmix"] floating enable; border none
-# for_window [class="Klipper"] floating enable; border none
-# for_window [class="Plasmoidviewer"] floating enable; border none
-# for_window [class="(?i)*nextcloud*"] floating disable
-# for_window [class="plasmashell" window_type="notification"] border none, move right 700px, move down 450px
-# no_focus [class="plasmashell" window_type="notification"]
-# for_window [title="Desktop — Plasma"] kill; floating enable; border none
-
-## Audio
-# bindsym XF86AudioRaiseVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "increase_volume"
-# bindsym XF86AudioLowerVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "decrease_volume"
-# bindsym XF86AudioMute exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mute"
-# bindsym XF86AudioMicMute exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mic_mute"

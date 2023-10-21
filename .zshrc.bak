@@ -7,10 +7,8 @@
 setopt AUTO_CD
 cdpath=($HOME/d $HOME/d/sp22 $HOME $HOME/drive $HOME/d/cs61b/repo)
 
-export BAT_THEME='nord'
-export LESSOPEN="| batpipe"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
+export LESSOPEN="| pygmentize -O style=monokai -g -f terminal256 %s"
 export ZSH="$HOME/.oh-my-zsh"
 
 export PATH="/home/vivien/go/bin:$PATH"
@@ -28,12 +26,11 @@ export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
 export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="$HOME/.idris2/bin:$PATH"
 export PATH="$HOME/.yarn/bin:$PATH"
-# export PATH="$HOME/miniconda3/bin:$PATH"  # commented out by conda initialize
 
 export WINEARCH="win64"
 export WINEPATH="/usr/bin"
 export WINEPREFIX="$HOME/.wine"
-# export PATH="$WINEPATH:$PATH"
+export PATH="$WINEPATH:$PATH"
 
 export MANPATH="$HOME/anaconda3/share/man:$HOME/funny-manpages:/usr/share/man:$MANPATH"
 # $EDITOR should open in terminal
@@ -158,6 +155,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
 PYTHONDEVMODE=true
+export PATH
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 #[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
@@ -186,7 +184,7 @@ alias pyscratch="e ~/experiments/pythonia/scratch.py"
 alias E="sudoedit"
 alias copy='git clone'
 alias home="cd $HOME"
-alias pinstall="pip install --user --break-system-packages"
+alias pinstall="pip install"
 alias killscreen="sudo brightnessctl s 0"
 alias screenup="sudo brightnessctl s 40"
 alias e=$EDITOR
@@ -202,7 +200,7 @@ alias sc="systemctl"
 alias nemosu="pwd|xargs sudo nemo &"
 alias nemohere="pwd|xargs nemo &" #
 alias r="ranger"
-alias ipy='ptipython'
+alias ipy='ipython'
     #Spotify
 alias spotpause="playerctl --player spotify pause"
 alias spotnext="playerctl --player spotify next"
@@ -211,13 +209,7 @@ alias spotplay="playerctl --player spotify play"
 alias spottoggle="playerctl --player spotify play-pause"
 alias pauseall="playerctl --all-players pause"
 
-# Bat
-alias man='batman'
-# alias cat='bat'
-# alias diff = 'batdiff'
-# alias bg = 'batgrep'
-
-    #batdiff
+    #Apps
 alias gapminder='cd ~/Apps/Gapminder\ Offline-linux; ./Gapminder\ Offline'
 alias torbrowser="cd $HOME/Apps/tor-browser_en-US && ./start-tor-browser.desktop && cd $HOME"
 
@@ -230,17 +222,17 @@ alias aptinfo="apt-cache show"
 
     #Manjaro
 
-alias pac='/usr/bin/pacman'
-alias summon="sudo --preserve-env=pacman_program pacman -S"
-alias exterminate="sudo --preserve-env=pacman_program pacman -Rs"
-alias purge="sudo --preserve-env=pacman_program pacman -Qdtq"
-alias update="pacman -Qu"
-alias upgrade="sudo --preserve-env=pacman_program pacman -Syu"
-alias pacinfo="pacman -Si"
-alias pacsearch="pacman -Ss"
+alias pac='/usr/bin/pacmatic'
+alias summon="sudo --preserve-env pac -S"
+alias exterminate="sudo --preserve-env=pacman_program pac -Rs"
+alias purge="sudo --preserve-env=pacman_program pac -Qdtq"
+alias update="pac -Qu"
+alias upgrade="sudo --preserve-env=pacman_program pac -Syu"
+alias pacinfo="pac -Si"
+alias pacsearch="pac -Ss"
 alias rosettav="o ~/Downloads/pacrosetta.html"
 alias rosettaw="w3m ~/Downloads/pacrosetta.html"
-alias ypac='env pacman_program="/usr/bin/pacman" yay'
+alias ypac='env pacman_program="/usr/bin/yay" pacmatic'
 alias ysummon="ypac -S"
 alias yupgrade="ypac -Syu"
 alias yinfo="ypac -Si"
@@ -335,17 +327,14 @@ alias cl=cless
 # fi
 # unset __conda_setup
 # <<< conda init <<<
-# export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
+export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
 
 #source $HOME/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # source $HOME/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # source $HOME/.oh-my-zsh/plugins/z/z.sh
-# export PATH="$HOME/bin:/usr/bin:$PATH"
-
-# export FZF_DEFAULT_COMMAND='ag -g "" --ignore "node_modules" --ignore ".rustup" --ignore "site_packages"'
-
+export PATH="$HOME/bin:/usr/bin:$PATH"
 
 # CS61b
 #
@@ -360,9 +349,7 @@ alias cl=cless
 
 # For KDE connect, Xiaomi device id
 export palantir=$(kdeconnect-cli -a --id-only|head -n 1)
-[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.xonsh
-
-#i (-sh)
+#xonsh -i
 #if xonsh; then
 #  exit
 #fi
@@ -374,54 +361,3 @@ export palantir=$(kdeconnect-cli -a --id-only|head -n 1)
 # PERL_LOCAL_LIB_ROOT="/home/rohan/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 # PERL_MB_OPT="--install_base \"/home/rohan/perl5\""; export PERL_MB_OPT;
 # PERL_MM_OPT="INSTALL_BASE=/home/rohan/perl5"; export PERL_MM_OPT;
-
-chpwd()
-  case $PWD in
-    (*/cs170-fa23-coding/*) echo "activating conda.."
-                            conda activate cs170
-                            pip install -r requirements.txt
-                            jupyter notebook
-  esac
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-
-__conda_setup="$('/home/vivien/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/vivien/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/vivien/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/vivien/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-conda deactivate
-
-desidev () {
-    # This is the install location of our desi software.
-    # If you are not at NERSC, then change this to something
-    # without "NERSC_HOST" in the name.
-    desisoft="${HOME}/desispec"
-
-    # Set environment variables
-    export CPATH=${desisoft}/include:${CPATH}
-    export LIBRARY_PATH=${desisoft}/lib:${LIBRARY_PATH}
-    export LD_LIBRARY_PATH=${desisoft}/lib:${LD_LIBRARY_PATH}
-    export PYTHONPATH=${desisoft}/lib/python3.5/site-packages:${PYTHONPATH}
-
-    # Special setup for redmonster
-    red="${HOME}/desi-git/redmonster"
-    export PYTHONPATH=${red}/python:${PYTHONPATH}
-    export REDMONSTER_TEMPLATES_DIR=${red}/templates
-
-    # Choose what data files to use- these locations
-    # are for NERSC.
-    export DESI_ROOT=/project/projectdirs/desi
-    export DESIMODEL=${DESI_ROOT}/software/edison/desimodel/master
-    export DESI_BASIS_TEMPLATES=${DESI_ROOT}/spectro/templates/basis_templates/v2.2
-    export STD_TEMPLATES=${DESI_ROOT}/spectro/templates/star_templates/v1.1/star_templates_v1.1.fits
-}

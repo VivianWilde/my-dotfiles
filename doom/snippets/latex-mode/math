@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: math
+# key:
+# --
+\documentclass[12pt]{exam}
+\newcommand{\examnum}{HW2} % This is the name of the assignment
+\usepackage{header}
+
+\begin{document}
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+	\textbf{\class} & \textbf{Name:} & \textit{Vivien}\\
+	\textbf{\examnum} &&\\
+\end{tabular*}\\
+\end{document}
