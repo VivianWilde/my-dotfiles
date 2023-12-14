@@ -4,23 +4,31 @@
 
 # terminal emulator
 super + Return
-  xfce4-terminal
+  terminator
 
+alt + 3
+  tdrop -a -r -w 1100 -h 700 -y "$PANEL_HEIGHT" -s dropdown terminator
+
+# Super_L
+  # polybar-msg cmd show
+
+# @Super_L
+    # polybar-msg cmd hide
 
 super + e
-emacsclient -nc --eval '(progn (doom/switch-to-scratch-buffer) (consult-buffer))'
+  emacsclient -nc --eval '(progn (doom/switch-to-scratch-buffer) (consult-buffer))'
 
 super + x
   emacsclient -nc --eval '(doom/switch-to-scratch-buffer)'
-
 
 super + v
   ~/bin/vivaldi
 # program launcher
 super + d
-  ulauncher-toggle
+  kupfer
+  # ulauncher-toggle
 
-super + Shift + n
+super + shift + n
   nemo
 
 # TODO
@@ -47,14 +55,15 @@ super + shift + e
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
-
+super + alt + Escape
+  bspc quit
 #
 # bspwm hotkeys
 #
 
 # quit/restart bspwm
-super + alt + {q,r}
-	bspc {quit,wm -r}
+super + shift + r
+  bspc wm -r
 
 # close and kill
 # super + {_,shift + }q
@@ -63,7 +72,7 @@ super + {_, shift +}q
 	bspc node -c
 
 # alternate between the tiled and monocle layout
-super + m
+super + f
 	bspc desktop -l next
 
 # send the newest marked node to the newest preselected node
@@ -79,7 +88,7 @@ super + g
 #
 
 # set the window state
-super + {t,shift + t,s,f}
+super + {t,shift + t,s,m}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
 # set the node flags
@@ -104,16 +113,17 @@ super + {_,shift + }c
 
 # focus the next/previous desktop in the current monitor
 super + bracket{left,right}
-	bspc desktop -f {prev,next}.local
+	bspc desktop -f {prev,next}.occupied.local
 
 super + Tab
-  bspc desktop -f next.local
+  bspc desktop -f next.occupied.local
 
-super + Shift + Tab
-  bspc desktop -f previous.local
+super + shift + Tab
+  bspc desktop -f prev.occupied.local
+
 # focus the last node/desktop
-super + {grave,Tab}
-	bspc {node,desktop} -f last
+# super + {grave,Tab}
+# 	bspc {node,desktop} -f last
 
 # focus the older or newer node in the focus history
 super + {o,i}
@@ -125,6 +135,7 @@ super + {o,i}
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
+
 #
 # preselect
 #
@@ -132,6 +143,12 @@ super + {_,shift + }{1-9,0}
 # preselect the direction
 super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}
+
+# Rotate
+super + r
+  bspc node @/ -R 90
+# super + Shift + f
+  # bspc node -F
 
 # preselect the ratio
 super + ctrl + {1-9}
@@ -189,8 +206,16 @@ XF86MonBrightnessDown
 
 # Screenshot
 Print
-  scrot "$(xdg-user-dir PICTURES)/screenshot-$(date +%F_%T).png"
+  flameshot gui
+  # maim -s "$HOME/Pictures/screenshot-$(date +%F_%T).png"
+  # flameshot gui
+  # scrot "$(xdg-user-dir PICTURES)/screenshot-$(date +%F_%T).png"
+
+alt + Print
+  flameshot full
 
 super + Print
-  ~/.config/bspwm/scripts/screenshot.sh
+  flameshot gui
 
+super + Shift + Print
+  ~/.config/bspwm/scripts/screenshot.sh

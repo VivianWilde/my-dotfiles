@@ -53,6 +53,11 @@ export STK_INSTALL_DIR="$HOME/apps/stk-engine"
 export LD_LIBRARY_PATH="$STK_INSTALL_DIR/bin:$LD_LIBRARY_PATH"
 export STK_CONFIG_DIR="$HOME/.config/stk-engine"
 
+# DESI ROOT
+export DESIROOT="$HOME/d/urap/data"
+export DESI_SPECTRO_REDUX="$HOME/mnt/spectro/redux"
+export RR_TEMPLATE_DIR="$HOME/d/urap/libs/redrock/py/redrock/templates"
+
 
 #export PYTHONPATH="$HOME/.local/lib/python3.8/:/home/rohan/.local/lib/python3.8/site-packages"
 #export PYTHONHOME="$HOME/.local/lib/python3.8/:/home/rohan/.local/lib/python3.8/site-packages"
@@ -167,6 +172,9 @@ export LANG=en_US.UTF-8
 #Aliases sorted properly
 
 #Admin/utility
+
+# DESI
+alias desimnt="sshfs vivien@perlmutter.nersc.gov:/global/cfs/cdirs/desi/ ~/mnt"
 
     #Java
 alias jcomp="javac -d out"
@@ -360,7 +368,7 @@ alias cl=cless
 
 # For KDE connect, Xiaomi device id
 export palantir=$(kdeconnect-cli -a --id-only|head -n 1)
-[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.xonsh
+# [[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.xonsh
 
 #i (-sh)
 #if xonsh; then
@@ -401,11 +409,12 @@ unset __conda_setup
 
 conda deactivate
 
+
 desidev () {
     # This is the install location of our desi software.
     # If you are not at NERSC, then change this to something
     # without "NERSC_HOST" in the name.
-    desisoft="${HOME}/desispec"
+    desisoft="${HOME}/desi-libs"
 
     # Set environment variables
     export CPATH=${desisoft}/include:${CPATH}

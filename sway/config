@@ -18,17 +18,19 @@ blur on
 # blur_passes
 blur_radius 1
 
-shadows on
-shadows_on_csd on
-shadow_color #0000007F
-shadow_blur_radius 50
+shadows enable
+shadows_on_csd enable
+shadow_color #9fcc2e
+# client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
+shadow_blur_radius 10
 default_dim_inactive 0.1
 for_window [app_id="vivaldi-stable"] dim_inactive 0.00
 layer_effects "waybar" blur enable; shadows enable; corner_radius 6
 
 titlebar_separator disable
 
-set $opacity 0.7
+# set $opacity 0.7
+set $opacity 1.0
 for_window [app_id=".*"] opacity $opacity
 # for_window [app_id="vivaldi-stable"] opacity 0.8
 
@@ -131,19 +133,21 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl sset 5%-
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec tilix
-# bindsym $mod+Return exec xfce4-terminal
+# bindsym $mod+Return exec tilix
+# bindsym $mod+Return exec 'env SHELL=/bin/xonsh terminology'
+bindsym $mod+Return exec terminator
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # Start dmenu (a program launcher)
-bindsym $mod+d exec ulauncher-toggle
-# bindsym $mod+
+bindsym ctrl+shift+space exec ulauncher-toggle
+# bindsym $mod+d exec "synapse -s & --display=:0 "
+bindsym $mod+d exec "kupfer"
+# bindsym $mod+d exec "ulauncher-toggle"
 bindsym Mod1+Shift+Space exec 'albert toggle'
 # unbind control+space
 # bindsym $mod+space exec ulauncher-toggle
-bindsym ctrl+shift+space exec "synapse -s & --display=:0 "
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed $mod+d exec --no-startup-id i3-dmenu-desktop
@@ -215,14 +219,13 @@ bindsym $mod+a focus parent
 set $ws1 "1:CS"
 set $ws2 "2:Math"
 set $ws3 "3:URAP"
-set $ws4 "4:"
+set $ws4 "4:Apps"
 set $ws5 "5:D&D"
 set $ws6 "6:Research"
-set $ws7 "7:D&D"
-set $ws8 "8:Writing"
-set $ws9 "9:Reading"
+set $ws7 "7:Writing"
+set $ws8 "8:Reading"
+set $ws9 "9:Misc"
 set $ws10 "10:Freedom"
-# Free Choice
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -232,7 +235,7 @@ bindsym $mod+4 workspace number $ws4
 bindsym $mod+5 workspace number $ws5
 bindsym $mod+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 (workspace) number $ws8
+bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
@@ -304,10 +307,9 @@ exec --no-startup-id redshift-gtk
 exec_always --no-startup-id "~/bin/autosuspend"
 exec_always --no-startup-id "sudo updatedb"
 exec_always --no-startup-id "~/bin/laptop.sh"
-# exec_always --no-startup-id "swaybg -i ~/Pictures/eagle_nebula"
-# set $background "/home/vivien/backgrounds/red_nebula"
-output "*" bg "/home/vivien/backgrounds/nebulae-sky" fill
-# exec_always --no-startup-id "feh --bg-scale ~/Pictures/eagle_nebula"
+# output "*" bg "/home/vivien/backgrounds/nebulae-sky" fill
+output "*" bg "/home/vivien/backgrounds/panopticon.jpg" fill
+# output "*" bg "/home/vivien/backgrounds/squid" fill
 exec --no-startup-id nm-applet
 exec volctl
 exec_always --no-startup-id autotiling-rs
@@ -315,12 +317,14 @@ exec libinput-gestures
 exec_always "ulauncher --no-window-shadow --hide-window"
 # exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
 # exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
-exec tilix
+# exec 'env SHELL=/bin/xonsh terminology'
+exec terminator
 exec "killall -9 emacs"
 exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
 # exec_always --no-startup-id "cd /home/vivien/apps/5e-srd-api && docker compose up --restart always" # Run the 5e API on startup
 
 # Systemd services
+exec "systemctl start bluetooth"
 exec "systemctl start --user emacs"
 exec "systemctl start --user cronie"
 exec "systemctl start --user spotify-listener"
@@ -354,7 +358,7 @@ bindsym $mod+minus scratchpad show
 
 #bindsym $mod+0 [class="Mailspring"] scratchpad show
 # bindsym Mod1+3 [class="Tilix"] scratchpad show
-bindsym Mod1+3 [app_id="tilix"] scratchpad show
+bindsym Mod1+3 [app_id="terminator"] scratchpad show
 
 # bindsym $mod+3 [class="Tilix"] scratchpad show
 bindsym $mod+Shift+s [class="Spotify"] scratchpad show
@@ -457,10 +461,10 @@ for_window [app_id="Chromium"] inhibit_idle fullscreen
 # class                 border  bground text    indicator child_border
 
 # TMA
-# client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
+client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
 
 # Nano
-client.focused            #e1bee7 #e1bee7 #eceff4 #e1bee7   #e1bee7
+# client.focused            #e1bee7 #e1bee7 #eceff4 #e1bee7   #e1bee7
 
 # client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
 # client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36

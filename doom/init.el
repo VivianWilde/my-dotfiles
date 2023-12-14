@@ -88,7 +88,7 @@
        ;;ansible
        (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
        ;;direnv
-       ;;docker
+       docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
        ein               ; tame Jupyter notebooks with emacs
        eval     ; run code, run (also, repls)
@@ -158,7 +158,7 @@
        (racket +lsp)         ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
        rest              ; Emacs as a REST client
-       ;;rst               ; ReST in peace
+       rst               ; ReST in peace
        ;(ruby +lsp)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        ;(rust +lsp)              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good

@@ -1,15 +1,1 @@
-[Unit]
-Description=Emacs text editor
-Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
-
-[Service]
-Type=forking
-ExecStart=/usr/bin/emacs --daemon
-ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
-#SuccessExitStatus=15
-Restart=on-failure
-# WorkingDirectory=/usr/lib/emacs/28.0.50/x86_64-pc-linux-gnu/
-
-[Install]
-WantedBy=default.target
-
+/usr/share/emacs/29.1/etc/emacs.service

@@ -186,6 +186,10 @@
 
 (map! :nvieo "C-'" #'imenu-list-smart-toggle)
 
+
+(map! :map ein:notebook-mode-map :localleader
+      "a" #'ein:worksheet-execute-all-cells-above)
+
 (map! :leader
       (:prefix-map ("c" . "code")
        :desc "Comment Lines" "l" #'comment-line
@@ -319,7 +323,8 @@
   :desc "Lookup in API" "a" #'dnd5e-api-search
   :desc "Roll d20" "d" #'org-d20-d20
   :desc "Roll dice" "r" #'org-d20-roll
-  :desc "Lookup in local SRD" "s" #'dnd-search-srd
+  :desc "Lookup in D&D SRD" "s" #'dnd-search-srd
+  :desc "Lookup in Cypher SRD" "c" #'cypher-search-srd
   :desc "Roll on the Wild Magic table" "w" #'dnd-wild-magic-roll
   :desc "Flip a Binary Coin" "f" #'coin-flip
   )
@@ -402,10 +407,10 @@
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
 (setq suggest-key-bindings nil)
-;; (setq python-shell-interpreter "ipython3"
-;;       python-shell-interpreter-args "--simple-prompt --pprint")
-(setq python-shell-interpreter "ptpython"
-      python-shell-interpreter-args "--dark-bg")
+(setq python-shell-interpreter "ipython3"
+      python-shell-interpreter-args "--simple-prompt --pprint")
+;; (setq python-shell-interpreter "ptpython"
+;;       python-shell-interpreter-args "--dark-bg")
                                         ; (setq helm-swoop-pre-input-function (lambda () ""))
 (setq history-delete-duplicates t)
 (setq smudge-transport 'connect)
@@ -499,6 +504,15 @@ ARG has the same meaning as for `kill-sexp'."
         (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
         )
     (consult-ripgrep "~/drive/RPG/5e/5e-srd-split"))
+  )
+
+(defun cypher-search-srd ()
+  "Search Restructured Text SRD"
+  (interactive)
+  (let (
+        (consult-ripgrep-args "rg -t rst --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+        )
+    (consult-ripgrep "~/drive/RPG/cypher/cypher-system-reference"))
   )
 
 (defun dnd-wild-magic-roll ()
@@ -883,31 +897,31 @@ converted to PDF at the same location."
 
 
 (after! hl-todo
-;; (setq hl-todo-keyword-faces
-;;       '(
-;;         ("TODO" . "#dc752f")
-;;         ("NEXT" . "#dc752f")
-;;         ("THEM" . "#2d9574")
-;;         ("PROG" . "#4f97d7")
-;;         ("OKAY" . "#4f97d7")
-;;         ("DONT" . "#f2241f")
-;;         ("FAIL" . "#f2241f")
-;;         ("DONE" . "#86dc2f")
-;;         ("NOTE" . "#b1951d")
-;;         ("KLUDGE" . "#b1951d")
-;;         ("HACK" . "#b1951d")
-;;         ("TEMP" . "#b1951d")
-;;         ("FIXME" . "#dc752f")
-;;         ("XXX+" . "#dc752f")
-;;         ("\\?\\?\\?+" . "#dc752f")
-;;         ("IDEA" . "#2d9574")
-;;         ("CITE" . "#dc752f")
-;;         ("OBVIOUS" . "#dc752f")
-;;         ("PHRASING" . "#dc752f")
-;;         ("LACKING" . "#dc752f")))
-  (add-to-list 'hl-todo-keyword-faces '("IDEA"  success bold))
-  (add-to-list 'hl-todo-keyword-faces '("DONE"  error bold))
-        )
+  ;; (setq hl-todo-keyword-faces
+  ;;       '(
+  ;;         ("TODO" . "#dc752f")
+  ;;         ("NEXT" . "#dc752f")
+  ;;         ("THEM" . "#2d9574")
+  ;;         ("PROG" . "#4f97d7")
+  ;;         ("OKAY" . "#4f97d7")
+  ;;         ("DONT" . "#f2241f")
+  ;;         ("FAIL" . "#f2241f")
+  ;;         ("DONE" . "#86dc2f")
+  ;;         ("NOTE" . "#b1951d")
+  ;;         ("KLUDGE" . "#b1951d")
+  ;;         ("HACK" . "#b1951d")
+  ;;         ("TEMP" . "#b1951d")
+  ;;         ("FIXME" . "#dc752f")
+  ;;         ("XXX+" . "#dc752f")
+  ;;         ("\\?\\?\\?+" . "#dc752f")
+  ;;         ("IDEA" . "#2d9574")
+  ;;         ("CITE" . "#dc752f")
+  ;;         ("OBVIOUS" . "#dc752f")
+  ;;         ("PHRASING" . "#dc752f")
+  ;;         ("LACKING" . "#dc752f")))
+  (add-to-list 'hl-todo-keyword-faces '("IDEA" warning bold))
+  (add-to-list 'hl-todo-keyword-faces '("DONE" success bold))
+  )
 
 (after! latex
   (add-to-list 'LaTeX-section-list '("cvsection" 2))
@@ -938,12 +952,13 @@ converted to PDF at the same location."
 ;;;; Org Config
 (after! org
   (setq org-startup-indented t)
+  (setq org-export-with-smart-quotes t)
   (sp-local-pair '(org-mode) "`" "'")
   (sp-local-pair '(org-mode) "``" "''")
 
   ;; (add-hook! 'writeroom-mode-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
   ;; (add-hook! 'writeroom-mode-enable-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
-  (add-hook 'org-mode-hook #'writeroom-mode )
+  ;; (add-hook 'org-mode-hook #'writeroom-mode )
   (add-hook! 'org-mode-hook 'org-hide-drawer-all)
   ;; (add-hook! 'org-mode-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
   (global-org-modern-mode)
@@ -956,6 +971,7 @@ converted to PDF at the same location."
   (add-hook! 'org-mode-hook (lambda () (git-gutter-mode -1)))
                                         ; (add-hook! 'org-mode-hook 'variable-pitch-mode)
   (add-hook! 'org-mode-hook 'turn-off-smartparens-strict-mode)
+
   (setq org-list-demote-modify-bullet
         '(("+" . "-") ("-" . "+") ("*" . "+")))
                                         ; (setq org-edit-src-auto-save-idle-delay 300)
@@ -974,6 +990,21 @@ converted to PDF at the same location."
 
 
   )
+
+
+(defun find-and-replace (from to)
+  "Replaces in the current buffer all occurences of from to to (not interactively)"
+  (while (re-search-forward from nil t)
+    (replace-match to nil nil)))
+
+(defun smarten-quotes ()
+  (interactive)
+  (find-and-replace "'" "’")          ; Apostrophe -> Right quote
+  (find-and-replace "`" "‘")            ; Backtick -> Left quote
+  )
+
+
+
 
 
 
@@ -1094,7 +1125,8 @@ converted to PDF at the same location."
 (set-popup-rule! (rx bol "*clyrics") :size 0.3 :quit t :select t :ttl nil)
 (setq doom-scratch-initial-major-mode 'org-mode)
 ;; (setq doom-font (font-spec :family "Source Code Pro" :size 14)) ;; 14 if not monitr
-(setq doom-font (font-spec :family "Roboto Mono Nerd Font" :size 15))
+(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 14)) ;; 14 if not monitr
+;; (setq doom-font (font-spec :family "Roboto Mono Nerd Font" :size 15))
 ;; (setq doom-variable-pitch-font (font-spec :family "Latin Modern Roman" :size 14))
 ;; (setq doom-variable-pitch-font (font-spec :family "FairyDustB" :size 14))
 (setq doom-variable-pitch-font (font-spec :family "Montserrat" :size 14))

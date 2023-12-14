@@ -7,13 +7,13 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 
 bspc monitor -d I II III IV V VI VII VIII IX X
 
-bspc config border_width         2
-bspc config window_gap          12
+bspc config border_width         1
+bspc config window_gap          4
 
 bspc config split_ratio          0.52
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
-bspc config pointer_follows_focus true
+bspc config pointer_follows_focus false
 bspc config focus_follows_pointer true
 
 bspc rule -a Gimp desktop='^8' state=floating follow=on
@@ -23,22 +23,29 @@ bspc rule -a mplayer2 state=floating
 bspc rule -a Yad state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
+bspc rule -a Emacs state=tiled
+bspc rule -a Ulauncher state=floating border=off
+bspc rule -a Kupfer.py border=off
+
 
 
 # Border
-bspc config focused_border_color        "#6c71c4"
-bspc config normal_border_color         "#073642"
-bspc config active_border_color         "#073642"
+bspc config focused_border_color        "#9fcc2e"
+bspc config normal_border_color         "#44475a"
+bspc config active_border_color         "#44475a"
+
+
 
 #
 # Autostart
 #
 # Set display from arandr saved script
-sh ~/.screenlayout/monitor.sh &
+# sh ~/.screenlayout/monitor.sh &
 # Bar
-~/.config/polybar/launch.sh &
+~/.config/polybar/launch.sh --docky &
 # Notifications
 /usr/bin/dunst &
+dunstctl set-paused true &
 
 # Wallpaper
 nitrogen --restore &
@@ -56,45 +63,44 @@ xsetroot -cursor_name left_ptr &
 ~/.config/bspwm/scripts/low_bat_notifier.sh
 
 # GTK settings
-export GTK_THEME=Nordic-bluish-accent
-export GTK4_THEME=Nordic-bluish-accent
+# export GTK_THEME=Nordic-bluish-accent
+# export GTK4_THEME=Nordic-bluish-accent
 gsettings set org.gnome.desktop.interface icon-theme "Nordic-bluish-accent"
-gsettings set org.gnome.desktop.interface gtk-theme "Fantasma-GTK"
-gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"
+gsettings set org.gnome.desktop.interface gtk-theme "vimix-dark-laptop-beryl"
+# gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"
 gsettings set org.gnome.desktop.interface cursor-theme "Qogir"
-exec_always gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"
-
-# Xmod/etc. to swap parens
-setxkbmap -option parens:swap_brackets
+gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"
 
 # Monitor setup
 xrandr --output eDP-1 --primary
 
 # Autostarts
-~/bin/autosuspend
+/home/vivien/bin/autosuspend
 nm-applet
 libinput-gestures
-ulauncher --no-window-shadow --hide-window
-compton -cb --config ~/.config/picom/picom.conf
-synapse -s &
+# ulauncher --no-window-shadow --hide-window
+# synapse -s &
 
-# killall -9 emacs
-# trash ~/.config/emacs/.cache/.emacs.desktop.lock
-cd ~/apps/5e-srd-api && docker-compose up --build # Run the 5e API on startup
-
-# Systemd
-systemctl start --user emacs
-systemctl start --user cronie
-systemctl start --user spotify-listener
-systemctl start --user onedrive
-systemctl start --user mopidy
-
-# Background
-exec_always --no-startup-id "feh --bg-scale ~/Pictures/panopticon.jpg"
+# cd ~/apps/5e-srd-api && docker-compose up --build # Run the 5e API on startup
 
 # TODO
-# background
 # aesthetics - so much
 # scratchpad
-# borders/shadow
-bspc rule -a Ulauncher state=floating border=off
+# gestures
+# Systemd
+# killall -9 emacs
+trash ~/.config/emacs/.cache/.emacs.desktop.lock
+systemctl start --user emacs &
+emacs --fg-daemon &
+
+systemctl start --user cronie &
+systemctl start --user spotify-listener &
+systemctl start --user onedrive &
+systemctl start --user mopidy &
+#systemctl restart --user emacs
+
+
+picom -cb --config ~/.config/picom/picom.conf &
+
+# Swap parens
+setxkbmap -option parens:swap_brackets &

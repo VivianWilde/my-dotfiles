@@ -49,10 +49,10 @@ determine the exact padding."
 
   ;; name        default   256       16
   (
-   ;; (bg         '("#21272e" nil       nil            ))
-   ;; (bg-alt     '("#1B1F23" nil       nil            ))
+   (bg-alt     '("#1B1F23" nil       nil            ))
    (bg         '("#072017" nil       nil            ))
-   (bg-alt     '("#1a211f" nil       nil            ))
+   ;; (bg         '("#1f242e" nil       nil            ))
+   ;; (bg-alt     '("#1b1f23" nil       nil            ))
 
    (base0      '("#10151a" "black"   "black"        ))
    (base1      '("#181A1F" "#2e2e2e" "brightblack"  ))
@@ -66,13 +66,8 @@ determine the exact padding."
    (fg         '("#f8f8f0" "#bfbfbf" "brightwhite"  ))
    (fg-alt     '("#6B717D" "#979797" "white"        ))
    (grey       '("#737c8c"))
-   ;; (red        '("#e74c3c" "#ff6655" "red"          ))
-   ;; (green      '("#53df83" "#99bb66" "green"        ))
-
-   ;; (green        '("#e74c3c" "#ff6655" "red"          ))
-   (green        '("#d08770" "#dd8844" "red"          ))
-   (red      '("#53df83" "#99bb66" "green"        ))
-   ;; (red'("#79A129" "#99bb66" "green"        ))
+   (red        '("#d08770" "#dd8844" "red"          ))
+   (green      '("#53df83" "#99bb66" "green"        ))
    (teal       '("#1abc9c" "#44b9b1" "brightgreen"  ))
    (blue       '("#56b5c2" "#51afef" "brightblue"   ))
    (cyan       '("#56b6c2" "#46D9FF" "brightcyan"   ))
@@ -87,16 +82,16 @@ determine the exact padding."
 
    ;; custom
    (green-alt  '("#9cd230"                          ))
-   ;; (green-dark '("#30c965"                          ))
-   (green-dark green)
+   (green-dark '("#30c965"                          ))
+   ;; (green-dark green)
 
    ;; face categories -- required for all themes
-   (highlight      red)
+   (highlight green)
    (vertical-bar   (doom-darken base1 0.1))
    (selection      cyan)
    (builtin        teal)
    (comments       base8)
-   (doc-comments   base8)
+   (doc-comments violet)
    (constants      teal)
    (functions      red)
    (keywords       teal)
