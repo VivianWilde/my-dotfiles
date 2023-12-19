@@ -89,9 +89,7 @@ libinput-gestures
 # gestures
 # Systemd
 # killall -9 emacs
-trash ~/.config/emacs/.cache/.emacs.desktop.lock
-systemctl start --user emacs &
-emacs --fg-daemon &
+# trash ~/.config/emacs/.cache/.emacs.desktop.lock
 
 systemctl start --user cronie &
 systemctl start --user spotify-listener &
@@ -104,3 +102,6 @@ picom -cb --config ~/.config/picom/picom.conf &
 
 # Swap parens
 setxkbmap -option parens:swap_brackets &
+
+systemctl start --user emacs &
+emacs --fg-daemon &

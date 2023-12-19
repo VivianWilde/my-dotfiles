@@ -9,21 +9,26 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-# Important startup stuff
+# Environment Vars
+#
+# Gnome/GUI Settings
 exec-always "export QT_QPA_PLATFORMTHEME=qt5ct"
+exec --no-startup-id "export GTK_THEME=vimix-dark-laptop-beryl"
+exec --no-startup-id "export GTK4_THEME=Nordic-bluish-accent"
+exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Nordic-bluish-accent"'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "vimix-dark-laptop-beryl"'
+exec_always 'gsettings set org.gnome.desktop.interface cursor-theme "Qogir'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
+
+# Xrandr
 exec --no-startup-id "~/bin/laptop.sh"
 
-exec --no-startup-id "export GTK_THEME=Nordic-bluish-accent"
-exec --no-startup-id "export GTK4_THEME=Nordic-bluish-accent"
+
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Nordic-bluish-accent"'
-exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Nordic-bluish-accent"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Fantasma-GTK"'
-exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "vimix-dark-laptop-beryl"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Midnight-Green"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Midnight-Green"'
-exec_always 'gsettings set org.gnome.desktop.interface cursor-theme "Qogir'
-exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
 
 # -option compose:rctrl
 set $mod Mod4

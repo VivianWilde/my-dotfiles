@@ -73,8 +73,8 @@
 ;; (package! matlab-mode)
 
 ;;;; Misc
-(package! bnf-mode)
-(package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
+;; (package! bnf-mode)
+;; (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
 (package! journalctl-mode)
 ;; (package! xonsh-mode)
 ;;(package! spl :recipe (:local-repo "~/.config"))
@@ -86,7 +86,7 @@
 ;; (package! tide)
 
 ;;;; Lisp/Scheme
-;(package! geiser-guile)
+(package! geiser-guile)
 (package! sotlisp)
 (package! highlight-defined)
 (package! lisp-extra-font-lock)
@@ -94,14 +94,14 @@
 (package! litex-mode)
 
 ;;; Prose/Org
-(package! org-jira)
+;; (package! org-jira)
 (package! org-modern)
 (package! pandoc)
 (package! ox-pandoc)
 (package! htmlize)
 (package! org-transclusion)
 ;;(package! fountain-mode)
-(package! poet-theme)
+;; (package! poet-theme)
 (package! afternoon-theme)
 (package! olivetti)
 (package! org-ml)
@@ -124,7 +124,7 @@
 ;;; Misc
 ;;;; Programming
 (package! lsp-origami)
-(package! riscv-mode)
+;; (package! riscv-mode)
 ;; (package! emacs-python-pytest :disable t)
 (package! pydoc)
 (package! imenu-list)
@@ -144,7 +144,7 @@
 ;;;; Utilities
 (package! inherit-org :recipe (:host github :repo "chenyanming/inherit-org"))
 (package! tldr)
-(package! hyperbole)
+;; (package! hyperbole)
 (package! info-plus)
 (package! google-this)
 (package! w3m)
@@ -153,7 +153,7 @@
 (package! fzf)
 ;;(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
 ;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
-(package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
+;; (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
 (package! brotab :recipe (:local-repo "~/experiments/elisp/brotab"))
 ;;(package! nov.el)
 ;; (package! tumblesocks)
@@ -190,5 +190,5 @@
 (package! autothemer)
 (package! TransSide :recipe (:type git :host github :repo "Harith163/TransSide-theme"))
 (package! rainbow-mode)
-(package! poet)
-(package! tron-legacy-theme)
+;; (package! poet)
+;; (package! tron-legacy-theme)

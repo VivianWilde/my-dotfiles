@@ -352,13 +352,7 @@
   :desc "Search the Web" "w" #'w3m-search-new-session
   )
 
- (:prefix-map ("j" . "Jira")
-  :desc "Get Issues" "g" #'my/view-all-issues
-  :desc "Create Issue" "c" #'my/create-concise-issue
-  :desc "Refresh Issues" "r" #'org-jira-refresh-issues-in-buffer
-  ;; TODO: Progress issue commands
 
-  )
  )
 
 
@@ -818,79 +812,6 @@ converted to PDF at the same location."
         (remove ".git" projectile-project-root-files-bottom-up)))
 
 
-(use-package! org-jira)
-(after! org-jira
-  (setq jiralib-url "https://arcanequark.atlassian.net")
-  (setq my-jira-project "ARC")
-  (setq my-jira-user "Vivien Wilde")
-  (setq my-jira-board (cons "Consolidated"  9))
-  (add-to-list 'auth-sources "~/.authinfo")
-
-  (add-hook! 'org-jira--render-issue 'save-buffer)
-  (add-hook! 'org-jira--render-issues-from-issue-list 'save-buffer)
-
-  (defun my/create-concise-issue (project type summary)
-    "Create an issue in PROJECT, of type TYPE, with given SUMMARY and DESCRIPTION."
-    (interactive
-     (let* (
-            (project (org-jira-read-project))
-            (type (org-jira-read-issue-type project))
-            (summary (read-string "Summary: "))
-            )
-       (list project type summary )))
-    (if (or
-         (equal type "")
-         (equal summary ""))
-        (error "Must provide all information!"))
-    (let* (
-           (description "")
-           (parent-id nil)
-           (ticket-struct (my/get-issue-struct project type summary description)))
-      (jiralib-create-issue ticket-struct)))
-  )
-
-(defun my/get-issue-struct (project type summary description &optional parent-id)
-  "Create an issue struct for PROJECT, of TYPE, with SUMMARY and DESCRIPTION."
-  (if (or (equal project "")
-          (equal type "")
-          (equal summary ""))
-      (error "Must provide all information!"))
-  (let* ((project-components (jiralib-get-components project))
-         ;; (priority (car (rassoc (org-jira-read-priority) (jiralib-get-priorities))))
-         (ticket-struct
-          `((fields
-             (project (key . ,project))
-             (parent (key . ,parent-id))
-             (issuetype (id . ,(car (rassoc type (if (and (boundp 'parent-id) parent-id)
-                                                     (jiralib-get-subtask-types)
-                                                   (jiralib-get-issue-types-by-project project))))))
-             (summary . ,(format "%s%s" summary
-                                 (if (and (boundp 'parent-id) parent-id)
-                                     (format " (subtask of [jira:%s])" parent-id)
-                                   "")))
-             (description . ,description)
-             ;; (priority (id . ,priority))
-             ;; accountId should be nil if Unassigned, not the key slot.
-             ))))
-    ticket-struct))
-
-
-(defun my/view-all-issues ()
-  (interactive)
-  (let (switch-to-buffer #'ignore) (org-jira-get-issues (org-jira-get-issue-list org-jira-get-issue-list-callback)))
-  (org-save-all-org-buffers)
-  (let* ((dir org-jira-working-dir)
-         (all-issues-file "all-issues.org")
-         (all-issues-path (f-join dir all-issues-file))
-         (project-files (f-files dir (lambda (filepath) (s-uppercase? (f-base filepath)) )))
-         (command (apply #'s-concat `("cat " ,@(lispy-interleave " " project-files) ">" ,all-issues-path)))
-         )
-    (shell-command command)
-    (-each project-files (lambda (file) (kill-buffer (find-buffer-visiting (expand-file-name file)))  ))
-    (find-file all-issues-path)
-    )
-  )
-
 
 
 
@@ -1230,7 +1151,7 @@ converted to PDF at the same location."
 (cl-defmacro lsp-org-babel-enable (lang)
   "Support LANG in org source code block."
   ;; (setq centaur-lsp 'lsp-mode)
-  (cl-check-type lang stringp)
+  (cl-check-type lang string)
   (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
          (intern-pre (intern (format "lsp--%s" (symbol-name edit-pre)))))
     `(progn
