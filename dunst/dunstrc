@@ -69,7 +69,7 @@
 
     # Defines color of the frame around the notification window.
     # frame_color = "#AF83ED"
-    frame_color = "#e9e9f4"
+    frame_color = "#f8f8f0"
 
     # Define a color for the separator.
     # possible values are:
@@ -78,7 +78,7 @@
     #  * frame: use the same color as the frame;
     #  * anything else will be interpreted as a X color.
     # separator_color = frame
-    separator_color = "#e9e9f4"
+    separator_color = "#f8f8f0"
     # Sort messages by urgency.
     sort = yes
 
@@ -225,7 +225,7 @@
     # corners.
     # The radius will be automatically lowered if it exceeds half of the
     # notification height to avoid clipping text and/or icons.
-    corner_radius = 0
+    corner_radius = 15
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
@@ -323,8 +323,9 @@
 
 [urgency_normal]
     msg_urgency = normal
-    background = "#290064"
-    foreground = "#e9e9f4"
+    background = "#21272e"
+    frame_color="#e74c3c"
+    foreground = "#1abc9c"
 
 
 # Every section that isn't one of the above is interpreted as a rules to
@@ -448,3 +449,6 @@
 #  desktop_entry=org.kde.kdeconnect.*
   format = ""
   history_ignore = yes
+[onedrive]
+appname = "OneDrive"
+format = ""

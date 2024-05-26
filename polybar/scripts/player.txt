@@ -1,0 +1,277 @@
+#!/usr/bin/env python3
+
+"""Control and watch MPRIS-compatible media players."""
+
+import pydbus
+from functools import partial
+
+
+class Player:
+    """
+    Connect and listen to a media player’s MPRIS interface via D-Bus.
+
+    See <https://specifications.freedesktop.org/mpris-spec/2.2/> for the second
+    version of the Media Player Remote Interfacing Specification (MPRIS).
+    """
+
+    # Path at which the mandatory MPRIS object is exposed by players
+    path = '/org/mpris/MediaPlayer2'
+
+    def __init__(self, bus, name, callback=lambda watcher: None):
+        """
+        Initiate a connection to a player.
+
+        :param SessionBus bus: Active connection to the session bus.
+        :param str interface: Name of the player’s interface on the bus.
+        :param Callable callback: Function to call whenever the
+            player’s state changes.
+        """
+        self.bus = bus
+        self.interface = bus.get(name, Player.path)
+        self.callback = callback
+
+        self._properties_changed_sub = (
+            self.interface.PropertiesChanged
+                .connect(self._on_properties_changed)
+        )
+
+    def close(self):
+        """Stop listening to this player’s interface."""
+        self._properties_changed_sub.disconnect()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self):
+        self.close()
+
+    def _on_properties_changed(self, interface_name, changed, invalidated):
+        if 'Metadata' in changed \
+                or 'Metadata' in invalidated \
+                or 'PlaybackStatus' in changed \
+                or 'PlaybackStatus' in invalidated:
+            self.callback()
+
+
+class PlayerWatcher:
+    """
+    Watch for all MPRIS-compatible players connected to D-Bus.
+
+    See <https://specifications.freedesktop.org/mpris-spec/2.2/> for the second
+    version of the Media Player Remote Interfacing Specification (MPRIS).
+    """
+
+    # Mandatory prefix for all players conforming to MPRIS v2.2
+    namespace = 'org.mpris.MediaPlayer2.'
+
+    def __init__(self, bus, callback=lambda watcher: None):
+        """
+        Start watching for players.
+
+        :param SessionBus bus: Active connection to the session bus.
+        :param Callable callback: Function to call whenever a player changes.
+        """
+        self.bus = bus
+        self.callback = callback
+
+        self.meta = bus.get('org.freedesktop.DBus')
+        self.players = {}
+
+        for name in self.meta.ListNames():
+            if name.startswith(PlayerWatcher.namespace):
+                self._on_player_added(name)
+
+        self._name_changed_sub = self.meta.NameOwnerChanged.connect(
+            self._on_name_changed)
+
+    def get_active_player(self):
+        """
+        Get the first currently active player.
+
+        :return Optional[Player]: Handle to the first active player, or None.
+        """
+        # Use alphabetically sorted order as canonical order
+        players = sorted(list(self.players.keys()))
+
+        # Find the first player that is actively playing audio
+        for player in players:
+            if self.players[player].interface.PlaybackStatus == 'Playing':
+                return self.players[player]
+
+        # If none, find the first player that is paused
+        for player in players:
+            if self.players[player].interface.PlaybackStatus == 'Paused':
+                return self.players[player]
+
+        # If none, ignore stopped players
+        return None
+
+    def close(self):
+        """Stop watching for players."""
+        self._name_changed_sub.disconnect()
+
+        for name in self.players:
+            self._on_player_removed(name)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self):
+        self.close()
+
+    def _on_name_changed(self, name, old, new):
+        if name.startswith(PlayerWatcher.namespace):
+            if new and not old:
+                self._on_player_added(name)
+            elif old and not new:
+                self._on_player_removed(name)
+
+    def _on_player_added(self, name):
+        try:
+            self.players[name] = Player(
+                self.bus, name,
+                partial(self.callback, self))
+            self.callback(self)
+        except KeyError:
+            # Ignore invalid players
+            pass
+
+    def _on_player_removed(self, name):
+        if name in self.players:
+            self.players[name].close()
+            del self.players[name]
+            self.callback(self)
+
+
+artist_key = 'xesam:artist'
+artist_max_len = 20
+title_key = 'xesam:title'
+title_max_len = 30
+
+icons = {
+    'Playing': '契',
+    'Paused': '',
+}
+
+
+def available(watcher):
+    """Show available players."""
+    for name, player in watcher.players.items():
+        print(f'{player.interface.Identity} ({name})')
+
+
+def status(watcher):
+    """Print the current playback status on standard output."""
+    player = watcher.get_active_player()
+
+    if player:
+        status = player.interface.PlaybackStatus
+        metadata = player.interface.Metadata
+
+        title = metadata[title_key] if title_key in metadata \
+            else 'Unknown title'
+
+        if artist_key in metadata:
+            artist = metadata[artist_key]
+
+            if type(artist) == list:
+                if not artist:
+                    artist = None
+                elif len(artist) == 1:
+                    artist = artist[0]
+                else:
+                    artist = ', '.join(artist[:-1]) + ' et ' + artist[-1]
+        else:
+            # Heuristic for streams where the artist is inside the title
+            splitted = title.split(' - ', maxsplit=1)
+
+            if len(splitted) == 2:
+                artist = splitted[0]
+                title = splitted[1]
+            else:
+                artist = None
+
+        if artist is None:
+            artist = 'Unknown artist'
+
+        if len(artist) > artist_max_len:
+            artist = f'{artist[:artist_max_len - 1]}…'
+
+        if len(title) > title_max_len:
+            title = f'{title[:title_max_len - 1]}…'
+
+        print(f'{icons[status]} {artist} — {title}', flush=True)
+    else:
+        print('', flush=True)
+
+
+def play_pause(watcher):
+    """Toggle the current playing state between playing and paused."""
+    player = watcher.get_active_player()
+
+    if player:
+        player.interface.PlayPause()
+
+
+def next(watcher):
+    """Go to the next track."""
+    player = watcher.get_active_player()
+
+    if player:
+        player.interface.Next()
+
+
+def prev(watcher):
+    """Go to the previous track."""
+    player = watcher.get_active_player()
+
+    if player:
+        player.interface.Previous()
+
+
+if __name__ == '__main__':
+    from gi.repository import GLib
+    import sys
+
+    if len(sys.argv) <= 1:
+        action = 'status'
+        print(f"""No action specified, assuming “status”.
+Specify one of the following actions as argument:
+
+  available     {available.__doc__}
+  status        {status.__doc__}
+  play-pause    {play_pause.__doc__}
+  next          {next.__doc__}
+  prev          {prev.__doc__}
+""")
+    else:
+        action = sys.argv[1]
+
+    if action == 'available':
+        bus = pydbus.SessionBus()
+        watcher = PlayerWatcher(bus)
+        available(watcher)
+    elif action == 'status':
+        bus = pydbus.SessionBus()
+        watcher = PlayerWatcher(bus, status)
+        loop = GLib.MainLoop()
+
+        try:
+            loop.run()
+        except KeyboardInterrupt:
+            pass
+    elif action == 'play-pause':
+        bus = pydbus.SessionBus()
+        watcher = PlayerWatcher(bus)
+        play_pause(watcher)
+    elif action == 'next':
+        bus = pydbus.SessionBus()
+        watcher = PlayerWatcher(bus)
+        next(watcher)
+    elif action == 'prev':
+        bus = pydbus.SessionBus()
+        watcher = PlayerWatcher(bus)
+        prev(watcher)
+    else:
+        print(f'Unknown action {action}')
+        sys.exit(1)

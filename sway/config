@@ -14,25 +14,28 @@
 
 corner_radius 20
 # blur on
-blur on
-# blur_passes
-blur_radius 1
+blur enable
+blur_passes 1
+blur_radius 8
 
 shadows enable
 shadows_on_csd enable
-shadow_color #9fcc2e
+
 # client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
-shadow_blur_radius 10
+
+# shadow_blur_radius 10
 default_dim_inactive 0.1
 for_window [app_id="vivaldi-stable"] dim_inactive 0.00
+for_window [app_id="firefoxdeveloperedition"] dim_inactive 0.00
 layer_effects "waybar" blur enable; shadows enable; corner_radius 6
 
 titlebar_separator disable
 
 # set $opacity 0.7
-set $opacity 1.0
+set $opacity 0.7
 for_window [app_id=".*"] opacity $opacity
-# for_window [app_id="vivaldi-stable"] opacity 0.8
+# for_window [app_id="okular"] opacity 0.6
+
 
 
 
@@ -41,27 +44,42 @@ for_window [app_id=".*"] opacity $opacity
 exec_always "export WLR_NO_HARDWARE_CURSORS=1"
 exec_always "export QT_QPA_PLATFORM=wayland;xcb"
 exec_always "export QT_QPA_PLATFORMTHEME=qt5ct"
+exec_always "export QT_STYLE_OVERRIDE=kvantum"
 exec_always 'export MOZ_ENABLE_WAYLAND=1'
-exec --no-startup-id "export GTK_THEME=Nordic-bluish-accent"
-exec --no-startup-id "export GTK4_THEME=Nordic-bluish-accent"
+exec_always "export BROWSER=/usr/bin/firefox-developer-edition"
+exec 'export GTK_USE_PORTAL=0'
+exec --no-startup-id "export GTK_THEME=Dracula"
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Nordic-bluish-accent"'
-exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Nordic-bluish-accent"'
+exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Dracula"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Fantasma-GTK"'
-exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "vimix-dark-laptop-beryl"'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Midnight-Green"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Midnight-Green"'
-exec_always 'gsettings set org.gnome.desktop.interface cursor-theme "Qogir'
+exec_always 'gsettings set org.gnome.desktop.interface cursor-theme Dracula-cursors'
 exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
+exec_always 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 # exec --no-startup-id "~/bin/laptop.sh"
 # exec_always setxkbmap -option parens:swap_brackets
+# Systemd services
+exec "systemctl start bluetooth"
+exec "systemctl start --user emacs"
+exec "systemctl start --user cronie"
+exec "systemctl start --user spotify-listener"
+exec "systemctl start --user onedrive"
+exec "systemctl start --user mopidy"
+exec "systemctl start --user 5e-api"
+
+
+
 input * {
-xkb_options parens:swap_brackets
+      xkb_options parens:swap_brackets
 }
 
-output eDP-1 pos 0 0 res 1920x1200
-output HDMI-A-1 pos 1920 0 res 3840x2160
-exec_always xrandr --output eDP-1 --primary
+output HDMI-A-1 pos 0 0 res 1920x1080
+# output eDP-1 pos 3840 1  res 1920x1200
+exec_always xrandr --output HDMI-A-1 --primary
 # workspace 1 output HDMI-A-1
 
 
@@ -73,15 +91,15 @@ set $refresh_i3status killall -SIGUSR1 i3status
 # new_window pixel 0
 # default_border pixel 0
 # new_float none
-default_floating_border none
+# default_floating_none border
+default_border pixel 2
 # default_border pixel 1
-default_border pixel 1
 # TODO Borders
 
 # border pixel 5
-gaps inner 10
-gaps outer 5
-# smart_borders on
+gaps inner 4
+gaps outer 1
+smart_borders on
 smart_gaps on
 
 # # class                 border  bground text    indicator child_border
@@ -98,7 +116,7 @@ font pango:monospace 8
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 
-font pango:DejaVu Sans Mono 8
+font pango:Roboto Slab 8
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -125,6 +143,10 @@ bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl sset 5%+
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl sset 5%-
 
 
+bindsym XF86Go  exec ~/bin/headphones speak #F10
+bindsym Cancel exec ~/bin/headphones # F11
+
+
 
 # Screenshots
 # bindsym Print exec --no-startup-id i3-maim -s
@@ -135,14 +157,14 @@ floating_modifier $mod
 # start a terminal
 # bindsym $mod+Return exec tilix
 # bindsym $mod+Return exec 'env SHELL=/bin/xonsh terminology'
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec wezterm
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # Start dmenu (a program launcher)
 bindsym ctrl+shift+space exec ulauncher-toggle
-# bindsym $mod+d exec "synapse -s & --display=:0 "
+bindsym $mod+shift+d exec "synapse -s"
 bindsym $mod+d exec "kupfer"
 # bindsym $mod+d exec "ulauncher-toggle"
 bindsym Mod1+Shift+Space exec 'albert toggle'
@@ -155,6 +177,7 @@ bindsym Mod1+Shift+Space exec 'albert toggle'
 bindsym $mod+m move workspace to output left
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
+bindsym $mod+grave workspace back_and_forth
 
 bindgesture swipe:right workspace prev
 bindgesture swipe:left workspace next
@@ -219,8 +242,8 @@ bindsym $mod+a focus parent
 set $ws1 "1:CS"
 set $ws2 "2:Math"
 set $ws3 "3:URAP"
-set $ws4 "4:Apps"
-set $ws5 "5:D&D"
+set $ws4 "4:SciFi"
+set $ws5 "5:Cypher"
 set $ws6 "6:Research"
 set $ws7 "7:Writing"
 set $ws8 "8:Reading"
@@ -297,7 +320,7 @@ bindsym $mod+r mode "resize"
 
 # Make mouse work, hopefully
 # exec_always xrandr --output $(xrandr | grep -m 1 XWAYLAND | awk '{print $1;}') --primary
-exec_always xrandr --output eDP-1 --primary
+exec_always xrandr --output HDMI-A-1 --primary
 
 
 
@@ -308,40 +331,33 @@ exec_always --no-startup-id "~/bin/autosuspend"
 exec_always --no-startup-id "sudo updatedb"
 exec_always --no-startup-id "~/bin/laptop.sh"
 # output "*" bg "/home/vivien/backgrounds/nebulae-sky" fill
-output "*" bg "/home/vivien/backgrounds/panopticon.jpg" fill
+# output "*" bg "/home/vivien/backgrounds/panopticon.jpg" fill
+output "*" bg "/home/vivien/backgrounds/dracula-wallpaper/second-collection/waves/dracula-waves-44475a.png" fill
 # output "*" bg "/home/vivien/backgrounds/squid" fill
 exec --no-startup-id nm-applet
 exec volctl
 exec_always --no-startup-id autotiling-rs
 exec libinput-gestures
-exec_always "ulauncher --no-window-shadow --hide-window"
+# exec_always "ulauncher --no-window-shadow --hide-window"
 # exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
 # exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
 # exec 'env SHELL=/bin/xonsh terminology'
-exec terminator
+exec wezterm
 exec "killall -9 emacs"
 exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
 # exec_always --no-startup-id "cd /home/vivien/apps/5e-srd-api && docker compose up --restart always" # Run the 5e API on startup
-
-# Systemd services
-exec "systemctl start bluetooth"
-exec "systemctl start --user emacs"
-exec "systemctl start --user cronie"
-exec "systemctl start --user spotify-listener"
-exec "systemctl start --user onedrive"
-exec "systemctl start --user mopidy"
-exec "systemctl start --user 5e-api"
 
 
 exec "synapse -s &"
 
 # Window focus
 #bindsym $mod+v [class="Vivaldi-stable"] focus
-bindsym $mod+Shift+v exec nextmatch Vivaldi
-bindsym $mod+v exec "~/bin/vivaldi"
-bindsym $mod+Shift+e exec nextmatch Emacs
+# bindsym $mod+Shift+v exec nextmatch Firefox
+bindsym $mod+v exec firefox-developer-edition
 bindsym $mod+e exec emacsclient -nc --eval "(progn (doom/switch-to-scratch-buffer) (consult-buffer))"
+# bindsym $mod+e exec ~/bin/eclient
 bindsym $mod+x exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
+bindsym $mod+Shift+e exec emacsclient  -nc --eval "(deft-new-file)"
 # bindsym $mod+\/ exec com.github.alainm23.planner.quick-add
 # bindsym $mod+n exec nextmatch Org.gnome.Nautilus
 # bindsym $mod+Shift+n exec emacsclient -nc --eval '(ranger "/home/rohan/drive/School")'
@@ -358,20 +374,20 @@ bindsym $mod+minus scratchpad show
 
 #bindsym $mod+0 [class="Mailspring"] scratchpad show
 # bindsym Mod1+3 [class="Tilix"] scratchpad show
-bindsym Mod1+3 [app_id="terminator"] scratchpad show
+bindsym Mod1+3 [app_id="wezterm"] scratchpad show
 
 # bindsym $mod+3 [class="Tilix"] scratchpad show
 bindsym $mod+Shift+s [class="Spotify"] scratchpad show
-bindsym $mod+Shift+d [title="Discord"] scratchpad show
+# bindsym $mod+Shift+d [title="Discord"] scratchpad show
 bindsym $mod+n [class="Emacs"] scratchpad show
-bindsym $mod+b [class="Vivaldi-stable"] scratchpad show
+bindsym $mod+b [class="Firefox"] scratchpad show
 # bindsym $mod+Shift+d [class="Vivaldi-stable" instance="discord.com__login"] scratchpad show
 
 
 for_window [instance="spotify"] sticky enable
 for_window [title="fzf-switcher"] floating enable
 for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] floating enable
-for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] sticky enable
+# for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] sticky enable
 
 # SwayFX Aesthetics
 
@@ -443,17 +459,17 @@ for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 for_window [window_role="About"] floating enable
 for_window [title="File Operation Progress"] floating enable, border pixel 3, sticky enable, resize set width 40 ppt height 30 ppt
-for_window [app_id="firefox" title="^Library$"] floating enable, border pixel 1, sticky enable, resize set width 40 ppt height 30 ppt
+for_window [app_id="firefoxdeveloperedition" title="^Library$"] floating enable, border pixel 1, sticky enable, resize set width 40 ppt height 30 ppt
 for_window [app_id="floating_shell_portrait"] floating enable, border pixel 1, sticky enable, resize set width 30 ppt height 40 ppt
 for_window [title="Picture in picture"] floating enable, sticky enable
 # for_window [title="nmtui"] floating enable,  resize set width 50 ppt height 70 ppt
 # for_window [title="htop"] floating enable, resize set width 50 ppt height 70 ppt
 for_window [app_id="xsensors"] floating enable
 for_window [title="Save File"] floating enable
-for_window [app_id="firefox" title="Firefox — Sharing Indicator"] kill
+for_window [app_id="firefoxdeveloperedition" title="Firefox — Sharing Indicator"] kill
 
 # Inhibit idle
-for_window [app_id="firefox"] inhibit_idle fullscreen
+for_window [app_id="firefoxdeveloperedition"] inhibit_idle fullscreen
 for_window [app_id="Chromium"] inhibit_idle fullscreen
 
 
@@ -461,7 +477,8 @@ for_window [app_id="Chromium"] inhibit_idle fullscreen
 # class                 border  bground text    indicator child_border
 
 # TMA
-client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
+# shadow_color #9fcc2e
+# client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
 
 # Nano
 # client.focused            #e1bee7 #e1bee7 #eceff4 #e1bee7   #e1bee7
@@ -472,6 +489,16 @@ client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
 # client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
+# Dracula
+# shadow_color #50fa7b
+shadow_color #bd93f9
+client.focused  #50fa7b #50fa7b #f8f8f2  #50fa7b #50fa7b
+
+# bd = (11*16+13)
+# 93 = (9*16+3)
+# f9=(15*16+9)
+
+
 #
 # Status Bar:
 #
@@ -479,7 +506,8 @@ client.background       #F8F8F2
 bar {
     swaybar_command waybar
     position top
-    mode hide
+    # mode show
+    # mode hide
     modifier Mod4
 }
 
@@ -514,6 +542,7 @@ bar {
 # for_window [class="(?i)*nextcloud*"] floating disable
 # for_window [class="plasmashell" window_type="notification"] border none, move right 700px, move down 450px
 # no_focus [class="plasmashell" window_type="notification"]
+for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] floating enable
 # for_window [title="Desktop — Plasma"] kill; floating enable; border none
 
 ## Audio

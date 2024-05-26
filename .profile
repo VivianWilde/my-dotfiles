@@ -29,7 +29,7 @@ fi
 export EDITOR="/home/rohan/bin/eclient"
 export SUDO_EDITOR="emacsclient -c"
 export VISUAL="/home/rohan/bin/eclient"
-export BROWSER='/usr/bin/vivaldi-stable'
+export BROWSER='/usr/bin/firefox'
 export TERMINAL='tilix'
 
 xmodmap -e "keycode 35=parenright"

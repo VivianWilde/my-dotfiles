@@ -6,4 +6,4 @@ tmp/
 canvas-emacs
 
 doom/custom.el
-doom/local-packages/doom-nano-themes
+doom/local-packages

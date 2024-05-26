@@ -9,50 +9,99 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-# Environment Vars
-#
-# Gnome/GUI Settings
-exec-always "export QT_QPA_PLATFORMTHEME=qt5ct"
-exec --no-startup-id "export GTK_THEME=vimix-dark-laptop-beryl"
-exec --no-startup-id "export GTK4_THEME=Nordic-bluish-accent"
-exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Nordic-bluish-accent"'
-exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "vimix-dark-laptop-beryl"'
-exec_always 'gsettings set org.gnome.desktop.interface cursor-theme "Qogir'
-exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
 
-# Xrandr
-exec --no-startup-id "~/bin/laptop.sh"
+# client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
+
+# shadow_blur_radius 10
+# default_dim_inactive 0.1
+# for_window [app_id="vivaldi-stable"] dim_inactive 0.00
+# for_window [app_id="firefoxdeveloperedition"] dim_inactive 0.00
+# layer_effects "waybar" blur enable; shadows enable; corner_radius 6
+
+# titlebar_separator disable
+
+# set $opacity 0.7
+set $opacity 0.7
+# for_window [class=".*"] opacity $opacity
+# for_window [app_id="okular"] opacity 0.6
 
 
+
+
+
+# Important startup stuff
+# exec_always "export WLR_NO_HARDWARE_CURSORS=1"
+# exec_always "export QT_QPA_PLATFORM=wayland;xcb"
+exec_always "export QT_QPA_PLATFORMTHEME=qt5ct"
+exec_always "export QT_STYLE_OVERRIDE=kvantum"
+# exec_always 'export MOZ_ENABLE_WAYLAND=1'
+exec_always "export BROWSER=/usr/bin/firefox-developer-edition"
+exec 'export GTK_USE_PORTAL=0'
+# exec --no-startup-id "export GTK_THEME=Dracula"
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Nordic-bluish-accent"'
-# exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Fantasma-GTK"'
-# exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"'
+# exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Dracula"'
+exec --no-startup-id "export GTK_THEME=Ant-Bloody"
+exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Ant-Bloody"'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Ant-Bloody"'
+# exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Midnight-Green"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Midnight-Green"'
+exec_always 'gsettings set org.gnome.desktop.interface cursor-theme Dracula-cursors'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
+exec_always 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
+# exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+# exec --no-startup-id "~/bin/laptop.sh"
+exec_always setxkbmap -option parens:swap_brackets -option terminate:ctrl_alt_bksp
+# exec --no-startup-id xcape -e 'Caps_Lock=Escape'
+# exec --no-startup-id xmodmap ~/.xmodmap
+# ctrl:swapcaps
+# -option caps:ctrl_modifier -option terminate:ctrl_alt_bksp
+# exec_always xcape -e 'Ctrl_L=Escape'
+# -option ctrl:swapcaps
+exec_always picom -cb --config ~/.config/picom/picom.conf
+
+# Systemd services
+exec "systemctl start bluetooth"
+exec "systemctl start --user emacs"
+exec "systemctl start --user cronie"
+exec "systemctl start --user spotify-listener"
+exec "systemctl start --user onedrive"
+exec "systemctl start --user mopidy"
+exec "systemctl start --user 5e-api"
+
+
+
+# input * {
+#       xkb_options parens:swap_brackets
+# }
+
+# output HDMI-A-1 pos 0 0 res 1920x1080
+# output eDP-1 pos 3840 1  res 1920x1200
+# exec_always xrandr --output HDMI-A-1 --primary
+# workspace 1 output HDMI-A-1
+
 
 # -option compose:rctrl
 set $mod Mod4
 set $refresh_i3status killall -SIGUSR1 i3status
 
-exec_always setxkbmap -option parens:swap_brackets
-
 # Gap setup
 # new_window pixel 0
 # default_border pixel 0
 # new_float none
-default_floating_border none
+# default_floating_none border
+default_border pixel 2
 # default_border pixel 1
-default_border pixel 1
-
+# TODO Borders
 
 # border pixel 5
-gaps inner 10
-gaps outer 5
-# smart_borders on
-smart_gaps on
+gaps inner 4
+gaps outer 3
+smart_borders on
+smart_gaps off
 
 # # class                 border  bground text    indicator child_border
-# client.focused #859900 #987ac4 ##6c71c4
+# client.focused #85b300 #987ac4 #6c71c4
 
 # # class                 border  bground text    indicator child_border
 # # client.focused #0088CC #0088CC #ffffff #dddddd
@@ -65,7 +114,7 @@ font pango:monospace 8
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 
-font pango:DejaVu Sans Mono 8
+font pango:Roboto Slab 8
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -92,27 +141,33 @@ bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl sset 5%+
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl sset 5%-
 
 
+bindsym XF86Go  exec ~/bin/headphones speak #F10
+bindsym Cancel exec ~/bin/headphones # F11
+
+
 
 # Screenshots
-bindsym Print exec --no-startup-id i3-maim -s
+# bindsym Print exec --no-startup-id i3-maim -s
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminator
+# bindsym $mod+Return exec tilix
+# bindsym $mod+Return exec 'env SHELL=/bin/xonsh terminology'
+bindsym $mod+Return exec wezterm
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # Start dmenu (a program launcher)
 bindsym ctrl+shift+space exec ulauncher-toggle
-# bindsym $mod+d exec "synapse -s & --display=:0 "
+# bindsym $mod+shift+d exec "synapse -s"
 bindsym $mod+d exec "kupfer"
 # bindsym $mod+d exec "ulauncher-toggle"
-bindsym Mod1+Shift+Space exec 'albert toggle'
- # unbind control+space
- # bindsym control+space exec albert toggle
+bindsym Mod1+Shift+space exec 'albert toggle'
+# unbind control+space
+# bindsym $mod+space exec ulauncher-toggle
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed $mod+d exec --no-startup-id i3-dmenu-desktop
@@ -120,6 +175,11 @@ bindsym Mod1+Shift+Space exec 'albert toggle'
 bindsym $mod+m move workspace to output left
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
+bindsym $mod+grave workspace back_and_forth
+
+# bindgesture swipe:right workspace prev
+# bindgesture swipe:left workspace next
+
 
 
 
@@ -169,7 +229,7 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 # bindsym $mod+space focus mode_toggle
 
-# focus the parent container
+#  focus the parent container
 bindsym $mod+a focus parent
 
 # focus the child container
@@ -177,17 +237,16 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:CS"
-set $ws2 "2:Math"
-set $ws3 "3:URAP"
-set $ws4 "4:Apps"
-set $ws5 "5:D&D"
+set $ws1 "1:LBNL"
+set $ws2 "2:Lang"
+set $ws3 "3:Writing"
+set $ws4 "4:PCS"
+set $ws5 "5:RPG"
 set $ws6 "6:Research"
-set $ws7 "7:Writing"
-set $ws8 "8:Reading"
-set $ws9 "9:Misc"
-set $ws10 "10:Freedom"
-# Free Choice
+set $ws7 "7:Chores"
+set $ws8 "8:???"
+set $ws9 "9:???"
+set $ws10 "10:???"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -256,45 +315,49 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+
+# Make mouse work, hopefully
+# exec_always xrandr --output $(xrandr | grep -m 1 XWAYLAND | awk '{print $1;}') --primary
+# exec_always xrandr --output HDMI-A-1 --primary
+
+
+
 # Autostarts
-exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
-# exec --no-startup-id "export GTK_THEME=Nordic"
-# exec --no-startup-id "export GTK4_THEME=Nordic"
+# exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
 exec --no-startup-id redshift-gtk
-exec_always --no-startup-id "~/bin/autosuspend"
+exec --no-startup-id "~/bin/autosuspend"
+# exec_always --no-startup-id "sudo updatedb"
 exec_always --no-startup-id "~/bin/laptop.sh"
-exec_always --no-startup-id "feh --bg-scale /home/vivien/backgrounds/panopticon.jpg"
+# output "*" bg "/home/vivien/backgrounds/nebulae-sky" fill
+# output "*" bg "/home/vivien/backgrounds/panopticon.jpg" fill
+# output "*" bg "/home/vivien/backgrounds/dracula-wallpaper/second-collection/waves/dracula-waves-44475a.png" fill
+exec --no-startup-id "feh --bg-scale /home/vivien/backgrounds/dracula-wallpaper/second-collection/waves/dracula-waves-44475a.png"
+# output "*" bg "/home/vivien/backgrounds/squid" fill
 exec --no-startup-id nm-applet
 exec volctl
 exec_always --no-startup-id autotiling-rs
-exec libinput-gestures
-# exec "ulauncher --no-window-shadow --hide-window"
+exec_always --no-startup-id autotiling
+exec_always libinput-gestures -c ~/dotfiles/libinput-gestures.conf
+# exec_always "ulauncher --no-window-shadow --hide-window"
 # exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
-exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
-exec terminator
+# exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
+# exec 'env SHELL=/bin/xonsh terminology'
+exec wezterm
 exec "killall -9 emacs"
 exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
-# exec "cd ~/apps/5e-srd-api && docker-compose up --build" # Run the 5e API on startup
-
-# Systemd services
-exec "systemctl start bluetooth"
-exec "systemctl start --user emacs"
-exec "systemctl start --user cronie"
-exec "systemctl start --user spotify-listener"
-exec "systemctl start --user onedrive"
-exec "systemctl start --user mopidy"
-exec "systemctl start --user 5e-api"
+# exec_always --no-startup-id "cd /home/vivien/apps/5e-srd-api && docker compose up --restart always" # Run the 5e API on startup
 
 
-# exec-always "synapse -s &"
+exec "synapse -s &"
 
 # Window focus
 #bindsym $mod+v [class="Vivaldi-stable"] focus
-bindsym $mod+Shift+v exec nextmatch Vivaldi
-bindsym $mod+v exec "~/bin/vivaldi"
-bindsym $mod+Shift+e exec nextmatch Emacs
+# bindsym $mod+Shift+v exec nextmatch Firefox
+bindsym $mod+v exec firefox-developer-edition
 bindsym $mod+e exec emacsclient -nc --eval "(progn (doom/switch-to-scratch-buffer) (consult-buffer))"
+# bindsym $mod+e exec ~/bin/eclient
 bindsym $mod+x exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
+bindsym $mod+Shift+e exec emacsclient  -nc --eval "(deft-new-file)"
 # bindsym $mod+\/ exec com.github.alainm23.planner.quick-add
 # bindsym $mod+n exec nextmatch Org.gnome.Nautilus
 # bindsym $mod+Shift+n exec emacsclient -nc --eval '(ranger "/home/rohan/drive/School")'
@@ -310,21 +373,30 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
 #bindsym $mod+0 [class="Mailspring"] scratchpad show
-bindsym Mod1+3 [class="Terminator"] scratchpad show
+# bindsym Mod1+3 [class="Tilix"] scratchpad show
+bindsym Mod1+3 [class="org.wezfurlong.wezterm"] scratchpad show
+
+# bindsym $mod+3 [class="Tilix"] scratchpad show
 bindsym $mod+Shift+s [class="Spotify"] scratchpad show
-bindsym $mod+Shift+d [title="Discord"] scratchpad show
+# bindsym $mod+Shift+d [title="Discord"] scratchpad show
 bindsym $mod+n [class="Emacs"] scratchpad show
-bindsym $mod+b [class="Vivaldi-stable"] scratchpad show
+bindsym $mod+b [class="Firefox"] scratchpad show
 # bindsym $mod+Shift+d [class="Vivaldi-stable" instance="discord.com__login"] scratchpad show
 
 
 for_window [instance="spotify"] sticky enable
+for_window [title="fzf-switcher"] floating enable
+for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] floating enable
+# for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] sticky enable
+
+# SwayFX Aesthetics
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 # exec_always --no-startup-id ~/apps/i3scripts/bar.sh
 
 # Rules, because teams sucks
-for_window [class="^.*"] border pixel 4
+# for_window [class="^.*"] border pixel 4
 for_window [title="Microsoft Teams Notification"] floating enable
 no_focus [title="Microsoft Teams Notification"]
 for_window [class="Pavucontrol"] floating enable
@@ -333,37 +405,155 @@ for_window [floating] border pixel 0
 # for window [title="Grade 9A"] floating enable
 
 
-# From sway
+# From default sway
+# exec swayidle -w\
+#     timeout 1070 'swaylock -f -C ~/.config/swaylock/config'\
+#     timeout 770 'swaymsg "output * power off"' \
+#     resume 'swaymsg "output * power on"' \
+#     before-sleep 'swaylock -C ~/.config/swaylock/config'
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+# exec --no-startup-id xss-lock --transfer-sleep-lock -- 3lock --nofork
+
+## Lock Screen
+    # bindsym $mod+f1 exec ~/.config/sway/scripts/lockman.sh
+
+
+    # bindsym print exec '/usr/share/swayfx/scripts/grimshot --notify save area'
+    bindsym Print exec --no-startup-id "flameshot gui"
+
+    # bindsym Shift+print exec ~/.config/sway/scripts/screenshot.sh
+
+# set $laptop eDP-1
+# bindswitch --reload --locked lid:on output $laptop disable
+# bindswitch --reload --locked lid:off output $laptop enable
+
+# exec_always ~/.config/sway/scripts/clamshell.sh
+## Autostarts
+# Auth with polkit-gnome:
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# Desktop notifications
+exec mako
+
+# Network Applet
 exec nm-applet --indicator
+
+# GTK3 applications take a long time to start
+# exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+# exec hash dbus-update-activation-environment 2>/dev/null && \
+#      dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+
+# Welcome App
+# exec dex -a -s /etc/xdg/autostart/:~/.config/autostart/
+
+# Sway Fader
+# exec python3 ~/.config/sway/scripts/swayfader.py
+
+
+exec "killall teams"
+exec "killall xfce4-notifyd"
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [window_role="About"] floating enable
+for_window [title="File Operation Progress"] floating enable, border pixel 3, sticky enable, resize set width 40 ppt height 30 ppt
+for_window [class="firefoxdeveloperedition" title="^Library$"] floating enable, border pixel 1, sticky enable, resize set width 40 ppt height 30 ppt
+for_window [class="floating_shell_portrait"] floating enable, border pixel 1, sticky enable, resize set width 30 ppt height 40 ppt
+for_window [title="Picture in picture"] floating enable, sticky enable
+# for_window [title="nmtui"] floating enable,  resize set width 50 ppt height 70 ppt
+# for_window [title="htop"] floating enable, resize set width 50 ppt height 70 ppt
+for_window [class="xsensors"] floating enable
+for_window [title="Save File"] floating enable
+for_window [class="firefoxdeveloperedition" title="Firefox — Sharing Indicator"] kill
+
+# Inhibit idle
+for_window [class="firefoxdeveloperedition"] inhibit_idle fullscreen
+for_window [class="Chromium"] inhibit_idle fullscreen
 
 
 ## New Coloring (Endeavor)
 # class                 border  bground text    indicator child_border
 
 # TMA
-client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
+# shadow_color #9fcc2e
+# client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
 
 # Nano
-# client.focused            #e1bee7 #e1bee7 #eceff4 #e1bee7   #e1bee7
+client.focused            #e1bee7 #e1bee7 #eceff4 #e1bee7   #e1bee7
 
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.background       #F8F8F2
+# client.focused  #50fa7b #50fa7b #f8f8f2  #50fa7b #50fa7b
+
+# Dracula
+# shadow_color #50fa7b
+# shadow_color #bd93f9
+
+# class                 border  bground text    indicator child_border
+# client.focused  #50fa7b #50fa7b #f8f8f2  #50fa7b #50fa7b
+# client.focused  #bd93f9 #bd93f9 #f8f8f2  #bd93f9 #bd93f9
+# client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
 # client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
 # client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+# client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
 # client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-client.background       #F8F8F2
+
+# client.background       #F8F8F2
+
+# Henna
+client.focused #1abc9c #1abc9c #f8f8f0 #1abc9c #1abc9c
 
 
-
-
-exec_always '/home/rohan/.config/polybar/launch.sh' #TODO i3bar
+#
+# Status Bar:
+#
 bar {
-       status_command swaybar
+       status_command i3blocks
+       i3bar_command i3bar --transparency
+	   font pango:RobotoSlab, FontAwesome5Free, FontAwesome5Brands, SymbolsNerdFont 10
        position top
-       # height 25
+       height 40
        mode hide
        modifier Mod4
+       tray_padding 10px
+       # separator_symbol "〉〉〉"
+       separator_symbol ""
+  colors {
+    background #282A36b3
+    # statusline #F8F8F2
+    statusline #f8f8f0
+    separator #1abc9c
+    # separator  #bd93f9
+
+    # focused_workspace  #44475Ab3 #bd93f9 #F8F8F2
+    focused_workspace  #44475Ab3 #1abc9c #F8F8F2
+    active_workspace   #282A36b3 #44475Ab3 #F8F8F2
+    inactive_workspace #282A36b3 #282A36b3 #BFBFBF
+    urgent_workspace   #FF5555 #FF5555 #F8F8F2
+    binding_mode       #FF5555 #FF5555 #F8F8F2
+  }
 }
+
+#
+# Keybindings List
+#
+    # bindsym $mod+t exec xed ~/.config/sway/cheatsheet
+
+
+#bar {
+#        status_command i3status
+#        position top
+#        height 25
+#        mode dock
+#}
 
 # KDE config
 # Plasma compatibility improvements
@@ -383,10 +573,15 @@ bar {
 # for_window [class="(?i)*nextcloud*"] floating disable
 # for_window [class="plasmashell" window_type="notification"] border none, move right 700px, move down 450px
 # no_focus [class="plasmashell" window_type="notification"]
-# for_window [title="Desktop — Plasma"] kill; floating enable; border none
+for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] floating enable
+for_window [class="Kupfer.py"] floating enable
+for_window [class="Kupfer.py"] move position center
 
 ## Audio
 # bindsym XF86AudioRaiseVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "increase_volume"
 # bindsym XF86AudioLowerVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "decrease_volume"
 # bindsym XF86AudioMute exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mute"
 # bindsym XF86AudioMicMute exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mic_mute"
+# exec_always setxkbmap -option parens:swap_brackets -option caps:ctrl_modifier -option terminate:ctrl_alt_bksp
+# exec_always xcape -e 'Caps_Lock=Escape'
+# exec_always xmodmap ~/.xmodmap

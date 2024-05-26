@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: cypher stats
+# key: trigger
+# --
+**** Cypher Stats
+***** Level
+***** Description
+***** Motive
+***** Environment
+***** Health
+***** Damage Inflicted
+***** Armor
+***** Movement
+***** Modifications
+***** Combat
+***** Special Abilities
+Used as intrusions, probably. I love this mechanic.
+***** Intrusions

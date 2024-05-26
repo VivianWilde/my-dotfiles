@@ -14,7 +14,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export ZSH="$HOME/.oh-my-zsh"
 
 export PATH="/home/vivien/go/bin:$PATH"
-export PATH="/home/rohan/.local/bin:$PATH"
+export PATH="/home/vivien/.local/bin:$PATH"
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH="$HOME/.pub-cache/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -28,6 +28,7 @@ export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
 export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="$HOME/.idris2/bin:$PATH"
 export PATH="$HOME/.yarn/bin:$PATH"
+export PATH="$HOME/drive/work/langs/roc/roc-nightly:$PATH"
 # export PATH="$HOME/miniconda3/bin:$PATH"  # commented out by conda initialize
 
 export WINEARCH="win64"
@@ -37,11 +38,11 @@ export WINEPREFIX="$HOME/.wine"
 
 export MANPATH="$HOME/anaconda3/share/man:$HOME/funny-manpages:/usr/share/man:$MANPATH"
 # $EDITOR should open in terminal
-export BROWSER='/usr/bin/vivaldi-stable'
-export EDITOR="/home/rohan/bin/eclient"
+# export BROWSER='/usr/bin/firefox'
+export EDITOR="/home/vivien/bin/eclient"
 export SUDO_EDITOR="emacsclient -c"
 # $VISUAL opens in GUI with non-daemon as alternate
-export VISUAL="/home/rohan/bin/eclient"
+export VISUAL="/home/vivien/bin/eclient"
 export TERMINAL='tilix'
 export GRAVEYARD="$HOME/.local/share/Trash"
 export TEXT_AID_TOO_EDITOR="emacsclient -c"
@@ -55,12 +56,12 @@ export STK_CONFIG_DIR="$HOME/.config/stk-engine"
 
 # DESI ROOT
 export DESIROOT="$HOME/d/urap/data"
-export DESI_SPECTRO_REDUX="$HOME/mnt/spectro/redux"
+export DESI_SPECTRO_REDUX="$HOME/d/urap/data"
 export RR_TEMPLATE_DIR="$HOME/d/urap/libs/redrock/py/redrock/templates"
 
 
-#export PYTHONPATH="$HOME/.local/lib/python3.8/:/home/rohan/.local/lib/python3.8/site-packages"
-#export PYTHONHOME="$HOME/.local/lib/python3.8/:/home/rohan/.local/lib/python3.8/site-packages"
+#export PYTHONPATH="$HOME/.local/lib/python3.8/:/home/vivien/.local/lib/python3.8/site-packages"
+#export PYTHONHOME="$HOME/.local/lib/python3.8/:/home/vivien/.local/lib/python3.8/site-packages"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -199,6 +200,7 @@ alias killscreen="sudo brightnessctl s 0"
 alias screenup="sudo brightnessctl s 40"
 alias e=$EDITOR
 alias l="/usr/bin/less -r"
+alias newdoom="doom sync && systemctl restart --user emacs"
 alias enes="trans -s en -t es"
 alias esen="trans -s es -t en"
 alias clip="xclip -selection c"
@@ -377,60 +379,33 @@ export palantir=$(kdeconnect-cli -a --id-only|head -n 1)
 
 #source $HOME/.config/broot/launcher/bash/br
 
-# PATH="/home/rohan/perl5/bin${PATH:+:${PATH}}"; export PATH;
-# PERL5LIB="/home/rohan/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-# PERL_LOCAL_LIB_ROOT="/home/rohan/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-# PERL_MB_OPT="--install_base \"/home/rohan/perl5\""; export PERL_MB_OPT;
-# PERL_MM_OPT="INSTALL_BASE=/home/rohan/perl5"; export PERL_MM_OPT;
+# PATH="/home/vivien/perl5/bin${PATH:+:${PATH}}"; export PATH;
+# PERL5LIB="/home/vivien/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+# PERL_LOCAL_LIB_ROOT="/home/vivien/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+# PERL_MB_OPT="--install_base \"/home/vivien/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=/home/vivien/perl5"; export PERL_MM_OPT;
 
-chpwd()
-  case $PWD in
-    (*/cs170-fa23-coding/*) echo "activating conda.."
-                            conda activate cs170
-                            pip install -r requirements.txt
-                            jupyter notebook
-  esac
+# desidev () {
+#     # This is the install location of our desi software.
+#     # If you are not at NERSC, then change this to something
+#     # without "NERSC_HOST" in the name.
+#     desisoft="${HOME}/desi-libs"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
+#     # Set environment variables
+#     export CPATH=${desisoft}/include:${CPATH}
+#     export LIBRARY_PATH=${desisoft}/lib:${LIBRARY_PATH}
+#     export LD_LIBRARY_PATH=${desisoft}/lib:${LD_LIBRARY_PATH}
+#     export PYTHONPATH=${desisoft}/lib/python3.5/site-packages:${PYTHONPATH}
 
-__conda_setup="$('/home/vivien/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/vivien/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/vivien/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/vivien/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+#     # Special setup for redmonster
+#     red="${HOME}/desi-git/redmonster"
+#     export PYTHONPATH=${red}/python:${PYTHONPATH}
+#     export REDMONSTER_TEMPLATES_DIR=${red}/templates
 
-conda deactivate
-
-
-desidev () {
-    # This is the install location of our desi software.
-    # If you are not at NERSC, then change this to something
-    # without "NERSC_HOST" in the name.
-    desisoft="${HOME}/desi-libs"
-
-    # Set environment variables
-    export CPATH=${desisoft}/include:${CPATH}
-    export LIBRARY_PATH=${desisoft}/lib:${LIBRARY_PATH}
-    export LD_LIBRARY_PATH=${desisoft}/lib:${LD_LIBRARY_PATH}
-    export PYTHONPATH=${desisoft}/lib/python3.5/site-packages:${PYTHONPATH}
-
-    # Special setup for redmonster
-    red="${HOME}/desi-git/redmonster"
-    export PYTHONPATH=${red}/python:${PYTHONPATH}
-    export REDMONSTER_TEMPLATES_DIR=${red}/templates
-
-    # Choose what data files to use- these locations
-    # are for NERSC.
-    export DESI_ROOT=/project/projectdirs/desi
-    export DESIMODEL=${DESI_ROOT}/software/edison/desimodel/master
-    export DESI_BASIS_TEMPLATES=${DESI_ROOT}/spectro/templates/basis_templates/v2.2
-    export STD_TEMPLATES=${DESI_ROOT}/spectro/templates/star_templates/v1.1/star_templates_v1.1.fits
-}
+#     # Choose what data files to use- these locations
+#     # are for NERSC.
+#     export DESI_ROOT=/project/projectdirs/desi
+#     export DESIMODEL=${DESI_ROOT}/software/edison/desimodel/master
+#     export DESI_BASIS_TEMPLATES=${DESI_ROOT}/spectro/templates/basis_templates/v2.2
+#     export STD_TEMPLATES=${DESI_ROOT}/spectro/templates/star_templates/v1.1/star_templates_v1.1.fits
+# }

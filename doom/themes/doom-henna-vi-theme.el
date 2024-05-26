@@ -49,12 +49,11 @@ determine the exact padding."
 
   ;; name        default   256       16
   (
-   (bg-alt     '("#1B1F23" nil       nil            ))
-   (bg         '("#072017" nil       nil            ))
-   ;; (bg         '("#1f242e" nil       nil            ))
-   ;; (bg-alt     '("#1b1f23" nil       nil            ))
-
-   (base0      '("#10151a" "black"   "black"        ))
+   ;; (bg-alt     '("#1B1F23" nil       nil            ))
+   ;; (bg         '("#072017" nil       nil            ))
+   (bg         '("#1f242e" nil       nil            ))
+   (bg-alt     '("#1b1f23" nil       nil            ))
+(base0      '("#10151a" "black"   "black"        ))
    (base1      '("#181A1F" "#2e2e2e" "brightblack"  ))
    (base2      '("#1B1F23" "#262626" "brightblack"  ))
    (base3      '("#262D35" "#3f3f3f" "brightblack"  ))
@@ -66,7 +65,8 @@ determine the exact padding."
    (fg         '("#f8f8f0" "#bfbfbf" "brightwhite"  ))
    (fg-alt     '("#6B717D" "#979797" "white"        ))
    (grey       '("#737c8c"))
-   (red        '("#d08770" "#dd8844" "red"          ))
+   ;; (red        '("#" "#dd8844" "red"          )) ;; Used to be from Nano
+   (red        '("#e74c3c" "#ff6655" "red"          ))
    (green      '("#53df83" "#99bb66" "green"        ))
    (teal       '("#1abc9c" "#44b9b1" "brightgreen"  ))
    (blue       '("#56b5c2" "#51afef" "brightblue"   ))
@@ -86,7 +86,7 @@ determine the exact padding."
    ;; (green-dark green)
 
    ;; face categories -- required for all themes
-   (highlight green)
+   (highlight violet)
    (vertical-bar   (doom-darken base1 0.1))
    (selection      cyan)
    (builtin        teal)
@@ -117,7 +117,7 @@ determine the exact padding."
       (if (integerp doom-henna-vi-padded-modeline) doom-henna-vi-padded-modeline 4)))
 
 
-   (modeline-fg     fg)
+   (modelikkjj hne-fg     fg)
    (modeline-fg-alt base7)
    (modeline-bg
     (if -modeline-bright

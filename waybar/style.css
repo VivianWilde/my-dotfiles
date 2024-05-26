@@ -1,0 +1,267 @@
+/* =============================================================================
+ *
+ * Waybar configuration
+ *
+ * Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
+ *
+ * =========================================================================== */
+
+/* -----------------------------------------------------------------------------
+ * Keyframes
+ * -------------------------------------------------------------------------- */
+
+/*
+Arc-Dark Color Scheme
+*/
+/* @define-color highlight #12a394; */
+@define-color base1  #072017 ;
+
+
+/* @define-color foreground	#f8f8f2; */
+/* @define-color background	rgba(40, 42, 54, 0.5); */
+@define-color gray	#44475a;
+@define-color black #21222c;
+@define-color background-darker rgba(30, 31, 41, 230);
+@define-color background #282a36;
+@define-color selection #44475a;
+@define-color foreground #f8f8f2;
+@define-color comment #6272a4;
+@define-color cyan #8be9fd;
+@define-color green #50fa7b;
+@define-color orange #ffb86c;
+@define-color pink #ff79c6;
+@define-color purple #bd93f9;
+@define-color highlight @purple;
+@define-color red #ff5555;
+@define-color yellow #f1fa8c;
+@define-color white #ffffff;
+@define-color brred #ff6e6e;
+@define-color brgreen #69ff94;
+@define-color bryellow #ffffa5;
+@define-color brcyan #a4ffff;
+@define-color brblue #6272a4;
+@define-color brpurple #d6acff;
+@define-color brpink #ff92df;
+
+@define-color arch_blue #89b4fa;
+
+@define-color workspace_background	@background;
+@define-color workspace_button	@foreground;
+@define-color workspace_active	@black;
+@define-color workspace_active_background	@purple;
+@define-color workspace_urgent	@white;
+@define-color workspace_urgent_background	@brred;
+@define-color workspace_hover	@black;
+@define-color workspace_hover_background	@pink;
+@define-color critical	@red;
+@define-color warning	@yellow;
+
+
+
+
+@keyframes blink-warning {
+    70% {
+        color: white;
+    }
+
+    to {
+        color: white;
+        background-color: orange;
+    }
+}
+
+@keyframes blink-critical {
+    70% {
+      color: white;
+    }
+
+    to {
+        color: white;
+        background-color: red;
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Base styles
+ * -------------------------------------------------------------------------- */
+
+/* Reset all styles */
+* {
+    border: none;
+ 	border-radius: 26px;
+   /* border-radius: 0; */
+    min-height: 0;
+    margin: 1px;
+    padding: 0;
+}
+
+/* The whole bar */
+#waybar {
+    background: transparent;
+    color: #bebebe;
+    /* background-color: @base1; */
+    background-color:  alpha(@background, 0.6);
+    font-family: RobotoMono;
+    font-size: 14px;
+}
+
+/* Every modules */
+#battery,
+#clock,
+#backlight,
+#cpu,
+#custom-keyboard-layout,
+#memory,
+#mode,
+#custom-weather,
+#network,
+#pulseaudio,
+#temperature,
+#tray,
+#idle_inhibitor,
+#custom-PBPbattery {
+    padding:0.6rem 1.5rem;
+    margin: 1px 0px;
+}
+
+/* -----------------------------------------------------------------------------
+ * Modules styles
+ * -------------------------------------------------------------------------- */
+
+#battery {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery {
+    color: @green;
+    border-radius: 5px 0px 0px 5px;
+
+}
+
+#battery.discharging {
+    color: @foreground;
+}
+
+#battery.warning:not(.charging) {
+    color: @warning;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery.critical:not(.charging) {
+    background-color: @critical;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+
+
+
+
+#cpu.warning {
+    color: orange;
+}
+
+#cpu.critical {
+    color: red;
+}
+
+#memory {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#memory.warning {
+    color: orange;
+ }
+
+#memory.critical {
+    color: red;
+    animation-name: blink-critical;
+    animation-duration: 2s;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+#mode {
+    background: @highlight;
+    border-bottom: 3px transparent;
+    color:white;
+    margin-left: 5px;
+    padding: 7px;
+}
+
+#network.disconnected {
+    color: orange;
+}
+
+#pulseaudio {
+    padding-top:6px;
+}
+
+#pulseaudio.muted {
+    color: @highlight;
+}
+
+#temperature.critical {
+    color: red;
+}
+
+#window {
+    font-weight: bold;
+}
+
+#workspaces {
+    font-size:13px;
+}
+
+
+#clock {
+font-weight: bold;
+font-size: 16px;
+
+}
+
+
+#workspaces button {
+    border-bottom: 3px solid transparent;
+    margin-bottom: 0px;
+    padding:0px;
+}
+
+#workspaces button.focused {
+    border-bottom: 3px solid  @highlight;
+    margin-bottom: 1px;
+    padding-left:0;
+}
+
+#workspaces button.urgent {
+    border-color: #c9545d;
+    color: #c9545d;
+}
+
+#custom-power {
+    margin-left:15px;
+    margin-right:15px;
+    font-size:15px;
+}
+
+#custom-launcher {
+    font-size:15px;
+    margin-left:15px;
+    margin-right:10px;
+}
+
+#backlight.icon {
+    padding-right:1px;
+    font-size: 13px;
+}

@@ -65,7 +65,7 @@
 (package! dash)
 (package! s)
 (package! ht)
-(package! plz :recipe (:local-repo "~/.config/doom/local-packages/plz"))
+(package! plz :recipe (:local-repo "~/.config/doom/local-packages/plz" :build nil ))
 (package! esxml)
 
 ;;; Language Support
@@ -86,7 +86,7 @@
 ;; (package! tide)
 
 ;;;; Lisp/Scheme
-(package! geiser-guile)
+;;(package! geiser-guile)
 (package! sotlisp)
 (package! highlight-defined)
 (package! lisp-extra-font-lock)
@@ -99,7 +99,7 @@
 (package! pandoc)
 (package! ox-pandoc)
 (package! htmlize)
-(package! org-transclusion)
+;; (package! org-transclusion)
 ;;(package! fountain-mode)
 ;; (package! poet-theme)
 (package! afternoon-theme)
@@ -109,7 +109,7 @@
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
-(package! default-lang :recipe (:local-repo "~/experiments/elisp/default-lang") )
+;; (package! default-lang :recipe (:local-repo "~/experiments/elisp/default-lang"))
 ;; (package! ox-reveal)
 ;;(package! lsp-grammarly)
 ;; (package! ox-latex)
@@ -136,12 +136,15 @@
 (package! lentic)
 (package! symbol-overlay)
 (package! workgroups2)
+(package! bfs :recipe (:local-repo "~/.config/doom/local-packages/bfs" :build nil))
 
-(straight-use-package
- '(app-launcher :type git :host github :repo "SebastienWae/app-launcher"))
+;; (straight-use-package
+;; '(app-launcher :type git :host github :repo "SebastienWae/app-launcher"))
 
 ;;(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
 ;;;; Utilities
+;; (package! edit-server)
+(package! obsidian)
 (package! inherit-org :recipe (:host github :repo "chenyanming/inherit-org"))
 (package! tldr)
 ;; (package! hyperbole)
@@ -154,7 +157,7 @@
 ;;(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
 ;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
 ;; (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
-(package! brotab :recipe (:local-repo "~/experiments/elisp/brotab"))
+(package! brotab :recipe (:local-repo "~/experiments/elisp/brotab" :build nil))
 ;;(package! nov.el)
 ;; (package! tumblesocks)
 ;; (package! consult-spotify)
@@ -174,21 +177,42 @@
 ;; (package! nano-modeline)
 (package! doom-nano-modeline
   :recipe (:host github
-  :repo "ronisbr/doom-nano-modeline"))
+           :repo "ronisbr/doom-nano-modeline"))
+(package! book-mode :recipe (:host github :repo "rougier/book-mode"))
+
 
 
 
 ;;; D&D
 (package! org-d20)
-(package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd"))
-(package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api"))
+(package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd" :build nil))
+(package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api" :build nil))
 ;; (package! button-lock)
 (package! decide)
+(package! egme :recipe (:local-repo "~/.config/doom/local-packages/egme" :build t))
+
+;;; Fun
+(package! pacmacs)
 
 ;;; Helm
 ;;; Themes
 (package! autothemer)
 (package! TransSide :recipe (:type git :host github :repo "Harith163/TransSide-theme"))
+(package! synthwave :recipe (:type git :host github :repo "TroyFletcher/emacs-synthwave-theme"))
 (package! rainbow-mode)
-;; (package! poet)
+(package! poet)
 ;; (package! tron-legacy-theme)
+
+
+;; Esolangs
+;; (package! lolcode-mode)
+
+;; Terminal
+;; (package! eat)
+
+
+;; Notes
+;; (package! deft)
+;; Fun
+(package! fireplace)
+(package! dionysos)
