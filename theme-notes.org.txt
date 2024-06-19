@@ -10,3 +10,5 @@ Emacs: Nano-Dark
 Vivaldi: Nano Attempt
 Tilix: Nord
 BG: From https://github.com/dxnst/nord-backgrounds
+
+Really why was this a good idea
