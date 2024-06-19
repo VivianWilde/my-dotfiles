@@ -1,0 +1,42 @@
+[user]
+	name = Vi
+	email = vivien.goyal@gmail.com
+[credential]
+	helper = store
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[core]
+	excludesFile = /home/rohan/dotfiles/.gitignore
+	pager = delta
+[push]
+	default = simple
+	autoSetupRemote = true
+[init]
+	defaultBranch = main
+[sendpack]
+	sideband = false
+[pull]
+	rebase = false
+# [commit]
+# 	template
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+	syntax-theme=rosepinemoon
+
+
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+[commit]
+	template = /home/vivien/dotfiles/.gitmessage
+[github]
+	user = VivianWilde

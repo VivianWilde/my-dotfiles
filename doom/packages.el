@@ -65,7 +65,7 @@
 (package! dash)
 (package! s)
 (package! ht)
-(package! plz :recipe (:local-repo "~/.config/doom/local-packages/plz" :build nil ))
+(package! plz :recipe (:local-repo "~/.config/doom/local-packages/plz" :build t ))
 (package! esxml)
 
 ;;; Language Support
@@ -75,7 +75,7 @@
 ;;;; Misc
 ;; (package! bnf-mode)
 ;; (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
-(package! journalctl-mode)
+;; (package! journalctl-mode)
 ;; (package! xonsh-mode)
 ;;(package! spl :recipe (:local-repo "~/.config"))
 
@@ -91,7 +91,7 @@
 (package! highlight-defined)
 (package! lisp-extra-font-lock)
 (package! nameless)
-(package! litex-mode)
+;; (package! litex-mode)
 
 ;;; Prose/Org
 ;; (package! org-jira)
@@ -101,7 +101,7 @@
 (package! htmlize)
 ;; (package! org-transclusion)
 ;;(package! fountain-mode)
-;; (package! poet-theme)
+(package! poet-theme)
 (package! afternoon-theme)
 (package! olivetti)
 (package! org-ml)
@@ -123,20 +123,24 @@
 
 ;;; Misc
 ;;;; Programming
+(package! origami)
 (package! lsp-origami)
 ;; (package! riscv-mode)
 ;; (package! emacs-python-pytest :disable t)
 (package! pydoc)
 (package! imenu-list)
-(package! counsel-jq)
+;; (package! counsel-jq)
+(package! igist)
 
 
 ;;; Random toys
 ;; TODO investigate these
 (package! lentic)
 (package! symbol-overlay)
-(package! workgroups2)
-(package! bfs :recipe (:local-repo "~/.config/doom/local-packages/bfs" :build nil))
+;; (package! workgroups2)
+;; (package! bfs :recipe (:local-repo "~/.config/doom/local-packages/bfs" :build nil))
+
+;;; Roc!
 
 ;; (straight-use-package
 ;; '(app-launcher :type git :host github :repo "SebastienWae/app-launcher"))
@@ -144,7 +148,7 @@
 ;;(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
 ;;;; Utilities
 ;; (package! edit-server)
-(package! obsidian)
+;; (package! obsidian)
 (package! inherit-org :recipe (:host github :repo "chenyanming/inherit-org"))
 (package! tldr)
 ;; (package! hyperbole)
@@ -162,13 +166,13 @@
 ;; (package! tumblesocks)
 ;; (package! consult-spotify)
 ;;;; Search
-(package! blink-search)
+;; (package! blink-search)
 ;;; Consult
 ;;(package! consult-ls-git)
 ;;(package! consult-project-extra)
 
 ;; Ivy
-(package! ivy-file-preview)
+;; (package! ivy-file-preview)
 
 
 ;;; Nano
@@ -178,7 +182,7 @@
 (package! doom-nano-modeline
   :recipe (:host github
            :repo "ronisbr/doom-nano-modeline"))
-(package! book-mode :recipe (:host github :repo "rougier/book-mode"))
+;; (package! book-mode :recipe (:host github :repo "rougier/book-mode"))
 
 
 
@@ -186,21 +190,28 @@
 ;;; D&D
 (package! org-d20)
 (package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd" :build nil))
-(package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api" :build nil))
+(package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api" :build t))
 ;; (package! button-lock)
 (package! decide)
 (package! egme :recipe (:local-repo "~/.config/doom/local-packages/egme" :build t))
 
 ;;; Fun
-(package! pacmacs)
+;; (package! pacmacs)
+;; (package! bongo)
+(package! dirvish)
+;; (package! nethack)
+
+(package! consult-emms :recipe (:local-repo "~/.config/doom/local-packages/consult-emms" :build nil))
+
+(package! magit-delta)
 
 ;;; Helm
 ;;; Themes
 (package! autothemer)
-(package! TransSide :recipe (:type git :host github :repo "Harith163/TransSide-theme"))
-(package! synthwave :recipe (:type git :host github :repo "TroyFletcher/emacs-synthwave-theme"))
+;; (package! TransSide :recipe (:type git :host github :repo "Harith163/TransSide-theme"))
+;; (package! synthwave :recipe (:type git :host github :repo "TroyFletcher/emacs-synthwave-theme"))
 (package! rainbow-mode)
-(package! poet)
+;; (package! poet)
 ;; (package! tron-legacy-theme)
 
 
@@ -216,3 +227,7 @@
 ;; Fun
 (package! fireplace)
 (package! dionysos)
+
+;;; Hugo
+(package! easy-hugo)
+(package! obsidian)

@@ -29,24 +29,26 @@ set $opacity 0.7
 
 
 
+exec_always "export TERMINAL=wezterm"
+exec_always "export BROWSER=/usr/bin/firefox-developer-edition"
 # Important startup stuff
 # exec_always "export WLR_NO_HARDWARE_CURSORS=1"
 # exec_always "export QT_QPA_PLATFORM=wayland;xcb"
 exec_always "export QT_QPA_PLATFORMTHEME=qt5ct"
 exec_always "export QT_STYLE_OVERRIDE=kvantum"
 # exec_always 'export MOZ_ENABLE_WAYLAND=1'
-exec_always "export BROWSER=/usr/bin/firefox-developer-edition"
 exec 'export GTK_USE_PORTAL=0'
 # exec --no-startup-id "export GTK_THEME=Dracula"
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Nordic-bluish-accent"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Dracula"'
-exec --no-startup-id "export GTK_THEME=Ant-Bloody"
-exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Ant-Bloody"'
-exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Ant-Bloody"'
+exec --no-startup-id "export GTK_THEME=rose-pine-moon-gtk"
+exec_always 'gsettings set org.gnome.desktop.interface icon-theme oomox-rose-pine-moon'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-theme rose-pine-moon-gtk'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Midnight-Green"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Midnight-Green"'
-exec_always 'gsettings set org.gnome.desktop.interface cursor-theme Dracula-cursors'
+exec_always 'gsettings set org.gnome.desktop.interface cursor-theme BreezeX-RosePine'
+
 exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
 exec_always 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
 # exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
@@ -62,12 +64,13 @@ exec_always picom -cb --config ~/.config/picom/picom.conf
 
 # Systemd services
 exec "systemctl start bluetooth"
-exec "systemctl start --user emacs"
+exec "systemctl start --user emacs && eclient"
 exec "systemctl start --user cronie"
 exec "systemctl start --user spotify-listener"
 exec "systemctl start --user onedrive"
 exec "systemctl start --user mopidy"
 exec "systemctl start --user 5e-api"
+exec "systemctl start --user syncthing"
 
 
 
@@ -96,9 +99,9 @@ default_border pixel 2
 
 # border pixel 5
 gaps inner 4
-gaps outer 3
+gaps outer 2
 smart_borders on
-smart_gaps off
+smart_gaps on
 
 # # class                 border  bground text    indicator child_border
 # client.focused #85b300 #987ac4 #6c71c4
@@ -114,14 +117,19 @@ font pango:monospace 8
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 
-font pango:Roboto Slab 8
+font pango:Roboto 8
+for_window [all] title_format "<b><i>%title</i></b>"
+for_window [all] title_window_icon on
+# font pango:Foglihten 8
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock -- i3lock -n -i "/home/vivien/Pictures/backgrounds/rosepine/rose_pine_circle.png" &
+exec --no-startup-id xautolock -time 5 -locker 'i3lock --nofork -i "/home/vivien/Pictures/backgrounds/rosepine/rose_pine_circle.png"'
+# exec --no-startup-id
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -132,6 +140,10 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+# bindsym XF86AudioRaiseVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "increase_volume"
+# bindsym XF86AudioLowerVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "decrease_volume"
+# bindsym XF86AudioMute exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mute"
+# bindsym XF86AudioMicMute exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mic_mute"
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
@@ -208,20 +220,21 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-#bindsym $mod+h split h
+bindsym $mod+Mod1+h split h
 
 # split in vertical orientation
-#bindsym $mod+v split v
+bindsym $mod+Mod1+v split v
 
-bindsym $mod+t split toggle
+bindsym $mod+Mod1+t split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
-bindsym $mod+w layout toggle tabbed
-bindsym $mod+s layout toggle split
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+u layout splitv
+bindsym $mod+y layout splith
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -239,12 +252,12 @@ bindsym $mod+a focus parent
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:LBNL"
 set $ws2 "2:Lang"
-set $ws3 "3:Writing"
+set $ws3 "3:Lang"
 set $ws4 "4:PCS"
 set $ws5 "5:RPG"
-set $ws6 "6:Research"
+set $ws6 "6:Writing"
 set $ws7 "7:Chores"
-set $ws8 "8:???"
+set $ws8 "8:Config"
 set $ws9 "9:???"
 set $ws10 "10:???"
 
@@ -325,13 +338,16 @@ bindsym $mod+r mode "resize"
 # Autostarts
 # exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
 exec --no-startup-id redshift-gtk
-exec --no-startup-id "~/bin/autosuspend"
+exec_always kdeconnectd
+exec_always playerctld
+# exec --no-startup-id "~/bin/autosuspend"
 # exec_always --no-startup-id "sudo updatedb"
 exec_always --no-startup-id "~/bin/laptop.sh"
 # output "*" bg "/home/vivien/backgrounds/nebulae-sky" fill
 # output "*" bg "/home/vivien/backgrounds/panopticon.jpg" fill
 # output "*" bg "/home/vivien/backgrounds/dracula-wallpaper/second-collection/waves/dracula-waves-44475a.png" fill
-exec --no-startup-id "feh --bg-scale /home/vivien/backgrounds/dracula-wallpaper/second-collection/waves/dracula-waves-44475a.png"
+# exec --no-startup-id "feh --bg-scale /home/vivien/Pictures/backgrounds/dracula-wallpaper/second-collection/waves/dracula-waves-44475a.png"
+exec --no-startup-id "feh --bg-scale ~/Pictures/backgrounds/rosepine/rose_pine_circle.png"
 # output "*" bg "/home/vivien/backgrounds/squid" fill
 exec --no-startup-id nm-applet
 exec volctl
@@ -342,7 +358,8 @@ exec_always libinput-gestures -c ~/dotfiles/libinput-gestures.conf
 # exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
 # exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
 # exec 'env SHELL=/bin/xonsh terminology'
-exec wezterm
+exec $BROWSER
+exec $TERMINAL
 exec "killall -9 emacs"
 exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
 # exec_always --no-startup-id "cd /home/vivien/apps/5e-srd-api && docker compose up --restart always" # Run the 5e API on startup
@@ -354,7 +371,7 @@ exec "synapse -s &"
 #bindsym $mod+v [class="Vivaldi-stable"] focus
 # bindsym $mod+Shift+v exec nextmatch Firefox
 bindsym $mod+v exec firefox-developer-edition
-bindsym $mod+e exec emacsclient -nc --eval "(progn (doom/switch-to-scratch-buffer) (consult-buffer))"
+bindsym $mod+e exec emacsclient -nc --eval '(progn (doom/switch-to-scratch-buffer) (consult-buffer))'
 # bindsym $mod+e exec ~/bin/eclient
 bindsym $mod+x exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
 bindsym $mod+Shift+e exec emacsclient  -nc --eval "(deft-new-file)"
@@ -405,19 +422,8 @@ for_window [floating] border pixel 0
 # for window [title="Grade 9A"] floating enable
 
 
-# From default sway
-# exec swayidle -w\
-#     timeout 1070 'swaylock -f -C ~/.config/swaylock/config'\
-#     timeout 770 'swaymsg "output * power off"' \
-#     resume 'swaymsg "output * power on"' \
-#     before-sleep 'swaylock -C ~/.config/swaylock/config'
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
-# exec --no-startup-id xss-lock --transfer-sleep-lock -- 3lock --nofork
-
 ## Lock Screen
-    # bindsym $mod+f1 exec ~/.config/sway/scripts/lockman.sh
+bindsym $mod+f1 exec loginctl lock-session
 
 
     # bindsym print exec '/usr/share/swayfx/scripts/grimshot --notify save area'
@@ -485,12 +491,12 @@ for_window [class="Chromium"] inhibit_idle fullscreen
 # client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
 
 # Nano
-client.focused            #e1bee7 #e1bee7 #eceff4 #e1bee7   #e1bee7
+# client.focused            #e1bee7 #e1bee7 #eceff4 #e1bee7   #e1bee7
 
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.background       #F8F8F2
+# client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+# client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+# client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+# client.background       #F8F8F2
 # client.focused  #50fa7b #50fa7b #f8f8f2  #50fa7b #50fa7b
 
 # Dracula
@@ -509,7 +515,34 @@ client.background       #F8F8F2
 # client.background       #F8F8F2
 
 # Henna
-client.focused #1abc9c #1abc9c #f8f8f0 #1abc9c #1abc9c
+# client.focused #1abc9c #1abc9c #f8f8f0 #1abc9c #1abc9c
+# Rose Pine
+# set primary Rosé Pine Moon colorscheme colors
+set $base           #232136
+set $base_trans     #232136a0
+set $surface        #2a273f
+set $overlay        #393552
+set $muted          #6e6a86
+set $subtle         #908caa
+set $text           #e0def4
+set $love           #eb6f92
+set $gold           #f6c177
+set $rose           #ea9a97
+set $pine           #3e8fb0
+set $foam           #9ccfd8
+set $iris           #c4a7e7
+set $highlightlow   #2a283e
+set $highlightmed   #44415a
+set $highlighthigh  #56526e
+
+# Teming border and Windows --------------
+# target                 title     bg           text   indicator  border
+client.focused           $rose     $base_trans $text  $rose      $rose
+client.focused_inactive  $text     $base_trans $text  $subtle    $surface
+client.unfocused         $text     $base_trans $text  $overlay   $overlay
+client.urgent            $text     $base_trans $text  $love      $love
+client.placeholder       $base_trans    $base_trans $text  $overlay   $overlay
+client.background        $base_trans
 
 
 #
@@ -527,18 +560,17 @@ bar {
        # separator_symbol "〉〉〉"
        separator_symbol ""
   colors {
-    background #282A36b3
-    # statusline #F8F8F2
-    statusline #f8f8f0
-    separator #1abc9c
+    background #232136a0
+    statusline $text
+    separator $iris
     # separator  #bd93f9
 
-    # focused_workspace  #44475Ab3 #bd93f9 #F8F8F2
-    focused_workspace  #44475Ab3 #1abc9c #F8F8F2
-    active_workspace   #282A36b3 #44475Ab3 #F8F8F2
-    inactive_workspace #282A36b3 #282A36b3 #BFBFBF
-    urgent_workspace   #FF5555 #FF5555 #F8F8F2
-    binding_mode       #FF5555 #FF5555 #F8F8F2
+# focused_workspace  #44475Aa0 #bd93f9 $text
+focused_workspace  #44475Aa0 $pine $text
+active_workspace   #232136a0 #44475Aa0 $text
+    inactive_workspace #232136a0 #282A36a0 $text
+    urgent_workspace   #FF5555 #FF5555 $text
+    binding_mode       #FF5555 #FF5555 $text
   }
 }
 
@@ -576,6 +608,9 @@ bar {
 for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] floating enable
 for_window [class="Kupfer.py"] floating enable
 for_window [class="Kupfer.py"] move position center
+# for_window [title="Desktop @ QRect.*"] kill; floating enable; border none
+# for_window [title="Desktop — Plasma"] kill, floating enable, border none
+
 
 ## Audio
 # bindsym XF86AudioRaiseVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "increase_volume"

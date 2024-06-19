@@ -31,11 +31,17 @@
                                         ; available. You can either set `doom-theme' or manually load a theme with the
                                         ; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-magnus)
-(setq doom-theme 'doom-henna)
+(setq doom-theme 'doom-rose-pine-moon)
+(setq! doom-rose-pine-moon-brighter-text t)
+(setq! doom-rose-pine-moon-brighter-comments t)
+
+;;; Transparency
+(set-frame-parameter nil 'alpha-background 0.85)
+(add-to-list 'default-frame-alist '(alpha-background . 0.95))
 ;; (setq doom-theme 'doom-dracula)
 
 ;; (setq doom-theme 'doom-henna-vi)
-;; (setq doom-theme 'doom-henna)
+;; ( doom-theme 'doom-henna)
 ;;(load-theme 'doom-magnus)
 ;; (setq doom-theme 'doom-nano-dark)
 ;; (load-theme 'doom-nano-dark)
@@ -153,6 +159,28 @@
 (setq display-line-numbers-type t)
 
 
+;;;  Scroll all Fix
+(after! scroll-all-mode
+  (defun scroll-all-check-to-scroll ()
+    "Check `this-command' to see if a scroll is to be done."
+    (cond ((or (eq this-command 'evil-next-line) (eq this-command 'next-line))
+	   (call-interactively 'scroll-all-scroll-down-all))
+	  ((or (eq this-command 'evil-previous-line) (eq this-command 'previous-line))
+	   (call-interactively 'scroll-all-scroll-up-all))
+	  ((memq this-command '(scroll-up scroll-up-command evil-scroll-down evil-scroll-page-down))
+	   (call-interactively 'scroll-all-page-down-all))
+	  ((memq this-command '(scroll-down scroll-down-command evil-scroll-up evil-scroll-page-up))
+	   (call-interactively 'scroll-all-page-up-all))
+	  ((or (eq this-command 'evil-goto-first-line) (eq this-command 'beginning-of-buffer))
+	   (call-interactively 'scroll-all-beginning-of-buffer-all))
+	  ((or (eq this-command 'evil-goto-line) (eq this-command 'end-of-buffer))
+	   (call-interactively 'scroll-all-end-of-buffer-all))))
+
+
+  )
+(map! :nvieo "C-d" #'scroll-up
+      :nvieo "C-u" #'scroll-down)
+
 ;;; Keybindings
 (defalias 'normal-paste 'clipboard-yank)
 (defalias 'normal-copy 'clipboard-kill-ring-save)
@@ -165,7 +193,23 @@
 (map! :nvieo "C--" (cmd! (text-scale-decrease 1)))
 (map! :nvieo "C-+" (cmd! (text-scale-increase 1)))
 
-
+(after! woman
+  (setq! woman-manpath '("/usr/local/man/" "/home/vivien/anaconda3/share/man/" "/home/vivien/funny-manpages/" "/usr/share/man/" "/usr/man" "/usr/share/man" "/usr/local/share/man"
+                         ("/bin" . "/usr/share/man")
+                         ("/usr/bin" . "/usr/share/man")
+                         ("/sbin" . "/usr/share/man")
+                         ("/usr/sbin" . "/usr/share/man")
+                         ("/usr/local/bin" . "/usr/local/man")
+                         ("/usr/local/bin" . "/usr/local/share/man")
+                         ("/usr/local/sbin" . "/usr/local/man")
+                         ("/usr/local/sbin" . "/usr/local/share/man")
+                         ("/usr/X11R6/bin" . "/usr/X11R6/man")
+                         ("/usr/bin/X11" . "/usr/X11R6/man")
+                         ("/usr/games" . "/usr/share/man")
+                         ("/opt/bin" . "/opt/man")
+                         ("/opt/sbin" . "/opt/man"))
+         )
+  )
 
 (after! evil
   (map! :nvieo "C-n" #'next-line)
@@ -266,7 +310,10 @@
          :desc "Insert file path"
          "P" #'insert-path)))
 
-(map! :leader (:prefix ("h" . "help") :desc "TLDR" "T" #'tldr))
+(map! :leader (:prefix ("h" . "help")
+               :desc "TL;DR" "T" #'tldr
+               :desc "Woman" "w" #'woman
+               ))
 
 
 
@@ -340,7 +387,7 @@
 
 ;;;;; Spotify
 (map!
- :leader (:prefix-map ("a" . "Music")
+ :leader (:prefix-map ("z" . "Spotify")
           :desc "Next Track" "l" #'counsel-spotify-next
           :desc "Previous Track" "h" #'counsel-spotify-previous
           :desc "Play/Pause" "/" #'counsel-spotify-toggle-play-pause
@@ -348,7 +395,20 @@
           :desc "Album" "a" #'counsel-spotify-search-album
           :desc "Track" "t" #'counsel-spotify-search-track
           :desc "Tracks by Album" "A" #'counsel-spotify-search-tracks-by-album
-          :desc "Artist" "m" #'counsel-spotify-search-tracks-by-artist))
+          :desc "Artist" "m" #'counsel-spotify-search-tracks-by-artist
+          ))
+
+;; (map! :leader (:prefix-map ("z e" . "emms")
+;;                :desc "Find Track" "/" #'consult-emms-playlists
+;;                :desc "Shuffle" "s" #'emms-shuffle
+;;                :desc "Next" "j" #'emms-next
+;;                :desc "Prev" "k" #'emms-previous
+;;                :desc "Browse" "RET" #'emms-browser
+;;                :desc "Play/Pause" "SPC" #'emms-pause
+;;                :desc "Albums" "l" #'emms-browser-search-by-album
+;;                :desc "Artists" "a" #'emms-browser-search-by-artist
+;;                ))
+
 
 (map!
  :leader (:prefix ("y" . "Yank/Pop/Kill")
@@ -358,6 +418,10 @@
  )
 
 ;;;; D&D Keys
+;; (after! egme
+;; (load-library 'egme)
+;; )
+(use-package! egme)
 (map!
  :leader
  (:prefix ("d" . "D&D")
@@ -366,9 +430,14 @@
   :desc "Roll d20" "d" #'org-d20-d20
   :desc "Roll dice" "r" #'org-d20-roll
   :desc "Lookup in D&D SRD" "s" #'dnd-search-srd
-  :desc "Lookup in Cypher SRD" "c" #'cypher-search-srd
+  :desc "Lookup in Cypher SRD" "v" #'cypher-search-srd
   :desc "Roll on the Wild Magic table" "w" #'dnd-wild-magic-roll
-  :desc "Flip a Binary Coin" "f" #'coin-flip)
+  :desc "Flip a Binary Coin" "f" #'coin-flip
+  :desc "Draw a Card" "c" #'draw-card
+  :desc "Draw a Tarot Card" "t" #'draw-tarot
+  :desc "Draw a Major Arcana Card" "m" #'draw-major-arcana
+  :desc "Draw a Minor Arcana Card" "M" #'draw-minor-arcana
+  )
 
  (:prefix ("l" . "Lookup in API")
   :desc "Monsters" "m m" #'dnd5e-api-search-monsters
@@ -393,11 +462,16 @@
   :desc "Add Thread" "t" #'egme-add-thread
   :desc "Delete Thread" "T" #'egme-delete-thread
   :desc "Dashboard" "d" #'egme-toggle-dash
+  :desc "Draw Card" "c" #'insert-card
+  :desc "Draw Tarot/Oracle Card" "o" #'insert-tarot
+  :desc "Draw Major Arcana" "m" #'insert-major-arcana
+  :desc "Draw Minor Arcana" "m" #'insert-minor-arcana
   )
 
  (:prefix ("v" . "Vivien")
   :desc "Display Fortune" "f" #'display-fortune
-  :desc "Display One-One Quote" "o" #'message-one-one
+  :desc "Obsidian Create" "o" #'obsidian-capture
+  :desc "Obsidian Open" "O" #'obsidian-jump
   :desc "Read A Statement" "r m" #'read-magnus
   :desc "Read A Case from Juno Steel" "r j" #'read-penumbra
   :desc "Read a Podcast Transcript" "r p" #'read-podcast
@@ -406,7 +480,11 @@
   :desc "Browse Song Lyrics" "L" #'lyric-search
   :desc "Spotify Lyrics" "l" #'spotify-lyrics
   :desc "Search the Web" "w" #'w3m-search-new-session
-  :desc "Speak with the Doctor" "d" #'doctor))
+  :desc "Speak with the Doctor" "d" #'doctor
+  :desc "Create a Gist" "g" #'igist-create-new-gist
+  :desc "Copy Gist Url" "G" #'igist-copy-gist-url
+  :desc "Play a Little Rituals Game" "R" #'little-ritual
+  ))
 
 
 (use-package! deft)
@@ -447,6 +525,8 @@
 (global-undo-tree-mode 1)
 (global-origami-mode 1)
 (global-tree-sitter-mode 1)
+(global-hide-mode-line-mode -1)
+(tab-bar-mode -1)
 (smartparens-global-mode 1)
 (show-smartparens-global-mode 1)
 (smartparens-global-strict-mode 1)
@@ -465,6 +545,9 @@
 (setq history-delete-duplicates t)
 (setq smudge-transport 'connect)
 (setq ranger-override-dired 'ranger)
+
+(after! magit-delta
+  (add-hook! 'magit-mode-hook (magit-delta-mode +1)))
 
 ;;; Custom Functions
 
@@ -560,7 +643,7 @@ ARG has the same meaning as for `kill-sexp'."
   (let (
         (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."))
 
-    (consult-ripgrep "~/drive/RPG/5e/5e-srd-split")))
+    (consult-ripgrep "~/drive/rpg/5e/5e-srd-split")))
 
 
 (defun cypher-search-srd ()
@@ -569,14 +652,14 @@ ARG has the same meaning as for `kill-sexp'."
   (let (
         (consult-ripgrep-args "rg -t rst --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."))
 
-    (consult-ripgrep "~/drive/RPG/cypher/cypher-system-reference")))
+    (consult-ripgrep "~/drive/rpg/cypher/cypher-system-reference")))
 
 
 (defun dnd-wild-magic-roll ()
   "Roll on Wild Magic table, report result in echo area"
   (interactive)
   (let* ((l (+ 2 (random 249)))
-         (fname "~/drive/RPG/5e/5e-srd-split/wild-magic.md")
+         (fname "~/drive/rpg/5e/5e-srd-split/wild-magic.md")
          (cmd (format "sed '%dq;d' %s" l fname)))
 
     (message (shell-command-to-string cmd))))
@@ -689,23 +772,34 @@ n-[b/p] for walk backward/forward early commands history."
          (choice (completing-read "Search for Lyrics: " options (lambda (v) v) nil "" 'lyric-history))
          (response (shell-command-to-string (concat "clyrics "  "\"" choice "\""))))
 
-    (output-to-screen response)))
+    (output-to-screen "*cylrics*" response)))
 
 (defun spotify-lyrics ()
   (interactive)
-  (output-to-screen (shell-command-to-string "playerctl -p spotify -f '{{artist}}: {{title}}' metadata|xargs clyrics")))
+  (output-to-screen "*clyrics*" (shell-command-to-string "playerctl -p spotify -f '{{artist}}: {{title}}' metadata| tee  >(xargs -0 clyrics)")))
 
 
 
 
-(defun output-to-screen (result)
+(defun output-to-screen (bufname result)
   "Create a popup and display RESULT in it."
-  (with-current-buffer (get-buffer-create "*clyrics*")
+  (with-current-buffer (get-buffer-create bufname)
     (visual-line-mode 1)
     (erase-buffer)
     (insert result)
     (display-buffer (current-buffer))))
 
+
+(after! easy-hugo
+  (setq! easy-hugo-basedir "~/experiments/watchtower-blog/")
+  (setq! easy-hugo-postdir "content/posts")
+  (setq! easy-hugo-preview-url "http://localhost:1313/watchtower-blog" )
+  )
+
+(after! obsidian
+  (global-obsidian-mode)
+  (obsidian-specify-path "~/p/obsidian")
+  )
 
 ;; (after! ispell
 ;;   (setq ispell-dictionary "en_US")
@@ -762,12 +856,12 @@ n-[b/p] for walk backward/forward early commands history."
 
 
 
-(defun org-blockify-comment (region))
+;; (defun org-blockify-comment (region))
 ;; Basically, take a bunch of # comments, and place them inside a block
 ;; Process: Wrapped in save-excursion: Construct region, call uncomment on region, mark it, insert comment structure template.
 
 
-(defun find-commented-region (start comment-char))
+;; (defun find-commented-region (start comment-char))
 
 
 
@@ -894,6 +988,8 @@ converted to PDF at the same location."
 ;;; Package Configuration
 (after! consult
                                         ; Make consult-imenu-multi work like an imenu in all org buffers, basically. Fun.
+
+  (add-to-list 'consult-preview-excluded-files "[a-z0-9A-Z_]?+\\.gpg")
   (setq
    consult-ripgrep-args "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."
    consult-grep-args "egrep --null --line-buffered --color=never --ignore-case   --exclude-dir=.git --line-number -I -r .")
@@ -907,7 +1003,7 @@ converted to PDF at the same location."
 (after! imenu-list
   (setq imenu-list-focus-after-activation t
         imenu-list-position 'left
-        imenu-list-size 0.25))
+        imenu-list-size 0.16))
 
 
 (after! vterm
@@ -978,6 +1074,11 @@ converted to PDF at the same location."
   (setup-undo-tree)
   (add-hook 'org-mode-hook #'setup-undo-tree))
 
+(after! tree-sitter
+  (add-to-list 'tree-sitter-load-path "/usr/lib/tree_sitter")
+  (add-to-list 'tree-sitter-load-path "/usr/local/lib/")
+  )
+
 (after! writeroom-mode
   (setq! writeroom-mode-line t)
   )
@@ -985,8 +1086,8 @@ converted to PDF at the same location."
 (after! book-mode
   (remove-hook 'python-mode-hook 'book-mode)
   (remove-hook 'emacs-lisp-mode-hook 'book-mode)
-  (advice-add 'book-mode :after (lambda () (doom-modeline-mode 1)))
-  (advice-add 'book-mode-hl-line-range-function :around #'ignore)
+  (advice-add 'book-mode :after (lambda () (doom-modeline-mode 1) (setq hl-line-range-function nil)))
+  (advice-add 'book-mode-hl-line-range-function :around #'hl)
   (setq! book-mode-left-margin 7)
   (setq! book-mode-right-margin 7)
   )
@@ -1018,8 +1119,8 @@ converted to PDF at the same location."
   ;; (add-hook! 'writeroom-mode-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
   ;; (add-hook! 'writeroom-mode-enable-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
   ;; (add-hook! 'org-mode-hook (writeroom-mode))
-  (add-hook! 'org-mode-hook (book-mode))
-  (add-hook 'org-mode-hook #'org-hide-drawer-all)
+  ;; (add-hook! 'org-mode-hook (book-mode))
+  (add-hook 'org-mode-hook #'org-fold-hide-drawer-all)
   ;; (add-hook 'org-mode-hook 'turn-off-smartparens-mode)
   ;; (add-hook! 'org-mode-hook (lambda () (message "hooked") (setq doom--line-number-style nil) (setq display-line-numbers nil) ))
   (global-org-modern-mode)
@@ -1031,7 +1132,7 @@ converted to PDF at the same location."
   (add-hook 'org-mode-hook #'org-indent-mode)
   (add-hook! 'org-mode-hook  (git-gutter-mode -1))
                                         ; (add-hook! 'org-mode-hook 'variable-pitch-mode)
-  (add-hook 'org-mode-hook #'turn-off-smartparens-strict-mode)
+  (add-hook! 'org-mode-hook (turn-off-smartparens-strict-mode))
 
   (setq org-list-demote-modify-bullet
         '(("+" . "-") ("-" . "+") ("*" . "+")))
@@ -1080,24 +1181,27 @@ converted to PDF at the same location."
   (setq +file-templates-alist (-remove-item '(org-mode) +file-templates-alist))
   )
 
-
 ;;; Markdown
 ;; Optimised for doom-henna
 (after! markdown-mode
-  (add-hook! 'markdown-mode-hook (book-mode))
+  ;; (add-hook! 'markdown-mode-hook (book-mode))
+  (add-hook! 'markdown-mode-hook (lsp!))
+  (setq! markdown-hide-markup nil)
+  (setq! markdown-enable-wiki-links nil)
+  (setq! markdown-enable-html nil)
   (let* (
-         (red "#e74c3c")
-         (teal "#1abc9c")
-         (green "#53df83")
+         (red "#eb6f92")
+         (teal "#3e8fb0")
+         (gold "#f6c177")
          )
     (custom-set-faces!
       `(markdown-header-delimiter-face :foreground "#616161" :height 0.9)
-      `(markdown-header-face-1 :foreground ,red :weight extra-bold :height 1.6)
-      `(markdown-header-face-2 :foreground ,teal :weight extra-bold :height 1.4)
-      `(markdown-header-face-3 :foreground ,green :weight extra-bold :height 1.2)
-      `(markdown-header-face-4 :foreground ,(doom-lighten red 0.25) :weight bold :height 1.1)
-      `(markdown-header-face-5 :foreground ,(doom-lighten teal 0.25) :weight bold )
-      `(markdown-header-face-6 :foreground ,(doom-lighten green 0.25) :weight bold )
+      `(markdown-header-face-1 :foreground ,gold :weight extra-bold :height 1.6)
+      `(markdown-header-face-2 :foreground ,red :weight extra-bold :height 1.4)
+      `(markdown-header-face-3 :foreground ,teal :weight extra-bold :height 1.2)
+      `(markdown-header-face-4 :foreground ,(doom-lighten gold 0.25) :weight bold :height 1.1)
+      `(markdown-header-face-5 :foreground ,(doom-lighten red 0.25) :weight bold )
+      `(markdown-header-face-6 :foreground ,(doom-lighten teal 0.25) :weight bold )
       )
     )
 
@@ -1168,13 +1272,13 @@ converted to PDF at the same location."
    completion-ignore-case t
    org-lookup-dnd-sources
    ' (
-      ("/home/vivien/drive/RPG/5e/core/phb.pdf" 1 4 4 t)
-      ("/home/vivien/drive/RPG/5e/core/Monster Manual.pdf" 1 4 4 nil)
-      ("/home/vivien/drive/RPG/5e/core/dmg.pdf" 1 1 1 t)
-      ("/home/vivien/drive/RPG/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
-      ("/home/vivien/drive/RPG/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
-      ("/home/vivien/drive/RPG/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
-      ("/home/vivien/OneDrive_Personal/RPG/5e/character options/COFSA The Compendium of Forgotten Secrets - Awakening (Abridged).pdf" 0 3 3 t))))
+      ("/home/vivien/drive/rpg/5e/core/phb.pdf" 1 4 4 t)
+      ("/home/vivien/drive/rpg/5e/core/Monster Manual.pdf" 1 4 4 nil)
+      ("/home/vivien/drive/rpg/5e/core/dmg.pdf" 1 1 1 t)
+      ("/home/vivien/drive/rpg/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
+      ("/home/vivien/drive/rpg/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
+      ("/home/vivien/drive/rpg/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
+      ("/home/vivien/drive/rpg/5e/character options/COFSA The Compendium of Forgotten Secrets - Awakening (Abridged).pdf" 0 3 3 t))))
 
 
 ;;;; Programming Language Config
@@ -1198,14 +1302,16 @@ converted to PDF at the same location."
          eat--install-path "/home/vivien/.config/emacs/.local/straight/repos/eat"
          eat--load-file-path "/home/vivien/.config/emacs/.local/straight/repos/eat/eat.el"
          eat--shell-integration-path "/home/vivien/.config/emacs/.local/straight/repos/eat/integration"
-         )
-  )
+         ))
 
 
 
 ;;; Doom-specific config
 (set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
 (set-popup-rule! (rx bol "*clyrics") :size 0.3 :quit t :select t :ttl nil)
+(set-popup-rule! (rx bol "*tarot") :size 0.15 :quit t :select t :ttl nil)
+(set-popup-rule! (rx bol "*little-ritual") :size 11 :quit t :select t :ttl nil)
+
 (setq doom-scratch-initial-major-mode 'org-mode)
 ;; (setq doom-font (font-spec :family "Source Code Pro" :size 16)) ;; 14 if not monitr
 ;; (setq doom-font (font-spec :family "FiraCode Nerd Font Propo" :size 16)) ;; 14 if not monitr
@@ -1213,12 +1319,13 @@ converted to PDF at the same location."
 ;; (setq doom-font (font-spec :family "Fira Code" :size 15))
 
 ;; (setq doom-variable-pitch-font (font-spec :family "Latin Modern Roman" :size 14))
-(setq doom-variable-pitch-font (font-spec :family "Roboto Slab" :size 15))
+;; (setq doom-variable-pitch-font (font-spec :family "Roboto Slab" :size 15))
 ;; (setq doom-variable-pitch-font (font-spec :family "FairyDustB" :size 14))
 ;; (setq doom-variable-pitch-font (font-spec :family "Montserrat" :size 14))
 ;; (setq doom-variable-pitch-font (font-spec :family "Metamorphous" :size 14))
 ;; (setq doom-variable-pitch-font (font-spec :family "Nimbus Roman" :size 14))
-;; (setq doom-variable-pitch-font (font-spec :family "Foglihten" :size 14))
+;; (setq doom-variable-pitch-font (font-spec :family "Foglihten" :size 15))
+(setq doom-variable-pitch-font (font-spec :family "FairydustB" :size 15))
 ;; (setq doom-variable-pitch-font (font-spec :family "Z003" :size 14))
 (defalias 'doom/delete-frame-with-prompt 'delete-frame)
 
@@ -1259,10 +1366,26 @@ converted to PDF at the same location."
       smudge-oauth2-client-id "2be412c6f3014dde8ed52f4b9756757e"
       smudge-oauth2-client-secret "c29a8c121421479eb46d16d23291efba")
 
-
+(after! igist
+  (setq! igist-current-user-name "VivianWilde"
+         igist-auth-marker 'igist))
 
 
 ;;; Enable folding
+(map! :map origami-mode-map
+      :nv  "z o" #'origami-open-node
+      :nv "z O" #'origami-open-node-recursively
+      :nv  "z c" #'origami-close-node
+      :nv "z m" #'origami-close-all-nodes
+      :nv "z r" #'origami-open-all-nodes
+      :nv     "z a" #'origami-toggle-node
+      :nv  "z j" #'origami-next-fold
+      :nv "z k" #'origami-previous-fold
+      :nv "z n" #'origami-show-only-node
+      )
+
+(after! origami
+  )
 (setq lsp-enable-folding t)
 (use-package! lsp-origami)
 (add-hook 'lsp-after-open-hook #'lsp-origami-try-enable)
@@ -1271,7 +1394,7 @@ converted to PDF at the same location."
 ;;; Hooks
 (add-hook! 'doom-init-ui-hook  (defalias 'doom/delete-frame-with-prompt 'delete-frame))
 (add-hook 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
-(add-hook! pdf-tools-enabled-hook #'hide-mode-line-mode)
+;; (add-hook! pdf-tools-enabled-hook #'hide-mode-line-mode)
 
 ;;;; Prose
 (add-hook 'text-mode-hook #'auto-save-visited-mode)
@@ -1332,7 +1455,6 @@ converted to PDF at the same location."
 ;;   :config
 ;;   (doom-nano-modeline-mode 1)
 ;;   (global-hide-mode-line-mode 1))
-(global-hide-mode-line-mode -1)
 
 
 ;;; Elfeed/RSS
@@ -1379,7 +1501,121 @@ converted to PDF at the same location."
   (let ((user (completing-read "Select user: " (list "remus" "spica" "polaris" "vega" "deneb" "antares" "rigel"))))
     (find-file (format "/ssh:%s@127.0.0.1#16122:" user))))
 
+(defun nersc-ssh ()
+  (interactive)
+  (make-thread (lambda () (find-file "/ssh:perlmutter.nersc.gov:/global/homes/v/vivien")))
+  )
+
+
+;; (add-to-list 'auth-sources "~/.authinfo")
+(after! lsp
+  (custom-set-faces!
+    '(lsp-details-face :inherit shadow :foreground "#908caa" :background "#2b2d41" :height 0.8))
+
+  )
+(after! treemacs
+  (setq! treemacs-show-cursor t))
+
+(defun logout-system ()
+  (interactive)
+  (if (yes-or-no-p "Really Log Out?")
+      (shell-command "i3exit logout")
+    )
+
+  )
+
+;;; Tarot
+(setq tarot-file-loc "~/drive/rpg/solo/tarot.json")
+(setq tarot-data (ht-get (json-parse-string (f-read-text tarot-file-loc)) "cards"))
+(setq tarot-major-arcana (seq-filter (lambda (card) (equal (ht-get card "suit") "major")) tarot-data))
+(setq tarot-minor-arcana (seq-filter (lambda (card) (not (equal (ht-get card "suit") "major"))) tarot-data))
+
+(defun render-tarot (card)
+  (cl-flet* ((get-key (k) (ht-get card k) )
+             (meanings-list (meaning) (append (ht-get* card "meanings" meaning) nil)))
+    (s-concat
+     hard-newline
+     (s-upcase (get-key "name")) hard-newline
+     "Element: " (s-capitalize (get-key "element")) hard-newline
+     "Upright: " (s-titleize (--reduce (s-concat acc ", " it )  (meanings-list "upright") )) hard-newline
+     "Reversed: " (s-titleize (--reduce (s-concat acc ", " it) (meanings-list "reversed") )) hard-newline
+     )
+    )
+  )
+
+(defun draw-tarot ()
+  (interactive)
+  (output-to-screen "*tarot*" (render-tarot (seq-random-elt tarot-data)))
+  )
+
+(defun insert-tarot ()
+  (interactive)
+  (egme--print-output (render-tarot (seq-random-elt tarot-data)))
+  )
+
+(defun draw-major-arcana ()
+  (interactive)
+  (output-to-screen "*tarot*" (render-tarot (seq-random-elt tarot-major-arcana)))
+  )
+(defun draw-minor-arcana ()
+  (interactive)
+  (output-to-screen "*tarot*" (render-tarot (seq-random-elt tarot-minor-arcana)))
+  )
 
 
 
-(add-to-list 'auth-sources "~/.authinfo")
+(defun insert-major-arcana ()
+  (interactive)
+  (egme--print-output (render-tarot (seq-random-elt tarot-major-arcana)))
+  )
+(defun insert-minor-arcana ()
+  (interactive)
+  (egme--print-output (render-tarot (seq-random-elt tarot-minor-arcana)))
+  )
+
+
+
+(setq cards-file-loc "~/drive/rpg/solo/cards.json")
+(setq cards-data (json-parse-string (f-read-text cards-file-loc)))
+(defun render-card (card)
+  (cl-flet* (
+             (face-card-name (id)
+               (pcase id
+                 ("Q" "Queen")
+                 ("A" "Ace")
+                 ("J" "Jack")
+                 ("K" "King")
+                 (otherwise (int-to-string id))
+                 )
+               ))
+    (s-concat (face-card-name (ht-get card "value")) " " "of" " " (s-capitalize (ht-get card "suit")))
+    )
+  )
+(defun draw-card ()
+  (interactive)
+  (message (render-card (seq-random-elt cards-data)))
+  )
+(defun insert-card ()
+  (interactive)
+  (egme--print-output (render-card (seq-random-elt cards-data))))
+
+
+
+
+
+
+(defun little-ritual ()
+  (interactive)
+  (let* (
+         (card (render-tarot (seq-random-elt tarot-major-arcana)))
+         (dice (seq-random-elt (list "Yourself" "The Day Past" "The Day To Come" "The Present" "Something Important" "Something Mundane")))
+         (instructions (s-concat "Relate The Arcana to a facet of the result."  hard-newline "What do you feel? Is it appropriate?" hard-newline "Take a breath. Pause. Carry on.") )
+         (msg (s-concat "Result: " dice hard-newline card hard-newline instructions) )
+         )
+    (output-to-screen "*little-ritual*" msg)
+    (with-current-buffer "*little-ritual*"
+      (beginning-of-buffer)
+      )
+
+    )
+)

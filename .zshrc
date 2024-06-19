@@ -7,7 +7,6 @@
 setopt AUTO_CD
 cdpath=($HOME/d $HOME/d/sp22 $HOME $HOME/drive $HOME/d/cs61b/repo)
 
-export BAT_THEME='nord'
 export LESSOPEN="| batpipe"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
@@ -57,8 +56,12 @@ export STK_CONFIG_DIR="$HOME/.config/stk-engine"
 # DESI ROOT
 export DESIROOT="$HOME/d/urap/data"
 export DESI_SPECTRO_REDUX="$HOME/d/urap/data"
+export DESI_API_CONFIG_FILE="$HOME/d/urap/desiapi/etc/docker/config.toml"
+# export RR_TEMPLATE_DIR="$HOME/d/urap/libs/redrock/py/redrock/templates"
 export RR_TEMPLATE_DIR="$HOME/d/urap/libs/redrock/py/redrock/templates"
 
+export PYTHONPATH="$HOME/drive/work/urap/desiapi/py:$PYTHONPATH"
+export PATH="$HOME/drive/work/urap/desiapi/bin:$PATH"
 
 #export PYTHONPATH="$HOME/.local/lib/python3.8/:/home/vivien/.local/lib/python3.8/site-packages"
 #export PYTHONHOME="$HOME/.local/lib/python3.8/:/home/vivien/.local/lib/python3.8/site-packages"
@@ -201,6 +204,7 @@ alias screenup="sudo brightnessctl s 40"
 alias e=$EDITOR
 alias l="/usr/bin/less -r"
 alias newdoom="doom sync && systemctl restart --user emacs"
+alias py="ipython"
 alias enes="trans -s en -t es"
 alias esen="trans -s es -t en"
 alias clip="xclip -selection c"

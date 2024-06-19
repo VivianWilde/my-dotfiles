@@ -1,5 +1,3 @@
-[global]
-    ### Display ###
 
     # Which monitor should the notifications be displayed on.
     monitor = 0
@@ -31,7 +29,8 @@
     # screen width minus the width defined in within the geometry option.
 # Laptop/monitor
     # geometry = "800x4+1720+30" # Monitor
-    geometry = "400x1+760+15"  #Laptop
+    width = 400
+    offset = 5x5
     # font = Monospace 11 # Monitor
     font= Monospace 9   # Laptop
 
@@ -65,11 +64,20 @@
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
-    frame_width = 3
+    frame_width = 1
+    gap_size = 3
+
+    icon_theme = "rose-pine-icons"
+    enable_recursive_icon_lookup = true
+
+    background = "#393552"
+    foreground = "#e0def4"
 
     # Defines color of the frame around the notification window.
     # frame_color = "#AF83ED"
-    frame_color = "#f8f8f0"
+    # background = "#232136"
+    # frame_color="#c4a7e7"
+    # foreground = "e0def4"
 
     # Define a color for the separator.
     # possible values are:
@@ -129,7 +137,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "<b>%s</b>\n%b"
+    # format = "<b>%s</b>\n%b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -178,7 +186,6 @@
     max_icon_size = 32
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
 
     ### History ###
 
@@ -195,7 +202,7 @@
     dmenu = /usr/bin/dmenu -p dunst:
 
     # Browser for opening urls in context menu.
-    browser = /usr/bin/vivaldi-stable
+    browser = /usr/bin/firefox-developer-edition
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true
@@ -292,40 +299,26 @@
     # Context menu.
     context = ctrl+shift+period
 
-# [urgency_low]
-#     # IMPORTANT: colors have to be defined in quotation marks.
-#     # Otherwise the "#" and following would be interpreted as a comment.
-#     background = "#222222"
-#     foreground = "#888888"
-#     timeout = 5
-#     # Icon for notifications with low urgency, uncomment to enable
-#     #icon = /path/to/icon
-
-# [urgency_normal]
-#     background = "#285577"
-#     foreground = "#ffffff"
-#     timeout = 10
-#     # Icon for notifications with normal urgency, uncomment to enable
-#     #icon = /path/to/icon
-
-[urgency_critical]
-    background = "#900000"
-    foreground = "#ffffff"
-    frame_color = "#ff0000"
-    timeout = 0
-    # Icon for notifications with critical urgency, uncomment to enable
-    #icon = /path/to/icon
-
 [urgency_low]
-    msg_urgency = low
-    background = "#222222"
-    foreground = "#e9e9f4"
+    background = "#393955"
+    highlight = "#3e8fb0"
+    frame_color = "#3e8fb0"
+    default_icon = "dialog-information"
+    # format = "<b><span foreground='#3e8fb0'>%s</span></b>\n%b"
 
 [urgency_normal]
-    msg_urgency = normal
-    background = "#21272e"
-    frame_color="#e74c3c"
-    foreground = "#1abc9c"
+    background = "#443c53"
+    highlight = "#f6c177"
+    frame_color = "#f6c177"
+    default_icon = "dialog-warning"
+    # format = "<b><span foreground='#f6c177'>%s</span></b>\n%b"
+
+[urgency_critical]
+    background = "#433754"
+    highlight = "#eb6f92"
+    frame_color = "#eb6f92"
+    default_icon = "dialog-error"
+    # format = "<b><span foreground='#eb6f92'>%s</span></b>\n%b"
 
 
 # Every section that isn't one of the above is interpreted as a rules to
@@ -449,6 +442,7 @@
 #  desktop_entry=org.kde.kdeconnect.*
   format = ""
   history_ignore = yes
+
 [onedrive]
 appname = "OneDrive"
 format = ""

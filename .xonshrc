@@ -13,7 +13,7 @@ mystyle = {
 "INTENSE_CYAN":"#1abc9c",
 }
 register_custom_style("mystyle", mystyle, base="fruity")
-$XONSH_COLOR_STYLE="mystyle"
+$XONSH_COLOR_STYLE="rose-pine-moon"
 # $XONSH_COLOR_STYLE="inkpot"
 # $XONSH_COLOR_STYLE="lovelace"
 # $XONSH_COLOR_STYLE="rainbow_dash"
