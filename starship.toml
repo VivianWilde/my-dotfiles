@@ -1,0 +1,213 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# $username\
+# [](bg:white fg:yellow)\
+format = """
+$directory\
+$status\
+$container\
+[](fg:yellow bg:white)\
+$git_branch\
+[](fg:white bg:purple)\
+$shell\
+$package\
+$rust\
+$nodejs\
+$elixir\
+$python\
+[](fg:purple bg:overlay)\
+$time\
+[](fg:overlay)\
+$line_break$character\
+$username🏳️‍⚧️[❯](fg:yellow)[❯](fg:white)[❯](fg:purple)[❯](fg:overlay)"""
+
+# [](fg:foam bg:foam)\
+# $env_var\
+# $docker_context\
+
+palette = 'rose-pine-moon'
+
+[palettes.rose-pine]
+base = '#191724'
+surface = '#1f1d2e'
+overlay = '#26233a'
+muted = '#6e6a86'
+subtle = '#908caa'
+text = '#e0def4'
+love = '#eb6f92'
+gold = '#f6c177'
+rose = '#ebbcba'
+pine = '#31748f'
+foam = '#9ccfd8'
+iris = '#c4a7e7'
+highlight_low = '#21202e'
+highlight_med = '#403d52'
+highlight_high = '#524f67'
+
+[palettes.rose-pine-moon]
+base = '#232136'
+surface = '#2a273f'
+overlay = '#393552'
+muted = '#6e6a86'
+subtle = '#908caa'
+text = '#e0def4'
+# white = '#e0def4'
+love = '#eb6f92'
+gold = '#f6c177'
+# yellow = '#f6c177'
+rose = '#ea9a97'
+pine = '#3e8fb0'
+foam = '#9ccfd8'
+iris = '#c4a7e7'
+# purple = '#c4a7e7'
+highlight_low = '#2a283e'
+highlight_med = '#44415a'
+highlight_high = '#56526e'
+
+[palettes.rose-pine-dawn]
+base = '#faf4ed'
+surface = '#fffaf3'
+overlay = '#f2e9e1'
+muted = '#9893a5'
+subtle = '#797593'
+text = '#575279'
+love = '#b4637a'
+gold = '#ea9d34'
+rose = '#d7827e'
+pine = '#286983'
+foam = '#56949f'
+iris = '#907aa9'
+highlight_low = '#f4ede8'
+highlight_med = '#dfdad9'
+highlight_high = '#cecacd'
+
+[os]
+disabled = true
+style = "bg:rose fg:overlay"
+
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+
+[username]
+show_always = true
+style_user = "fg:purple"
+style_root = "fg:purple"
+format = '[ $user ]($style)'
+
+[directory]
+style = "fg:overlay bg:yellow"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:white"
+format = '[[ $symbol $branch ](fg:overlay bg:white)]($style)'
+
+[git_status]
+style = "bg:foam fg:love"
+format = '[[($all_status$ahead_behind )](fg:love bg:foam)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:purple"
+format = '[[ $symbol( $version) ](fg:rose bg:overlay)]($style)'
+
+[c]
+symbol = " "
+style = "bg:overlay"
+format = '[[ $symbol( $version) ](fg:rose bg:overlay)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:purple"
+format = '[[ $symbol( $version) ](fg:overlay bg:purple)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:overlay"
+format = '[[ $symbol( $version) ](fg:overlay bg:purple)]($style)'
+
+# [php]
+# symbol = ""
+# style = "bg:overlay"
+# format = '[[ $symbol( $version) ](fg:rose bg:overlay)]($style)'
+
+# [java]
+# symbol = " "
+# style = "bg:overlay"
+# format = '[[ $symbol( $version) ](fg:rose bg:overlay)]($style)'
+
+# [kotlin]
+# symbol = ""
+# style = "bg:overlay"
+# format = '[[ $symbol( $version) ](fg:rose bg:overlay)]($style)'
+
+# [haskell]
+# symbol = ""
+# style = "bg:overlay"
+# format = '[[ $symbol( $version) ](fg:rose bg:overlay)]($style)'
+
+[python]
+symbol = ""
+pyenv_version_name=true
+style = "bg:purple"
+format = '[[ $symbol( $virtualenv) ](fg:overlay bg:purple)]($style)'
+
+[docker_context]
+symbol = ""
+style = "bg:iris"
+format = '[[ $symbol( $context) ](fg:text bg:iris)]($style)'
+
+[conda]
+style = "bg:iris"
+format = '[[ $symbol( $environment) ](fg:text bg:iris)]($style)'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:gold"
+format = '[[  $time ](fg:text bg:overlay)]($style)'
+
+[line_break]
+disabled = false
+
+[character]
+disabled = true
+success_symbol = '[](bold fg:color_green)'
+error_symbol = '[](bold fg:love)'
+vimcmd_symbol = '[](bold fg:color_green)'
+vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
+vimcmd_replace_symbol = '[](bold fg:color_purple)'
+vimcmd_visual_symbol = '[](bold fg:color_yellow)'
+
+[shell]
+disabled = false
+style = "fg:overlay bg:purple"
+format = "[$indicator]($style)"

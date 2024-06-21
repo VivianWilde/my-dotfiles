@@ -20,10 +20,10 @@ config.color_scheme = 'rose-pine-moon'
 --espresso
 -- fairy floss dark
 -- gotham
-config.default_prog = {'/bin/xonsh'}
+config.default_prog = {'/bin/fish'}
 
 -- config.window_background_image = '/home/vivien/backgrounds/tma-tape.jpeg'
-config.window_background_image = "/home/vivien/Pictures/backgrounds/dracula-wallpaper/second-collection/soft-waves/dracula-soft-waves-44475a.png"
+-- config.window_background_image = "/home/vivien/Pictures/backgrounds/dracula-wallpaper/second-collection/soft-waves/dracula-soft-waves-44475a.png"
 -- config.window_background_image = "/home/vivien/Pictures/backgrounds/rosepine/rose_pine_circle.png"
 config.window_background_opacity = 0.9
 

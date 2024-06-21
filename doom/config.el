@@ -37,7 +37,8 @@
 
 ;;; Transparency
 (set-frame-parameter nil 'alpha-background 0.85)
-(add-to-list 'default-frame-alist '(alpha-background . 0.95))
+(add-to-list 'default-frame-alist '(alpha-background . 0.85))
+
 ;; (setq doom-theme 'doom-dracula)
 
 ;; (setq doom-theme 'doom-henna-vi)
@@ -285,7 +286,10 @@
   (map! :leader
         (:prefix ("b" . "buffer")
          :desc "Consult Buffer" "b" #'consult-buffer
-         :desc "Brotab" "t" #'brotab)
+         :desc "Brotab" "t" #'brotab
+         :desc "Popup Buffer" "P" #'pop-to-buffer
+         )
+
 
         (:prefix ("s" . "search")
          :desc "Consult Imenu All" "I" #'consult-imenu-all
@@ -535,6 +539,8 @@
 
 ;;; Misc variable modifications
 ;;;; Frequently update recentf
+(setq! recentf-auto-cleanup 'never) ;; disable before we start recentf !
+(remove-hook 'kill-emacs-hook #'recentf-cleanup)
 (run-at-time "5 min" 300 'recentf-save-list)
 (sp-use-paredit-bindings)
 (add-to-list 'Info-directory-list "/home/rohan/drive/books/nonfic/sicp-texinfo" t)
@@ -1007,7 +1013,7 @@ converted to PDF at the same location."
 
 
 (after! vterm
-  (setq vterm-shell "/bin/xonsh"))
+  (setq vterm-shell "/bin/fish"))
 
 
 (after! projectile
@@ -1185,8 +1191,9 @@ converted to PDF at the same location."
 ;; Optimised for doom-henna
 (after! markdown-mode
   ;; (add-hook! 'markdown-mode-hook (book-mode))
-  (add-hook! 'markdown-mode-hook (lsp!))
+  ;; (add-hook! 'markdown-mode-hook (lsp!))
   (setq! markdown-hide-markup nil)
+  (add-hook! 'markdown-mode-hook (setq! markdown-hide-markup nil))
   (setq! markdown-enable-wiki-links nil)
   (setq! markdown-enable-html nil)
   (let* (
