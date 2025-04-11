@@ -52,38 +52,14 @@
 ;; (package! transient :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440")
 ;; (package! with-editor :pin "391e76a256aeec6b9e4cbd733088f30c677d965b")
 
-
-;;; EAF
-;; (package! emacs-application-framework
-;; :recipe (:host github :repo "manateelazycat/emacs-application-framework"
-;; :files ("eaf.el" "src/lisp/*.el")))
-
-
-
-
 ;;; Libraries
 (package! dash)
 (package! s)
 (package! ht)
 (package! plz :recipe (:local-repo "~/.config/doom/local-packages/plz" :build t ))
 (package! esxml)
+;; (package! djvu)
 
-;;; Language Support
-(package! sphinx-doc)
-;; (package! matlab-mode)
-
-;;;; Misc
-;; (package! bnf-mode)
-;; (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
-;; (package! journalctl-mode)
-;; (package! xonsh-mode)
-;;(package! spl :recipe (:local-repo "~/.config"))
-
-;;;; Web
-;;(package! coffee-mode)
-;;(package! company-web)
-;; (package! typescript-mode)
-;; (package! tide)
 
 ;;;; Lisp/Scheme
 ;;(package! geiser-guile)
@@ -94,95 +70,70 @@
 ;; (package! litex-mode)
 
 ;;; Prose/Org
-;; (package! org-jira)
-(package! org-modern)
+(package! easy-hugo)
+;; (package! obsidian)
+;; (package! org-modern)
 (package! pandoc)
 (package! ox-pandoc)
-(package! htmlize)
-;; (package! org-transclusion)
-;;(package! fountain-mode)
+;; (package! htmlize)
 (package! poet-theme)
-(package! afternoon-theme)
+;; (package! afternoon-theme)
 (package! olivetti)
-(package! org-ml)
+;; (package! org-ml)
 (package! org-pandoc-import
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
 ;; (package! default-lang :recipe (:local-repo "~/experiments/elisp/default-lang"))
-;; (package! ox-reveal)
-;;(package! lsp-grammarly)
-;; (package! ox-latex)
-;; (package! org-panel
-;;   :recipe (:local-repo "~/.config/doom/local-packages/org-panel"))
 
-;;; Evil
-;; (package! evil-better-visual-line)
-;; (package! evil-cleverparens)
+;;; Programming
 (package! evil-smartparens)
-
-;;; Misc
-;;;; Programming
+(package! evil-cleverparens)
 (package! origami)
 (package! lsp-origami)
-;; (package! riscv-mode)
-;; (package! emacs-python-pytest :disable t)
 (package! pydoc)
 (package! imenu-list)
-;; (package! counsel-jq)
-(package! igist)
+;; (package! igist)
+(package! magit-delta)
+(package! rainbow-mode)
+
+;;; Language Support
+;; (package! graphviz-dot-mode)
+(package! fish-mode)
+(package! sphinx-doc)
+
+;; (package! jflex-mode :recipe (:local-repo "~/dotfiles/doom/local-packages/jflex-mode"))
+;; (package! cup-java-mode :recipe (:local-repo "~/dotfiles/doom/local-packages/cup-java-mode"))
 
 
 ;;; Random toys
-;; TODO investigate these
-(package! lentic)
-(package! symbol-overlay)
-;; (package! workgroups2)
-;; (package! bfs :recipe (:local-repo "~/.config/doom/local-packages/bfs" :build nil))
-
-;;; Roc!
-
-;; (straight-use-package
-;; '(app-launcher :type git :host github :repo "SebastienWae/app-launcher"))
-
-;;(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
-;;;; Utilities
-;; (package! edit-server)
-;; (package! obsidian)
-(package! inherit-org :recipe (:host github :repo "chenyanming/inherit-org"))
+;; (package! blink-search)
+;; (package! nov)
 (package! tldr)
-;; (package! hyperbole)
 (package! info-plus)
-(package! google-this)
 (package! w3m)
+(package! fzf)
+(package! zoxide)
+;; (package! dirvish)
+(package! inherit-org :recipe (:host github :repo "chenyanming/inherit-org"))
+;;; Mysteries
+;; (package! lentic)
+;; (package! symbol-overlay)
+
+
+
+;;; Integrations
+(package! brotab :recipe (:local-repo "~/experiments/elisp/brotab"))
 (package! counsel-spotify)
 (package! smudge)
-(package! fzf)
-;;(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
-;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
-;; (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
-(package! brotab :recipe (:local-repo "~/experiments/elisp/brotab" :build nil))
-;;(package! nov.el)
-;; (package! tumblesocks)
-;; (package! consult-spotify)
-;;;; Search
-;; (package! blink-search)
-;;; Consult
-;;(package! consult-ls-git)
-;;(package! consult-project-extra)
-
-;; Ivy
-;; (package! ivy-file-preview)
-
+;; (package! google-this)
 
 ;;; Nano
 ;; (package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
-(package! nano-theme)
-;; (package! nano-modeline)
-(package! doom-nano-modeline
-  :recipe (:host github
-           :repo "ronisbr/doom-nano-modeline"))
-;; (package! book-mode :recipe (:host github :repo "rougier/book-mode"))
+;; (package! nano-theme)
+;; (package! doom-nano-modeline
+;;   :recipe (:host github
+;;            :repo "ronisbr/doom-nano-modeline"))
 
 
 
@@ -190,44 +141,22 @@
 ;;; D&D
 (package! org-d20)
 (package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd" :build nil))
-(package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api" :build t))
+;; (package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api" :build t))
 ;; (package! button-lock)
 (package! decide)
 (package! egme :recipe (:local-repo "~/.config/doom/local-packages/egme" :build t))
-
-;;; Fun
-;; (package! pacmacs)
-;; (package! bongo)
-(package! dirvish)
-;; (package! nethack)
-
-(package! consult-emms :recipe (:local-repo "~/.config/doom/local-packages/consult-emms" :build nil))
-
-(package! magit-delta)
-
-;;; Helm
-;;; Themes
-(package! autothemer)
-;; (package! TransSide :recipe (:type git :host github :repo "Harith163/TransSide-theme"))
-;; (package! synthwave :recipe (:type git :host github :repo "TroyFletcher/emacs-synthwave-theme"))
-(package! rainbow-mode)
-;; (package! poet)
-;; (package! tron-legacy-theme)
+(package! tarot :recipe (:local-repo "~/.config/doom/local-packages/tarot"))
 
 
-;; Esolangs
-;; (package! lolcode-mode)
+;; Alphapapa Utilities
+(package! prism)
+(package! dogears)
+;; (package! yequake)
 
-;; Terminal
-;; (package! eat)
-
-
-;; Notes
-;; (package! deft)
-;; Fun
-(package! fireplace)
-(package! dionysos)
-
-;;; Hugo
-(package! easy-hugo)
-(package! obsidian)
+;;; Etc
+;; (package! autothemer)
+;; (package! fireplace)
+(package! denote)
+(package! consult-denote)
+(package! denote-explore)
+(package! zetteldeft)

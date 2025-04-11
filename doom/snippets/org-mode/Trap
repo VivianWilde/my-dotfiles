@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: Complex Trap
-# key: trigger-key
+# key: trap
+# uuid: trap
 # condition: t
 # --
 * Complex Trap:

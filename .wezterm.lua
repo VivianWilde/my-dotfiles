@@ -11,7 +11,8 @@ local config = wezterm.config_builder()
 -- This is where you actually apply your config choices
 
 -- For example, changing the color scheme:
-config.color_scheme = 'rose-pine-moon'
+config.color_scheme = 'rose-pine'
+-- config.color_scheme = 'nord'
 -- Possible themes:
 -- Butrin
 -- Blazer
@@ -20,8 +21,10 @@ config.color_scheme = 'rose-pine-moon'
 --espresso
 -- fairy floss dark
 -- gotham
-config.default_prog = {'/bin/fish'}
-
+-- config.default_prog = {'/usr/bin/zellij'}
+config.default_prog = {'/usr/bin/fish'}
+-- config.default_prog = {'/usr/bin/xonsh'}
+-- config.set_environment_variables = {COLORTERM="truecolor", TERM="xterm-24bit"}
 -- config.window_background_image = '/home/vivien/backgrounds/tma-tape.jpeg'
 -- config.window_background_image = "/home/vivien/Pictures/backgrounds/dracula-wallpaper/second-collection/soft-waves/dracula-soft-waves-44475a.png"
 -- config.window_background_image = "/home/vivien/Pictures/backgrounds/rosepine/rose_pine_circle.png"
@@ -29,7 +32,7 @@ config.window_background_opacity = 0.9
 
 
 
--- config.use_fancy_tab_bar =
+-- config.use_fancy_tab_bar = false
 
 config.keys = {
   {key = 'c', mods=default_mod, action=act.CopyTo 'ClipboardAndPrimarySelection',},
@@ -39,7 +42,7 @@ config.keys = {
   {key = 'w', mods=default_mod, action=act.CloseCurrentTab {confirm = false},},
   {key='q', mods='CTRL|SHIFT', action=act.QuitApplication},
 
-  {key = 'f', mods=default_mod, action=act.Search{CaseSensitiveString=""}},
+  {key = 'F', mods=default_mod, action=act.Search{CaseSensitiveString=""}},
 
   { key = '(', mods = default_mod, action = act.ActivateTabRelative(-1)},
   { key = ')', mods = default_mod, action = act.ActivateTabRelative(1)},
@@ -51,7 +54,7 @@ config.keys = {
   {key = '=', mods=default_mod, action=act.ResetFontSize},
 }
 
-config.use_fancy_tab_bar = false
+config.use_fancy_tab_bar = true
 config.window_frame = {
   font_size = 9.0
 }

@@ -1,0 +1,84 @@
+
+;;(package! zeitgeist :recipe (:local-repo "~/.config/doom/local-packages/zeitgeist"))
+
+;;(package! canvas-emacs :recipe (:local-repo "~/.config/doom/local-packages/canvas-emacs"))
+
+
+;;; EAF
+;; (package! emacs-application-framework
+;; :recipe (:host github :repo "manateelazycat/emacs-application-framework"
+;; :files ("eaf.el" "src/lisp/*.el")))
+
+;; (package! matlab-mode)
+;; (package! bnf-mode)
+;; (package! lark-mode :recipe (:local-repo "~/experiments/elisp/lark-mode"))
+;; (package! journalctl-mode)
+;; (package! xonsh-mode)
+;;(package! spl :recipe (:local-repo "~/.config"))
+
+;;;; Web
+;;(package! coffee-mode)
+;;(package! company-web)
+;; (package! typescript-mode)
+;; (package! tide)
+
+
+;; (package! org-jira)
+;; (package! org-transclusion)
+;;(package! fountain-mode)
+;; (package! ox-reveal)
+;;(package! lsp-grammarly)
+;; (package! ox-latex)
+;; (package! org-panel
+;;   :recipe (:local-repo "~/.config/doom/local-packages/org-panel"))
+
+
+
+;; (package! evil-better-visual-line)
+
+;; (package! riscv-mode)
+
+;; (package! counsel-jq)
+;; (package! emacs-python-pytest :disable t)
+;; (package! evil-cleverparens)
+
+;; (package! workgroups2)
+;; (package! bfs :recipe (:local-repo "~/.config/doom/local-packages/bfs" :build nil))
+;; (straight-use-package
+;; '(app-launcher :type git :host github :repo "SebastienWae/app-launcher"))
+
+;;(package! gjdb :recipe (:local-repo "~/d/cs/61b/cs61b-software/lib/emacs/lisp/gjdb"))
+;;;; Utilities
+;; (package! edit-server)
+;; (package! obsidian)
+
+;; (package! hyperbole)
+;; (package! mstodo :recipe (:local-repo "~/experiments/elisp/mstodo"))
+;;(package! nov.el)
+;; (package! tumblesocks)
+;; (package! consult-spotify)
+;;;; Search
+;; (package! blink-search)
+;;; Consult
+;;(package! consult-ls-git)
+;;(package! consult-project-extra)
+
+;; Ivy
+;; (package! ivy-file-preview)
+
+
+
+;; (package! nano-modeline)
+
+;; (package! book-mode :recipe (:host github :repo "rougier/book-mode"))
+;; (package! pacmacs)
+;; (package! bongo)
+
+;; (package! TransSide :recipe (:type git :host github :repo "Harith163/TransSide-theme"))
+;; (package! synthwave :recipe (:type git :host github :repo "TroyFletcher/emacs-synthwave-theme"))
+
+;; (package! poet)
+;; (package! tron-legacy-theme)
+
+;;; Fun
+;; (package! nethack)

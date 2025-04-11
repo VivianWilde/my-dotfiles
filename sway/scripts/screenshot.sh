@@ -6,13 +6,13 @@ selected=$(printf '%s\n' $entries | wofi --style=$HOME/.config/wofi/style.widget
  
 case $selected in
   active)
-    /usr/bin/grimshot --notify save active;;
+    /usr/share/swayfx/scripts/grimshot --notify save active;;
   screen)
-    /usr/bin/grimshot --notify save screen;;
+    /usr/share/swayfx/scripts/grimshot --notify save screen;;
   output)
-    /usr/bin/grimshot --notify save output;;
+    /usr/share/swayfx/scripts/grimshot --notify save output;;
   area)
-    /usr/bin/grimshot --notify save area;;
+    /usr/share/swayfx/scripts/grimshot --notify save area;;
   window)
-    /usr/bin/grimshot --notify save window;;
+    /usr/share/swayfx/scripts/grimshot --notify save window;;
 esac

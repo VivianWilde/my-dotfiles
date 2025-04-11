@@ -12,11 +12,11 @@
 
 # SwayFX Aesthetics
 
-corner_radius 20
+corner_radius 10
 # blur on
-blur enable
+blur disable
 blur_passes 1
-blur_radius 8
+blur_radius 5
 
 shadows enable
 shadows_on_csd enable
@@ -27,12 +27,12 @@ shadows_on_csd enable
 default_dim_inactive 0.1
 for_window [app_id="vivaldi-stable"] dim_inactive 0.00
 for_window [app_id="firefoxdeveloperedition"] dim_inactive 0.00
-layer_effects "waybar" blur enable; shadows enable; corner_radius 6
+# layer_effects "waybar" blur enable; shadows enable; corner_radius 6
 
 titlebar_separator disable
 
 # set $opacity 0.7
-set $opacity 0.7
+set $opacity 0.8
 for_window [app_id=".*"] opacity $opacity
 # for_window [app_id="okular"] opacity 0.6
 
@@ -45,14 +45,19 @@ exec_always "export WLR_NO_HARDWARE_CURSORS=1"
 exec_always "export QT_QPA_PLATFORM=wayland;xcb"
 exec_always "export QT_QPA_PLATFORMTHEME=qt5ct"
 exec_always "export QT_STYLE_OVERRIDE=kvantum"
+
+exec_always "export TERMINAL=wezterm"
 exec_always 'export MOZ_ENABLE_WAYLAND=1'
 exec_always "export BROWSER=/usr/bin/firefox-developer-edition"
 exec 'export GTK_USE_PORTAL=0'
-exec --no-startup-id "export GTK_THEME=Dracula"
+# exec --no-startup-id "export GTK_THEME=Dracula"
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Nordic-bluish-accent"'
-exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Dracula"'
+# exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Dracula"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Fantasma-GTK"'
-exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
+# exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
+exec --no-startup-id "export GTK_THEME=rose-pine-moon-gtk"
+exec_always 'gsettings set org.gnome.desktop.interface icon-theme oomox-rose-pine-moon'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-theme rose-pine-moon-gtk'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Midnight-Green"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Midnight-Green"'
@@ -70,6 +75,7 @@ exec "systemctl start --user spotify-listener"
 exec "systemctl start --user onedrive"
 exec "systemctl start --user mopidy"
 exec "systemctl start --user 5e-api"
+exec "systemctl start --user syncthing"
 
 
 
@@ -98,7 +104,7 @@ default_border pixel 2
 
 # border pixel 5
 gaps inner 4
-gaps outer 1
+gaps outer 2
 smart_borders on
 smart_gaps on
 
@@ -116,7 +122,11 @@ font pango:monospace 8
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 
-font pango:Roboto Slab 8
+font pango:Roboto 8
+
+
+for_window [all] title_format "<b><i>%title</i></b>"
+for_window [all] title_window_icon on
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -166,6 +176,10 @@ bindsym $mod+Shift+q kill
 bindsym ctrl+shift+space exec ulauncher-toggle
 bindsym $mod+shift+d exec "synapse -s"
 bindsym $mod+d exec "kupfer"
+
+bindsym $mod+shift+t exec "~/bin/create-todo"
+bindsym $mod+s exec "kupfer-exec ~/dotfiles/workspaces.kfcom"
+bindsym $mod+w exec "kupfer-exec ~/dotfiles/firefox.kfcom"
 # bindsym $mod+d exec "ulauncher-toggle"
 bindsym Mod1+Shift+Space exec 'albert toggle'
 # unbind control+space
@@ -210,20 +224,22 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-#bindsym $mod+h split h
+bindsym $mod+Mod1+h split h
 
 # split in vertical orientation
-#bindsym $mod+v split v
+bindsym $mod+Mod1+v split v
 
-bindsym $mod+t split toggle
+bindsym $mod+Mod1+t split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
-bindsym $mod+w layout toggle tabbed
-bindsym $mod+s layout toggle split
+# group
+bindsym $mod+g layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+u layout splitv
+bindsym $mod+y layout splith
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -239,16 +255,16 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:CS"
-set $ws2 "2:Math"
-set $ws3 "3:URAP"
-set $ws4 "4:SciFi"
-set $ws5 "5:Cypher"
-set $ws6 "6:Research"
-set $ws7 "7:Writing"
-set $ws8 "8:Reading"
-set $ws9 "9:Misc"
-set $ws10 "10:Freedom"
+set $ws1 "1:Math"
+set $ws2 "2:CS164"
+set $ws3 "3:PS1"
+set $ws4 "4:Club"
+set $ws5 "5:Research"
+set $ws6 "6:Writing"
+set $ws7 "7:RPG"
+set $ws8 "8:Chores"
+set $ws9 "9:???"
+set $ws10 "10:???"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -326,23 +342,26 @@ exec_always xrandr --output HDMI-A-1 --primary
 
 # Autostarts
 # exec --no-startup-id "/usr/lib/geoclue-2.0/demos/agent"
+exec_always kdeconnectd
+exec_always playerctld
+
 exec --no-startup-id redshift-gtk
 exec_always --no-startup-id "~/bin/autosuspend"
 exec_always --no-startup-id "sudo updatedb"
 exec_always --no-startup-id "~/bin/laptop.sh"
 # output "*" bg "/home/vivien/backgrounds/nebulae-sky" fill
-# output "*" bg "/home/vivien/backgrounds/panopticon.jpg" fill
-output "*" bg "/home/vivien/backgrounds/dracula-wallpaper/second-collection/waves/dracula-waves-44475a.png" fill
+output "*" bg "/home/vivien/Pictures/backgrounds/panopticon.jpg" fill
+# output "*" bg "/home/vivien/Pictures/backgrounds/morgana.jpg" fill
 # output "*" bg "/home/vivien/backgrounds/squid" fill
 exec --no-startup-id nm-applet
 exec volctl
-exec_always --no-startup-id autotiling-rs
+exec_always --no-startup-id autotiling
 exec libinput-gestures
 # exec_always "ulauncher --no-window-shadow --hide-window"
 # exec --no-startup-id "onedrive --monitor --confdir ~/.config/onedrivePersonal"
 # exec --no-startup-id "compton -cb --config ~/.config/picom/picom.conf"
 # exec 'env SHELL=/bin/xonsh terminology'
-exec wezterm
+exec $TERMINAL
 exec "killall -9 emacs"
 exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
 # exec_always --no-startup-id "cd /home/vivien/apps/5e-srd-api && docker compose up --restart always" # Run the 5e API on startup
@@ -418,7 +437,7 @@ exec swayidle -w\
 ## Lock Screen
     bindsym $mod+f1 exec ~/.config/sway/scripts/lockman.sh
 
-    bindsym print exec '/usr/share/swayfx/scripts/grimshot --notify save area'
+bindsym print exec '/usr/bin/grimshot --notify save area'
 
     bindsym Shift+print exec ~/.config/sway/scripts/screenshot.sh
 
@@ -473,31 +492,33 @@ for_window [app_id="firefoxdeveloperedition"] inhibit_idle fullscreen
 for_window [app_id="Chromium"] inhibit_idle fullscreen
 
 
-## New Coloring (Endeavor)
-# class                 border  bground text    indicator child_border
+# Rose Pine
+# set primary Rosé Pine Moon colorscheme colors
+set $base           #232136
+set $base_trans     #232136a0
+set $surface        #2a273f
+set $overlay        #393552
+set $muted          #6e6a86
+set $subtle         #908caa
+set $text           #e0def4
+set $love           #eb6f92
+set $gold           #f6c177
+set $rose           #ea9a97
+set $pine           #3e8fb0
+set $foam           #9ccfd8
+set $iris           #c4a7e7
+set $highlightlow   #2a283e
+set $highlightmed   #44415a
+set $highlighthigh  #56526e
 
-# TMA
-# shadow_color #9fcc2e
-# client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
-
-# Nano
-# client.focused            #e1bee7 #e1bee7 #eceff4 #e1bee7   #e1bee7
-
-# client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-# client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-# client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-client.background       #F8F8F2
-
-# Dracula
-# shadow_color #50fa7b
-shadow_color #bd93f9
-client.focused  #50fa7b #50fa7b #f8f8f2  #50fa7b #50fa7b
-
-# bd = (11*16+13)
-# 93 = (9*16+3)
-# f9=(15*16+9)
-
+# Teming border and Windows --------------
+# target                 title     bg           text   indicator  border
+client.focused           $rose     $base_trans $text  $rose      $rose
+client.focused_inactive  $text     $base_trans $text  $subtle    $surface
+client.unfocused         $text     $base_trans $text  $overlay   $overlay
+client.urgent            $text     $base_trans $text  $love      $love
+client.placeholder       $base_trans    $base_trans $text  $overlay   $overlay
+client.background        $base_trans
 
 #
 # Status Bar:
@@ -506,8 +527,7 @@ client.focused  #50fa7b #50fa7b #f8f8f2  #50fa7b #50fa7b
 bar {
     swaybar_command waybar
     position top
-    # mode show
-    # mode hide
+    mode hide
     modifier Mod4
 }
 
@@ -543,6 +563,9 @@ bar {
 # for_window [class="plasmashell" window_type="notification"] border none, move right 700px, move down 450px
 # no_focus [class="plasmashell" window_type="notification"]
 for_window [title="Extension: (Quick Commands) - Quick Commands — Mozilla Firefox"] floating enable
+
+for_window [class="Kupfer.py"] floating enable
+for_window [class="Kupfer.py"] move position center
 # for_window [title="Desktop — Plasma"] kill; floating enable; border none
 
 ## Audio

@@ -29,8 +29,9 @@
     # screen width minus the width defined in within the geometry option.
 # Laptop/monitor
     # geometry = "800x4+1720+30" # Monitor
-    width = 400
-    offset = 5x5
+    geometry="400x40+500+500"
+    # width = 400
+    # offset = 5x5
     # font = Monospace 11 # Monitor
     font= Monospace 9   # Laptop
 
@@ -443,6 +444,7 @@
   format = ""
   history_ignore = yes
 
-[onedrive]
-appname = "OneDrive"
-format = ""
+[skip-rule]
+    appname = onedrive
+    skip_display=true
+    format = ""

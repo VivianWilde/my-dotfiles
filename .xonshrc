@@ -13,7 +13,6 @@ mystyle = {
 "INTENSE_CYAN":"#1abc9c",
 }
 register_custom_style("mystyle", mystyle, base="fruity")
-$XONSH_COLOR_STYLE="rose-pine-moon"
 # $XONSH_COLOR_STYLE="inkpot"
 # $XONSH_COLOR_STYLE="lovelace"
 # $XONSH_COLOR_STYLE="rainbow_dash"
@@ -23,6 +22,7 @@ $XONSH_COLOR_STYLE="rose-pine-moon"
 source-zsh "~/.zshrc"
 $PROMPT = '{BOLD_RED}{user}@A.R.T 🏳️‍⚧️ {BOLD_INTENSE_RED}{cwd}{env_name: {}}{#FCF434}❯{#FFFFFF}❯{#9C59D1}❯{INTENSE_BLACK}❯{RESET}'
 # $XONSH_COLOR_STYLE = 'inkpot'
+$XONSH_COLOR_STYLE = 'nord-darker'
 # XONSH WEBCONFIG END
 $COMMANDS_CACHE_SIZE_WARNING='10000'
 # XONSH WIZARD START
@@ -63,7 +63,9 @@ $XONSH_HISTORY_SIZE=131072
 
 
 # xontrib load coreutils whole_word_jumping z  gitinfo jedi vox autovox argcomplete django
-xontrib load coreutils whole_word_jumping vox autovox jedi
+xontrib load coreutils whole_word_jumping vox
+# prompt_starship
+# jedi
 # xontrib load coreutils
 
 # xontrib load powerline2
@@ -85,10 +87,10 @@ aliases['cat']='bat'
 aliases['bg']='batgrep'
 aliases["newdoom"]="doom sync && systemctl restart --user emacs && e"
 
-import sys
-import random
-from random import randint
-fortune
+# import sys
+# import random
+# from random import randint
+# fortune
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -103,7 +105,33 @@ fortune
 #     _sys.modules["xontrib.conda"] = _mod
 #     del _sys, _mod, _ModuleType
 # # <<< conda initialize <<<
-execx($(starship init xonsh))
+# exec($(starship init xonsh))
+import uuid
+
+
+def starship_prompt():
+    last_cmd = __xonsh__.history[-1] if __xonsh__.history else None
+    status = last_cmd.rtn if last_cmd else 0
+    # I believe this is equivalent to xonsh.jobs.get_next_job_number() for our purposes,
+    # but we can't use that function because of https://gitter.im/xonsh/xonsh?at=60e8832d82dd9050f5e0c96a
+    jobs = sum(1 for job in __xonsh__.all_jobs.values() if job['obj'] and job['obj'].poll() is None)
+    duration = round((last_cmd.ts[1] - last_cmd.ts[0]) * 1000) if last_cmd else 0
+    return $(/usr/bin/starship prompt --status=@(status) --jobs=@(jobs) --cmd-duration=@(duration))
+
+def starship_rprompt():
+    last_cmd = __xonsh__.history[-1] if __xonsh__.history else None
+    status = last_cmd.rtn if last_cmd else 0
+    # I believe this is equivalent to xonsh.jobs.get_next_job_number() for our purposes,
+    # but we can't use that function because of https://gitter.im/xonsh/xonsh?at=60e8832d82dd9050f5e0c96a
+    jobs = sum(1 for job in __xonsh__.all_jobs.values() if job['obj'] and job['obj'].poll() is None)
+    duration = round((last_cmd.ts[1] - last_cmd.ts[0]) * 1000) if last_cmd else 0
+    return $(/usr/bin/starship prompt --status=@(status) --jobs=@(jobs) --cmd-duration=@(duration) --right)
+
+
+$PROMPT = starship_prompt
+$RIGHT_PROMPT = starship_rprompt
+$STARSHIP_SHELL = "xonsh"
+$STARSHIP_SESSION_KEY = uuid.uuid4().hex
 # conda deactivate
 @events.autovox_policy
 def dotvenv_policy(path, **_):
