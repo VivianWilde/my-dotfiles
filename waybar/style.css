@@ -43,7 +43,7 @@
     /* background-color: @base1; */
     background-color:  alpha(@base, 0.6);
     font-family: RobotoMono;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 /* Every modules */

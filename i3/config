@@ -35,11 +35,12 @@ exec_always "export BROWSER=/usr/bin/firefox-developer-edition"
 # exec_always "export WLR_NO_HARDWARE_CURSORS=1"
 # exec_always "export QT_QPA_PLATFORM=wayland;xcb"
 exec_always "export QT_QPA_PLATFORMTHEME=qt5ct"
+exec_always "export XDG_CURRENT_DESKTOP=i3wm"
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Fantasma-GTK"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Midnight-Green"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Midnight-Green"'
-exec_always 'gsettings set org.gnome.desktop.interface cursor-theme BreezeX-RosePine'
+exec_always 'gsettings set org.gnome.desktop.interface cursor-theme Dracula-cursors'
 
 exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
 exec_always 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
@@ -372,8 +373,9 @@ exec "synapse -s &"
 #bindsym $mod+v [class="Vivaldi-stable"] focus
 # bindsym $mod+Shift+v exec nextmatch Firefox
 bindsym $mod+v exec firefox-developer-edition
-bindsym $mod+e exec emacsclient -nc --eval '(progn (doom/switch-to-scratch-buffer) (consult-buffer))'
+# bindsym $mod+e exec emacsclient -nc --eval '(progn (doom/switch-to-scratch-buffer) (consult-buffer))'
 # bindsym $mod+e exec ~/bin/eclient
+bindsym $mod+e exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
 bindsym $mod+Shift+x exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
 bindsym $mod+x exec 'emacsclient --eval "(emacs-everywhere)"'
 bindsym $mod+Shift+e exec emacsclient  -nc --eval "(deft-new-file)"
@@ -398,7 +400,7 @@ bindsym Mod1+3 [class="org.wezfurlong.wezterm"] scratchpad show
 # for_window [title="Emacs Everywhere*"] move scratchpad, move position absolute center scratchpad show
 # for_window [title="scratchmacs"] move scratchpad, move position absolute center, scratchpad show
 # bindsym $mod+3 [class="Tilix"] scratchpad show
-bindsym $mod+Shift+s [class="Spotify"] scratchpad show
+bindsym $mod+Shift+s [class="tidal-hifi"] scratchpad show
 bindsym $mod+Shift+d [class="discord"] scratchpad show
 bindsym $mod+n [class="Emacs"] scratchpad show
 bindsym $mod+b [class="Firefox"] scratchpad show

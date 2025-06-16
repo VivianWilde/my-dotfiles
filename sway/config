@@ -76,6 +76,7 @@ exec "systemctl start --user onedrive"
 exec "systemctl start --user mopidy"
 exec "systemctl start --user 5e-api"
 exec "systemctl start --user syncthing"
+exec "~/bin/eclient"
 
 
 
@@ -104,7 +105,7 @@ default_border pixel 2
 
 # border pixel 5
 gaps inner 4
-gaps outer 2
+gaps outer 10
 smart_borders on
 smart_gaps on
 

@@ -93,7 +93,7 @@
 (package! lsp-origami)
 (package! pydoc)
 (package! imenu-list)
-;; (package! igist)
+(package! igist)
 (package! magit-delta)
 (package! rainbow-mode)
 

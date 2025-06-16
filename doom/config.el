@@ -44,7 +44,7 @@
 (setq doom-font (font-spec :family "iMWritingDuo Nerd Font" :size 16))
                                         ; (setq doom-variable-pitch-font (font-spec :family "FairydustB" :size 15))
 ;; (setq doom-variable-pitch-font (font-spec :family "Liberation Serif" :size 15))
-(setq! doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15))
+(setq! doom-variable-pitch-font (font-spec :family "Bona Nova" :size 15))
 
 ;;; Transparency
 (set-frame-parameter nil 'alpha-background 0.98)
