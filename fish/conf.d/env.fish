@@ -23,6 +23,7 @@ if status is-interactive
     export PATH="$HOME/.idris2/bin:$PATH"
     export PATH="$HOME/.yarn/bin:$PATH"
     export PATH="$HOME/drive/work/langs/roc/roc-nightly:$PATH"
+    export PATH="$HOME/.opam/default/bin:$PATH"
 
     export WINEARCH="win64"
     export WINEPATH="/usr/bin"
@@ -42,7 +43,6 @@ if status is-interactive
     export TEXT_AID_TOO_SECRET="HELLO-WORLD"
     export SAVEHIST=1000
     export FOREIGN_ALIASES_SUPPRESS_SKIP_MESSAGE=True
-    # export pacman_program="/usr/bin/powerpill"
 
     # DESI ROOT
     export SCRATCH="$HOME/d/urap/scratch"
@@ -54,5 +54,7 @@ if status is-interactive
 
     export PYTHONPATH="$HOME/drive/work/urap/desiapi/py:$PYTHONPATH"
     export PATH="$HOME/drive/work/urap/desiapi/bin:$PATH"
+    export PATH="$HOME/Downloads/platform-tools:$PATH"
+
 
 end

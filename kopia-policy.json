@@ -1,0 +1,29 @@
+{
+    "files": {
+        "ignore": [
+            ".local",
+            ".cache",
+            "Music",
+            ".cargo",
+            ".rustup",
+            "gPodder",
+            "apps",
+            ".minecraft",
+            ".zoom",
+            ".wine",
+            ".docker",
+            ".cabal",
+            ".npm",
+            ".lunarclient"
+        ],
+        "noParentDotFiles": true,
+        "noParentIgnore": true,
+        "ignoreCacheDirs": true
+    },
+    "scheduling": {
+        "cron": [
+            "0 0 * * 0"
+        ],
+        "runMissed": true
+    }
+}

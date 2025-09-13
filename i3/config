@@ -30,7 +30,7 @@ set $opacity 0.7
 exec_always "export PULSE_LATENCY_MSEC=83"
 exec_always "export PIPEWIRE_LATENCY=1024/48000"
 exec_always "export TERMINAL=wezterm"
-exec_always "export BROWSER=/usr/bin/firefox-developer-edition"
+exec_always "export BROWSER=/usr/bin/vivaldi"
 # Important startup stuff
 # exec_always "export WLR_NO_HARDWARE_CURSORS=1"
 # exec_always "export QT_QPA_PLATFORM=wayland;xcb"
@@ -40,10 +40,12 @@ exec_always "export XDG_CURRENT_DESKTOP=i3wm"
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Fantasma-GTK"'
 # exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Midnight-Green"'
 # exec_always 'gsettings set org.gnome.desktop.interface icon-theme "Midnight-Green"'
-exec_always 'gsettings set org.gnome.desktop.interface cursor-theme Dracula-cursors'
+exec_always 'gsettings set org.gnome.desktop.interface cursor-theme Catppuccin Macchiato Lavender'
+exec_always 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
+exec_always 'export GTK_THEME=Dracula'
 
 exec_always 'gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"'
-exec_always 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
+# exec_always 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
 # exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 # exec --no-startup-id "~/bin/laptop.sh"
 exec_always setxkbmap -option parens:swap_brackets
@@ -253,8 +255,8 @@ set $ws1 "1:Write"
 set $ws2 "2:RPG"
 set $ws3 "3:PL"
 set $ws4 "4:Theory"
-set $ws5 "5:Chores"
-set $ws6 "6:Read"
+set $ws5 "5:RPG2"
+set $ws6 "6:RPG3"
 set $ws7 "7:Tinker"
 set $ws8 "8:PDFs"
 set $ws9 "9:???"
@@ -352,7 +354,7 @@ exec --no-startup-id "feh --bg-scale /home/vivien/Pictures/backgrounds/flondon/f
 # output "*" bg "/home/vivien/backgrounds/squid" fill
 exec --no-startup-id nm-applet
 exec volctl
-exec_always --no-startup-id autotiling-rs
+# exec_always --no-startup-id autotiling-rs
 exec_always --no-startup-id autotiling
 exec_always libinput-gestures -c ~/dotfiles/libinput-gestures.conf
 # exec_always "ulauncher --no-window-shadow --hide-window"
@@ -365,6 +367,7 @@ exec "killall -9 emacs"
 exec "trash ~/.config/emacs/.cache/.emacs.desktop.lock"
 exec "~/.screenlayout/dubai-monitor.sh"
 # exec_always --no-startup-id "cd /home/vivien/apps/5e-srd-api && docker compose up --restart always" # Run the 5e API on startup
+exec --no-startup-id "cd /home/vivien/apps/pihole-local/ && docker compose up -d"
 
 
 exec "synapse -s &"
@@ -372,7 +375,7 @@ exec "synapse -s &"
 # Window focus
 #bindsym $mod+v [class="Vivaldi-stable"] focus
 # bindsym $mod+Shift+v exec nextmatch Firefox
-bindsym $mod+v exec firefox-developer-edition
+bindsym $mod+v exec vivaldi
 # bindsym $mod+e exec emacsclient -nc --eval '(progn (doom/switch-to-scratch-buffer) (consult-buffer))'
 # bindsym $mod+e exec ~/bin/eclient
 bindsym $mod+e exec emacsclient -nc --eval "(doom/switch-to-scratch-buffer)"
@@ -403,7 +406,7 @@ bindsym Mod1+3 [class="org.wezfurlong.wezterm"] scratchpad show
 bindsym $mod+Shift+s [class="tidal-hifi"] scratchpad show
 bindsym $mod+Shift+d [class="discord"] scratchpad show
 bindsym $mod+n [class="Emacs"] scratchpad show
-bindsym $mod+b [class="Firefox"] scratchpad show
+bindsym $mod+b [class="Vivaldi-stable"] scratchpad show
 # bindsym $mod+Shift+d [class="Vivaldi-stable" instance="discord.com__login"] scratchpad show
 
 
@@ -498,43 +501,44 @@ for_window [class="Chromium"] inhibit_idle fullscreen
 # client.focused          #9fcc2e #9fcc2e #F8F8F2 #9fcc2e   #9fcc2e
 
 
-# Rose Pine
-# set primary RosÃ© Pine Moon colorscheme colors
-set $base           #232136
-set $base_trans     #232136a0
-set $surface        #2a273f
-set $overlay        #393552
-set $muted          #6e6a86
-set $subtle         #908caa
-set $text           #e0def4
-set $love           #eb6f92
-set $gold           #f6c177
-set $rose           #ea9a97
-set $pine           #3e8fb0
-set $foam           #9ccfd8
-set $iris           #c4a7e7
-set $highlightlow   #2a283e
-set $highlightmed   #44415a
-set $highlighthigh  #56526e
+set $rosewater #f5e0dc
+set $flamingo #f2cdcd
+set $pink #f5c2e7
+set $mauve #cba6f7
+set $red #f38ba8
+set $maroon #eba0ac
+set $peach #fab387
+set $yellow #f9e2af
+set $green #a6e3a1
+set $teal #94e2d5
+set $sky #89dceb
+set $sapphire #74c7ec
+set $blue #89b4fa
+set $lavender #b4befe
+set $text #cdd6f4
+set $subtext1 #bac2de
+set $subtext0 #a6adc8
+set $overlay2 #9399b2
+set $overlay1 #7f849c
+set $overlay0 #6c7086
+set $surface2 #585b70
+set $surface1 #45475a
+set $surface0 #313244
+set $base #1e1e2e
+set $mantle #181825
+set $crust #11111b
 
-# Teming border and Windows --------------
-# target                 title     bg           text   indicator  border
-client.focused           $rose     $base_trans $text  $rose      $rose
-client.focused_inactive  $text     $base_trans $text  $subtle    $surface
-client.unfocused         $text     $base_trans $text  $overlay   $overlay
-client.urgent            $text     $base_trans $text  $love      $love
-client.placeholder       $base_trans    $base_trans $text  $overlay   $overlay
-client.background        $base_trans
+# target                 title     bg    text   indicator  border
+client.focused           $lavender $base $text  $rosewater $lavender
+client.focused_inactive  $overlay0 $base $text  $rosewater $overlay0
+client.unfocused         $overlay0 $base $text  $rosewater $overlay0
+client.urgent            $peach    $base $peach $overlay0  $peach
+client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
+client.background        $base
 
-
-# Henna
-# client.focused #1abc9c #1abc9c #f8f8f0 #1abc9c #1abc9c
-
-
-#
-# Status Bar:
-#
+# bar
 bar {
+
        status_command i3blocks
        i3bar_command i3bar --transparency
 	   font pango:RobotoSlab, FontAwesome5Free, FontAwesome5Brands, SymbolsNerdFont 10
@@ -546,17 +550,16 @@ bar {
        # separator_symbol "〉〉〉"
        separator_symbol ""
   colors {
-    background #232136a0
-    statusline #E0def4
-    separator #c4a7e7
-    # separator  #bd93f9
+    background         $base
+    statusline         $text
+    focused_statusline $text
+    focused_separator  $base
 
-# focused_workspace  #44475Aa0 #bd93f9 $text
-focused_workspace  #44475Aa0 #3e8fb0 #E5E9F0
-active_workspace   #282A36a0 #44475Aa0 $text
-    inactive_workspace #44475Aa0 #282A36a0 $text
-    urgent_workspace   #FF5555 #FF5555 $text
-    binding_mode       #FF5555 #FF5555 $text
+    # target           border bg        text
+    focused_workspace  $base  $mauve    $crust
+    active_workspace   $base  $surface2 $text
+    inactive_workspace $base  $base     $text
+    urgent_workspace   $base  $red      $crust
   }
 }
 
