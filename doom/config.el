@@ -8,7 +8,7 @@
                                         ;
                                         ;e.g. GPG configuration, email
                                         ; clients, file templates and snippets.
-(setq user-full-name "Vivien Goyal"
+(setq user-full-name "Vivienne Goyal"
       user-mail-address "vivien.goyal@gmail.com")
 
 
@@ -31,7 +31,9 @@
                                         ; available. You can either set `doom-theme' or manually load a theme with the
                                         ; `load-theme' function. This is the default:
                                         ; (setq doom-theme 'doom-magnus)
-(setq doom-theme 'doom-rose-pine-moon)
+;; (setq doom-theme 'doom-rose-pine-moon)
+(setq! catppuccin-flavor 'mocha)
+(setq doom-theme 'catppuccin)
 ;; (setq doom-theme 'doom-nord)
 ;; (setq! doom-nord-brighter-comments t)
 ;; (setq! doom-nord-comment-bg t)
@@ -45,7 +47,6 @@
                                         ; (setq doom-variable-pitch-font (font-spec :family "FairydustB" :size 15))
 ;; (setq doom-variable-pitch-font (font-spec :family "Liberation Serif" :size 15))
 (setq! doom-variable-pitch-font (font-spec :family "Bona Nova" :size 15))
-
 ;;; Transparency
 (set-frame-parameter nil 'alpha-background 0.98)
 (add-to-list 'default-frame-alist '(alpha-background . 0.98))
@@ -120,7 +121,7 @@
 (auto-save-visited-mode 1)
 (global-visual-line-mode 1)
 (global-undo-tree-mode 1)
-;(global-origami-mode 1)
+                                        ;(global-origami-mode 1)
 (global-tree-sitter-mode 1)
 (global-hide-mode-line-mode -1)
 (tab-bar-mode -1)
@@ -163,7 +164,7 @@
 
 (defun hugo-dated-post ()
   (interactive)
-  (easy-hugo-newpost (concat (format-time-string "%Y-%m-%d") ".org"))
+  (easy-hugo-newpost (concat (format-time-string "2350-%m-%d") ".org"))
   )
 
 (defun compile-graphviz ()
@@ -243,6 +244,7 @@ n-[b/p] for walk backward/forward early commands history."
 
 
 ;;;; Org
+
 (defun my/enhanced-annotate ()
   "Open annotations in other window"
   (interactive)
@@ -460,10 +462,14 @@ converted to PDF at the same location."
   (message "Wrote %s" (concat (file-name-sans-extension filename) ".pdf")))
 
 ;;; Package Config
+
+(after! yasnippet
+  (add-to-list 'yas-snippet-dirs "/home/vivien/.config/emacs/.local/straight/build-30.1/yasnippet-snippets/snippets" t))
+
 (after! centaur-tabs
-;; (defun centaur-tabs-buffer-groups ()
-;;   (cond ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
-;;  (t "GROUP")))
+  ;; (defun centaur-tabs-buffer-groups ()
+  ;;   (cond ((string-equal "*" (substring (buffer-name) 0 1)) "Emacs")
+  ;;  (t "GROUP")))
   )
 
 
@@ -529,9 +535,9 @@ converted to PDF at the same location."
   (map! "M-K" #'copy-sexp-as-kill))
 
 (after! easy-hugo
-  (setq! easy-hugo-basedir "~/p/campaigns/bloodletters/blogletters/")
-  (setq! easy-hugo-postdir "content/journal")
-  (setq! easy-hugo-preview-url "http://localhost:1313/blogletters")
+  (setq! easy-hugo-basedir "~/p/campaigns/lodestar/logstar")
+  (setq! easy-hugo-postdir "content/notes")
+  (setq! easy-hugo-preview-url "http://localhost:1313/logstar")
   )
 
 (after! obsidian
@@ -739,7 +745,6 @@ converted to PDF at the same location."
 
 
 
-
   (defun consult-file-externally (file)
     "Open FILE using system's default application."
     (interactive "fOpen: ")
@@ -875,13 +880,11 @@ converted to PDF at the same location."
    :map org-mode-map
    :nvieo
    "M-p" #'org-latex-export-to-pdf) ;; TODO a better one
-
   (set-company-backend! 'org-mode '(:separate company-dabbrev company-ispell))
 
   (add-hook 'org-mode-hook #'org-fold-hide-drawer-all)
   (add-hook! 'org-mode-hook (diff-hl-mode -1))
-                                        (add-hook! 'org-mode-hook (smartparens-strict-mode -1))
-                                        ; (global-org-modern-mode)
+  (add-hook! 'org-mode-hook (smartparens-strict-mode -1))
   (setq org-pretty-entities nil)
 
   (setq org-agenda-files (list "~/docs/Writing/Phone/todo.org"))
@@ -996,10 +999,10 @@ converted to PDF at the same location."
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-latex-listings 'minted)
 
-  (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  ;; (setq org-latex-pdf-process
+  ;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+  ;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+  ;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
   (setq org-src-fontify-natively t))
 
 
@@ -1093,12 +1096,15 @@ converted to PDF at the same location."
 
 
 ;;;; Hooks
+
+
 (add-hook! 'latex-mode-hook (smartparens-mode -1))
 (add-hook! 'doom-init-ui-hook  (defalias 'doom/delete-frame-with-prompt 'delete-frame))
 (add-hook 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
 ;; (add-hook! pdf-tools-enabled-hook #'hide-mode-line-mode)
 
 ;;;; Prose
+(add-hook 'org-mode-hook #'+zen/toggle)
 (add-hook 'text-mode-hook #'auto-save-visited-mode)
 (add-hook 'text-mode-hook #'visual-line-mode)
 (add-hook 'text-mode-hook #'hl-todo-mode)
@@ -1109,6 +1115,10 @@ converted to PDF at the same location."
 ;; (add-hook 'markdown-mode-hook #'auto-save-visited-mode)
 ;; (add-hook 'markdown-mode-hook #'visual-line-mode)
 ;; (add-hook! 'markdown-mode-hook (display-line-numbers-mode -1))
+(after! agda-input
+  (add-hook! 'org-mode-hook (set-input-method "Agda"))
+  (add-hook! 'agda-mode-hook (set-input-method "Agda"))
+  )
 
 ;;;; Programming
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
@@ -1123,6 +1133,7 @@ converted to PDF at the same location."
 (add-hook 'ielm-mode-hook #'eldoc-mode)
 ;; (add-hook! 'emacs-lisp-mode-hook #'sotlisp-mode)
 
+
 (after! smartparens
   (add-hook! 'smartparens-mode-hook #'evil-cleverparens-mode)
   (add-hook 'smartparens-mode-hook #'evil-smartparens-mode)
@@ -1130,6 +1141,10 @@ converted to PDF at the same location."
   (add-hook! 'smartparens-disabled-hook (lambda () (evil-cleverparens-mode -1)))
   (sp-local-pair '(tsx-ts-mode typescript-mode typescript-ts-mode) "<" ">" )
   )
+
+;;;; Proofs
+(add-hook! 'coq-mode-hook (proof-goto-point))
+(add-hook! 'coq-mode-hook (proof-electric-terminator-enable t))
 
 ;;;; Python
 (setq python-shell-interpreter "ipython3"
@@ -1182,6 +1197,9 @@ converted to PDF at the same location."
 
 
 (after! lsp
+  ;; (setq lsp-elixir-ls-server-dir "/usr/lib/elixir-ls"
+  ;;       lsp-elixir-local-server-command "/usr/lib/elixir-ls/language_server.sh")
+
   (custom-set-faces!
     '(lsp-details-face :inherit shadow :foreground "#908caa" :background "#2b2d41" :height 0.8))
 
@@ -1221,6 +1239,7 @@ converted to PDF at the same location."
 (use-package! egme)
 (use-package! brotab)
 (use-package! tarot)
+(use-package! agda-input)
 ;; (use-package! jflex-mode)
 ;; (use-package! cup-java-mode)
 ;; (use-package! inherit-org)
@@ -1305,10 +1324,10 @@ converted to PDF at the same location."
   :desc "Create Todo Item" "t" #'vi/insert-todo
   :desc "Open Todo File" "T" #'vi/open-todo-file
   )
-(:prefix ("r" . "Denote")
- :desc "New Note" "n" #'denote-open-or-create
- :desc "New Note in Subdirectory" "N"  #'denote-create-note-in-subdirectory
- :desc "Link" "l" #'denote-insert-link
- :desc "Search" "s" #'consult-denote-find
- )
+ (:prefix ("r" . "Denote")
+  :desc "New Note" "n" #'denote-open-or-create
+  :desc "New Note in Subdirectory" "N"  #'denote-create-note-in-subdirectory
+  :desc "Link" "l" #'denote-insert-link
+  :desc "Search" "s" #'consult-denote-find
+  )
  )

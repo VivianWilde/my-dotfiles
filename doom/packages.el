@@ -52,6 +52,9 @@
 ;; (package! transient :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440")
 ;; (package! with-editor :pin "391e76a256aeec6b9e4cbd733088f30c677d965b")
 
+;;; Themes
+(package! catppuccin-theme)
+
 ;;; Libraries
 (package! dash)
 (package! s)
@@ -72,7 +75,7 @@
 ;;; Prose/Org
 (package! easy-hugo)
 ;; (package! obsidian)
-;; (package! org-modern)
+(package! rainbow-delimiters)
 (package! pandoc)
 (package! ox-pandoc)
 ;; (package! htmlize)
@@ -96,7 +99,10 @@
 (package! igist)
 (package! magit-delta)
 (package! rainbow-mode)
+(package! yasnippet-snippets)
 
+;;; OPLSS
+;; (package! proof-general)
 ;;; Language Support
 ;; (package! graphviz-dot-mode)
 (package! fish-mode)
@@ -108,7 +114,7 @@
 
 ;;; Random toys
 ;; (package! blink-search)
-;; (package! nov)
+(package! nov)
 (package! tldr)
 (package! info-plus)
 (package! w3m)
@@ -155,7 +161,7 @@
 
 ;;; Etc
 ;; (package! autothemer)
-;; (package! fireplace)
+(package! fireplace)
 (package! denote)
 (package! consult-denote)
 (package! denote-explore)

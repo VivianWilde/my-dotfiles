@@ -63,7 +63,7 @@
        ;; objed             ; text object editing for the innocent
        ;;parinfer          ; turn lisp into python, sort of
        ;; rotate-text       ; cycle region at point between text candidates
-       ;; snippets          ; my elves. They type so I don't have to
+       snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
@@ -100,7 +100,7 @@
        (magit +forge)             ; a git porcelain for Emacs
        ;; make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
-       ;; pdf               ; pdf enhancements
+       pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
@@ -115,9 +115,9 @@
 
        :lang
        ;; (roc +lsp)
-       ;;agda              ; types of types of types of types...
+       (agda +local +tree-sitter)              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
-       ;;cc                 ; C > C++ == 1
+       (cc +lsp +tree-sitter)                 ; C > C++ == 1
        (clojure +lsp +tree-sitter)          ; java with a lisp
        common-lisp       ; if you've seen one lisp, you've seen them all
        coq               ; proofs-as-programs
@@ -137,9 +137,9 @@
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
        ;; (go +lsp)         ; the hipster dialect
-       ;; haskell     ; a language that's lazier than I am
+       (haskell +lsp +tree-sitter)     ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
-       ;; idris             ; a language you can depend on
+       idris             ; a language you can depend on
        (json +lsp +tree-sitter)              ; At least it ain't XML
        ;; (java +lsp +tree-sitter) ; the poster child for carpal tunnel syndrome
        ;; (javascript +tree-sitter)        ; all(hope(abandon(ye(who(enter(here))))))
@@ -152,7 +152,7 @@
        (markdown +tree-sitter +lsp)          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;; nix               ; I hereby declare "nix geht mehr!"
-       ocaml             ; an objective camel
+       (ocaml +lsp +tree-sitter)             ; an objective camel
        (org +jupyter +pandoc +roam2 +noter +reference +journal +present +brain +gnuplot)               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
@@ -182,7 +182,7 @@
        ;;(wanderlust +gmail)
 
        :app
-       ;; calendar
+       calendar
        ;; emms
        everywhere        ; *leave* Emacs!? You must be joking
        ;; irc               ; how neckbeards socialize
