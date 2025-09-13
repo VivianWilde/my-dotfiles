@@ -59,35 +59,15 @@
 (package! dash)
 (package! s)
 (package! ht)
-(package! plz :recipe (:local-repo "~/.config/doom/local-packages/plz" :build t ))
 (package! esxml)
-;; (package! djvu)
 
 
-;;;; Lisp/Scheme
-;;(package! geiser-guile)
-(package! sotlisp)
-(package! highlight-defined)
-(package! lisp-extra-font-lock)
-(package! nameless)
-;; (package! litex-mode)
 
 ;;; Prose/Org
-(package! easy-hugo)
-;; (package! obsidian)
 (package! rainbow-delimiters)
 (package! pandoc)
 (package! ox-pandoc)
-;; (package! htmlize)
-(package! poet-theme)
-;; (package! afternoon-theme)
 (package! olivetti)
-;; (package! org-ml)
-(package! org-pandoc-import
-  :recipe (:host github
-           :repo "tecosaur/org-pandoc-import"
-           :files ("*.el" "filters" "preprocessors")))
-;; (package! default-lang :recipe (:local-repo "~/experiments/elisp/default-lang"))
 
 ;;; Programming
 (package! evil-smartparens)
@@ -96,43 +76,19 @@
 (package! lsp-origami)
 (package! pydoc)
 (package! imenu-list)
-(package! igist)
 (package! magit-delta)
 (package! rainbow-mode)
 (package! yasnippet-snippets)
 
-;;; OPLSS
-;; (package! proof-general)
-;;; Language Support
-;; (package! graphviz-dot-mode)
-(package! fish-mode)
 (package! sphinx-doc)
-
-;; (package! jflex-mode :recipe (:local-repo "~/dotfiles/doom/local-packages/jflex-mode"))
-;; (package! cup-java-mode :recipe (:local-repo "~/dotfiles/doom/local-packages/cup-java-mode"))
 
 
 ;;; Random toys
-;; (package! blink-search)
-(package! nov)
 (package! tldr)
 (package! info-plus)
 (package! w3m)
 (package! fzf)
 (package! zoxide)
-;; (package! dirvish)
-(package! inherit-org :recipe (:host github :repo "chenyanming/inherit-org"))
-;;; Mysteries
-;; (package! lentic)
-;; (package! symbol-overlay)
-
-
-
-;;; Integrations
-(package! brotab :recipe (:local-repo "~/experiments/elisp/brotab"))
-(package! counsel-spotify)
-(package! smudge)
-;; (package! google-this)
 
 ;;; Nano
 ;; (package! nano-emacs :recipe (:type git :host github :repo "rougier/nano-emacs"))
@@ -144,23 +100,7 @@
 
 
 
-;;; D&D
-(package! org-d20)
-(package! org-lookup-dnd :recipe (:local-repo "~/experiments/elisp/org-lookup-dnd" :build nil))
-;; (package! dnd5e-api :recipe (:local-repo "~/experiments/elisp/dnd5e-api" :build t))
-;; (package! button-lock)
-(package! decide)
-(package! egme :recipe (:local-repo "~/.config/doom/local-packages/egme" :build t))
-(package! tarot :recipe (:local-repo "~/.config/doom/local-packages/tarot"))
-
-
-;; Alphapapa Utilities
-(package! prism)
-(package! dogears)
-;; (package! yequake)
-
 ;;; Etc
-;; (package! autothemer)
 (package! fireplace)
 (package! denote)
 (package! consult-denote)

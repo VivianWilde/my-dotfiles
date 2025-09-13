@@ -43,20 +43,16 @@
 (setq! doom-rose-pine-moon-brighter-modeline nil)
 ;; (setq! doom-rose-pine-brighter-text t)
 ;; (setq! doom-rose-pine-brighter-comments t)
-(setq doom-font (font-spec :family "iMWritingDuo Nerd Font" :size 16))
+;; (setq doom-font (font-spec :family "iMWritingDuo Nerd Font" :size 16))
                                         ; (setq doom-variable-pitch-font (font-spec :family "FairydustB" :size 15))
 ;; (setq doom-variable-pitch-font (font-spec :family "Liberation Serif" :size 15))
-(setq! doom-variable-pitch-font (font-spec :family "Bona Nova" :size 15))
+;; (setq! doom-variable-pitch-font (font-spec :family "Bona Nova" :size 15))
 ;;; Transparency
-(set-frame-parameter nil 'alpha-background 0.98)
-(add-to-list 'default-frame-alist '(alpha-background . 0.98))
+;; (set-frame-parameter nil 'alpha-background 0.98)
+;; (add-to-list 'default-frame-alist '(alpha-background . 0.98))
 
 ;;; General Config
 (setq! warning-suppress-types (append warning-suppress-types '((org-element) (org-element-cache) (org-element--cache))))
-(set-popup-rule! (rx bol "*dnd5e-api-results") :size 0.3 :quit t :select t :ttl nil)
-(set-popup-rule! (rx bol "*clyrics") :size 0.3 :quit t :select t :ttl nil)
-(set-popup-rule! (rx bol "*tarot") :size 0.15 :quit t :select t :ttl nil)
-(set-popup-rule! (rx bol "*little-ritual") :size 11 :quit t :select t :ttl nil)
 
 (setq doom-scratch-initial-major-mode 'org-mode)
 
@@ -89,11 +85,7 @@
 
                                         ; (run-at-time "5 min" 300 'recentf-save-list)
 (sp-use-paredit-bindings)
-(add-to-list 'Info-directory-list "/home/rohan/drive/books/nonfic/sicp-texinfo" t)
 (add-to-list 'load-path "/home/vivien/.config/doom/local-packages")
-(add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
-(add-to-list 'auto-mode-alist '("[.]org[.]txt\\'" . org-mode))
-
 
 ;;;; Keybindings
 (map! :i "M-W" #'normal-copy)
@@ -109,7 +101,7 @@
        :desc "Comment Lines" "l" #'comment-line
        :desc "Run Make Task" "m" #'+make/run-last))
 
-(map! :map ctl-x-map "d" #'ranger)
+;; (map! :map ctl-x-map "d" #'ranger)
 
 (map! :leader (:prefix ("h" . "help")
                :desc "TL;DR" "T" #'tldr
@@ -117,7 +109,7 @@
                ))
 
 ;;;; Mode Declarations
-(lisp-extra-font-lock-global-mode 1)
+;; (lisp-extra-font-lock-global-mode 1)
 (auto-save-visited-mode 1)
 (global-visual-line-mode 1)
 (global-undo-tree-mode 1)
@@ -132,9 +124,6 @@
 (smartparens-global-mode 1)
 (show-smartparens-global-mode 1)
 ;; (smartparens-global-strict-mode 1)
-;; (ranger-override-dired-mode t)
-(display-time-mode 1)
-(display-battery-mode 1)
 (global-subword-mode 1)
 
 
@@ -160,20 +149,6 @@
   (interactive)
   (let ((val (read-minibuffer "Opacity: ")))
     (set-frame-parameter nil 'alpha-background val))
-  )
-
-(defun hugo-dated-post ()
-  (interactive)
-  (easy-hugo-newpost (concat (format-time-string "2350-%m-%d") ".org"))
-  )
-
-(defun compile-graphviz ()
-  (interactive)
-  (let* ((path (buffer-file-name))
-         (base (f-base path))
-         )
-    (async-shell-command (format "dot -Tpng %s.dot -o %s.pdf && xdg-open %s.pdf" base base base))
-    )
   )
 
 (defun find-and-replace (from to)
@@ -336,80 +311,6 @@ ARG has the same meaning as for `kill-sexp'."
 
 
 
-;;;; D&D
-(defun dnd-search-srd ()
-  "Search markdown SRD"
-  (interactive)
-  (let (
-        (consult-ripgrep-args "rg --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."))
-
-    (consult-ripgrep "~/drive/rpg/5e/5e-srd-split")))
-
-
-(defun cypher-search-srd ()
-  "Search Restructured Text SRD"
-  (interactive)
-  (let (
-        (consult-ripgrep-args "rg -t rst --glob !*.pdf --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number ."))
-
-    (consult-ripgrep "~/drive/rpg/cypher/cypher-system-reference")))
-
-
-(defun dnd-wild-magic-roll ()
-  "Roll on Wild Magic table, report result in echo area"
-  (interactive)
-  (let* ((l (+ 2 (random 249)))
-         (fname "~/drive/rpg/5e/5e-srd-split/wild-magic.md")
-         (cmd (format "sed '%dq;d' %s" l fname)))
-
-    (message (shell-command-to-string cmd))))
-
-(defun coin-flip ()
-  (interactive)
-  (message (if (zerop (mod (random 10000) 2))
-               "Heads (1)" "Tails (0)")))
-
-
-;;;; Podcasts
-(defun read-podcast-meta (prompt initial)
-  (lambda () (interactive)
-    (let* (
-           (path (concat "/home/vivien/drive/podcast_transcripts/" initial (if (string-empty-p initial) "" "/") ) )
-           (selected (read-file-name prompt path)))
-      (consult-find-file selected)
-      (with-current-buffer (find-buffer-visiting (expand-file-name selected))
-        ))))
-
-(defun search-podcast-meta (initial)
-  (lambda () (interactive) (consult-ripgrep (concat "/home/vivien/drive/podcast_transcripts/" initial))))
-
-(defalias #'read-magnus (read-podcast-meta "Statement: " "magnus_archives"))
-(defalias #'read-podcast (read-podcast-meta "Transcript: " ""))
-(defalias #'read-penumbra (read-podcast-meta "Penumbra: " "penumbra"))
-(defalias #'search-magnus (search-podcast-meta "magnus_archives"))
-(defalias #'search-penumbra (search-podcast-meta "penumbra"))
-(defalias #'search-podcast (search-podcast-meta ""))
-
-;;;; Music
-(defun lyric-search ()
-  "Search for lyrics using Clyrics, display in popup."
-  (interactive)
-  (let* (
-         (lines (s-split "\n" (f-read "/home/vivien/Music/database.txt")))
-         (options (append lyric-history lines))
-         (choice (completing-read "Search for Lyrics: " options (lambda (v) v) nil "" 'lyric-history))
-         (response (shell-command-to-string (concat "clyrics "  "\"" choice "\""))))
-
-    (output-to-screen "*cylrics*" response)))
-
-(defun spotify-lyrics ()
-  (interactive)
-  ;; (output-to-screen "*clyrics*" (shell-command-to-string "playerctl -p spotify -f '{{artist}}: {{title}}' metadata| tee  >(xargs -0 clyrics)"))
-  (output-to-screen "*clyrics*" (shell-command-to-string ""))
-
-  )
-
-
 
 
 
@@ -441,7 +342,6 @@ ARG has the same meaning as for `kill-sexp'."
 ;; (use-package! deft)
 ;;; Misc variable modifications
 ;;;; Frequently update recentf
-(setq smudge-transport 'connect)
 (remove-hook 'kill-emacs-hook #'recentf-cleanup)
 ;; (use-package! brotab)
 (defun pdf-print-buffer-with-faces (&optional filename)
@@ -478,49 +378,6 @@ converted to PDF at the same location."
 (after! consult-denote
   (consult-denote-mode 1))
 
-(after! doom-dashboard
-
-  (setq fancy-splash-image "/home/vivien/.config/doom/assets/resized-one.png")
-
-  (defun one-one-quote ()
-    (let* ((path "/home/vivien/.config/doom/fortunes/one-one")
-           (oddnum (lambda (upper) (+ 1 (* 2 (random (/ upper 2))))))
-           (line (funcall oddnum 51))
-           (cmd (format "sed '%dq;d' %s" line path)))
-
-      (shell-command-to-string cmd)))
-
-  (defun message-one-one ()
-    "Display a One-One quote in the minibuffer"
-    (interactive)
-    (message (one-one-quote)))
-
-  (defun dashboardify (fn)
-    "Call TXTFN, and wrap the result in a func that displays it nicely in doom-dashboard"
-    (lambda () (insert (+doom-dashboard--center (- +doom-dashboard--width 1) (propertize (funcall fn) 'face 'bold-italic 'align 'center))) (insert hard-newline)))
-
-  (defun get-good-fortune ()
-    (let* ((possibles (list "calvin" "discworld" "hitchhiker" "montypython"))
-           (choice (nth (random (length possibles)) possibles))
-           (command (format "fortune %s" choice))
-           (txt (shell-command-to-string command)))
-      txt))
-
-  (defun dashboard-fortune ()
-    (insert (+doom-dashboard--center (- +doom-dashboard--width 1) (get-good-fortune)))
-    (insert hard-newline))
-
-  (setq +doom-dashboard-functions `(
-                                    doom-dashboard-widget-banner
-                                    ,(dashboardify #'one-one-quote)
-                                    ;; ,(dashboardify (lambda () "Audio. Opperior. Vigilo."))
-                                    ;; dashboard-fortune
-                                    doom-dashboard-widget-shortmenu
-                                    doom-dashboard-widget-footer))
-
-  )
-
-
 (after! evil
   (map! :nvieo "C-n" #'next-line)
   (map! :nvieo "C-p" #'previous-line)
@@ -533,20 +390,6 @@ converted to PDF at the same location."
   (map! :map lispy-mode-map "[" #'self-insert-command)
   (map! "M-k" #'kill-sexp)
   (map! "M-K" #'copy-sexp-as-kill))
-
-(after! easy-hugo
-  (setq! easy-hugo-basedir "~/p/campaigns/lodestar/logstar")
-  (setq! easy-hugo-postdir "content/notes")
-  (setq! easy-hugo-preview-url "http://localhost:1313/logstar")
-  )
-
-(after! obsidian
-  (global-obsidian-mode)
-  (obsidian-specify-path "~/p/obsidian")
-  )
-
-
-
 
 (after! vertico
   (setq! vertico-count 5
@@ -675,15 +518,8 @@ converted to PDF at the same location."
 (after! ranger
   (setq! ranger-preview-file nil))
 
-(after! inherit-org
-  (add-hook! 'inherit-org-mode-hook  (org-indent-mode -1))
-  (add-hook! 'inherit-org-mode-hook (lambda () (org-indent-mode -1)))
-  (add-hook! 'inherit-org-mode-hook (setq! org-indent-agentized-buffers nil))
-  (add-hook! 'inherit-org (lambda! () (org-indent-mode -1))))
 
 
-(after! info
-  (add-hook! 'Info-mode-hook 'inherit-org-mode))
 
 ;; (after! helpful (add-hook! 'helpful-mode-hook 'inherit-org-mode))
 (after! w3m
@@ -698,9 +534,7 @@ converted to PDF at the same location."
 
 
 
-(after! savehist
-  (defvar lyric-history '())
-  (add-to-list 'savehist-additional-variables 'lyric-history))
+
 
 (after! consult
   (map!
@@ -784,9 +618,6 @@ converted to PDF at the same location."
         imenu-list-size 0.16))
 
 
-(after! vterm
-  (setq vterm-shell "/bin/fish"))
-
 
 (after! projectile
   (setq projectile-project-root-files-bottom-up
@@ -806,11 +637,7 @@ converted to PDF at the same location."
 ;; (sp-local-pair '(LaTeX-mode) "`" "'")
 ;; (sp-local-pair '(LaTeX-mode) "$" "$")
 
-(after! litex-mode
-  (add-to-list 'litex-latex-functions 'sqrt)
-  (setq litex-math-brackets-end "\\right)"
-        litex-math-brackets-start "\\left("
-        litex-format-float-string "%.1f"))
+
 
 
 (after! undo-tree
@@ -830,14 +657,7 @@ converted to PDF at the same location."
   (setq! writeroom-mode-line t)
   )
 
-(after! book-mode
-  (remove-hook 'python-mode-hook 'book-mode)
-  (remove-hook 'emacs-lisp-mode-hook 'book-mode)
-  (advice-add 'book-mode :after (lambda () (doom-modeline-mode 1) (setq hl-line-range-function nil)))
-  (advice-add 'book-mode-hl-line-range-function :around #'hl)
-  (setq! book-mode-left-margin 7)
-  (setq! book-mode-right-margin 7)
-  )
+
 
 (after! imenu
   (map! :nvieo "C-'" #'imenu-list-smart-toggle)
@@ -857,11 +677,6 @@ converted to PDF at the same location."
 (after! org
 
 
-
-  (let ((base8 "#606F73"))
-    (custom-set-faces!
-      `(org-headline-done :foreground ,base8))
-    )
 
   (setq org-directory "~/org")
   (setq org-startup-indented t)
@@ -907,8 +722,6 @@ converted to PDF at the same location."
 
         :desc "Mark Ring Goto" "&" #'org-mark-ring-goto)
 
-  ;; (use-package! org-pandoc-import)
-
   (setq! org-pandoc-options-for-markdown '((wrap . "none"))))
 (setq! org-pandoc-options-for-markdown_mmd '((wrap . "none")))
 (setq! org-pandoc-options-for-markdown_strict '((wrap . "none")))
@@ -932,31 +745,12 @@ converted to PDF at the same location."
    markdown-hide-markup nil)
 
   ;; (add-hook! 'markdown-mode-hook (setq! markdown-hide-markup nil))
-
-  (let* (
-         (red "#eb6f92")
-         (teal "#3e8fb0")
-         (gold "#f6c177")
-         )
-    (custom-set-faces!
-      `(markdown-header-delimiter-face :foreground "#616161" :height 0.9)
-      `(markdown-header-face-1 :foreground ,gold :weight extra-bold :height 1.6)
-      `(markdown-header-face-2 :foreground ,red :weight extra-bold :height 1.4)
-      `(markdown-header-face-3 :foreground ,teal :weight extra-bold :height 1.2)
-      `(markdown-header-face-4 :foreground ,(doom-lighten gold 0.25) :weight bold :height 1.1)
-      `(markdown-header-face-5 :foreground ,(doom-lighten red 0.25) :weight bold )
-      `(markdown-header-face-6 :foreground ,(doom-lighten teal 0.25) :weight bold )
-      )
-    )
   )
 
 
 (after! json
   (map! :map json-mode-map :localleader
         (:desc "counsel-jq" "q" #'counsel-jq)))
-
-(setq! asm-comment-char 35)
-
 
 (after! ox-latex
   (setq! org-latex-minted-options '(("breaklines"))
@@ -1013,18 +807,6 @@ converted to PDF at the same location."
 
 
 
-(after! org-lookup-dnd
-  (setq!
-   completion-ignore-case t
-   org-lookup-dnd-sources
-   ' (
-      ("/home/vivien/drive/rpg/5e/core/phb.pdf" 1 4 4 t)
-      ("/home/vivien/drive/rpg/5e/core/Monster Manual.pdf" 1 4 4 nil)
-      ("/home/vivien/drive/rpg/5e/core/dmg.pdf" 1 1 1 t)
-      ("/home/vivien/drive/rpg/5e/unofficial/City_and_Wild.pdf" 0 2 2 nil)
-      ("/home/vivien/drive/rpg/5e/expansion/Volo's Guide to Monsters.pdf" 1 1 1 t)
-      ("/home/vivien/drive/rpg/5e/expansion/mordenkainens-tome-of-foes.pdf" 1 1 1 t)
-      ("/home/vivien/drive/rpg/5e/character options/COFSA The Compendium of Forgotten Secrets - Awakening (Abridged).pdf" 0 3 3 t))))
 
 
 (after! geiser
@@ -1065,12 +847,6 @@ converted to PDF at the same location."
 
 ;;; Secrets
 
-(after! counsel-spotify
-  (setq counsel-spotify-client-id "5ce31a3c706e4f1db765a5d064429202"
-        counsel-spotify-client-secret "40b1c9bb956e4dd2aa72287e8b0c4a06"
-        smudge-oauth2-client-id "2be412c6f3014dde8ed52f4b9756757e"
-        smudge-oauth2-client-secret "c29a8c121421479eb46d16d23291efba"))
-
 (after! igist
   (setq! igist-current-user-name "VivianWilde"
          igist-auth-marker 'igist))
@@ -1090,9 +866,7 @@ converted to PDF at the same location."
         :nv "z n" #'origami-show-only-node
         )
   )
-(setq lsp-enable-folding t)
 ;; (use-package! lsp-origami)
-(add-hook 'lsp-after-open-hook #'lsp-origami-try-enable)
 
 
 ;;;; Hooks
@@ -1163,47 +937,9 @@ converted to PDF at the same location."
 
 
                                         ; From Tecosaur, allows LSP to work in source blocks
-(cl-defmacro lsp-org-babel-enable (lang)
-  "Support LANG in org source code block."
-  ;; (setq centaur-lsp 'lsp-mode)
-  (cl-check-type lang string)
-  (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
-         (intern-pre (intern (format "lsp--%s" (symbol-name edit-pre)))))
-    `(progn
-       (defun ,intern-pre (info)
-         (let ((file-name (->> info caddr (alist-get :file))))
-           (unless file-name
-             (setq file-name (make-temp-file "babel-lsp-")))
-           (setq buffer-file-name file-name)
-           (lsp-deferred)))
-       (put ',intern-pre 'function-documentation
-            (format "Enable lsp-mode in the buffer of org source block (%s)."
-                    (upcase ,lang)))
-       (if (fboundp ',edit-pre)
-           (advice-add ',edit-pre :after ',intern-pre)
-         (progn
-           (defun ,edit-pre (info)
-             (,intern-pre info))
-           (put ',edit-pre 'function-documentation
-                (format "Prepare local buffer environment for org source block (%s)."
-                        (upcase ,lang))))))))
-(defvar org-babel-lang-list
-  '("go" "python" "ipython" "bash" "sh" "elixir" "ruby"))
-(dolist (lang org-babel-lang-list)
-  (eval `(lsp-org-babel-enable ,lang)))
-
-;; (with-current-buffer (get-buffer " *Echo Area 0*")                             ; the leading space character is correct
-;;   (setq-local face-remapping-alist '((default (:height 0)))))
 
 
-(after! lsp
-  ;; (setq lsp-elixir-ls-server-dir "/usr/lib/elixir-ls"
-  ;;       lsp-elixir-local-server-command "/usr/lib/elixir-ls/language_server.sh")
 
-  (custom-set-faces!
-    '(lsp-details-face :inherit shadow :foreground "#908caa" :background "#2b2d41" :height 0.8))
-
-  )
 (after! treemacs
   (setq! treemacs-show-cursor t))
 
@@ -1214,13 +950,6 @@ converted to PDF at the same location."
   (add-hook 'nov-mode-hook #'variable-pitch-mode)
   (add-hook 'nov-mode-hook #'visual-line-mode)
   (add-hook 'nov-mode-hook #'visual-fill-column-mode)
-  )
-
-(defun logout-system ()
-  (interactive)
-  (if (yes-or-no-p "Really Log Out?")
-      (shell-command "i3exit logout")
-    )
   )
 
 
@@ -1236,10 +965,10 @@ converted to PDF at the same location."
                                                   (insert item ))))
 
 ;;;; Custom Key Groups
-(use-package! egme)
-(use-package! brotab)
-(use-package! tarot)
-(use-package! agda-input)
+;; (use-package! egme)
+;; (use-package! brotab)
+;; (use-package! tarot)
+;; (use-package! agda-input)
 ;; (use-package! jflex-mode)
 ;; (use-package! cup-java-mode)
 ;; (use-package! inherit-org)
@@ -1248,63 +977,6 @@ converted to PDF at the same location."
 ;; (use-package! egme)
 (map!
  :leader
-
- (:prefix-map ("z" . "Spotify")
-  :desc "Next Track" "l" #'counsel-spotify-next
-  :desc "Previous Track" "h" #'counsel-spotify-previous
-  :desc "Play/Pause" "/" #'counsel-spotify-toggle-play-pause
-  :desc "Playlist" "p" #'counsel-spotify-search-playlist
-  :desc "Album" "a" #'counsel-spotify-search-album
-  :desc "Track" "t" #'counsel-spotify-search-track
-  :desc "Tracks by Album" "A" #'counsel-spotify-search-tracks-by-album
-  :desc "Artist" "m" #'counsel-spotify-search-tracks-by-artist
-  )
-
-
- (:prefix ("d" . "D&D")
-  :desc "Lookup in PDFs" "l" #'org-lookup-dnd-at-point
-  :desc "Lookup in API" "a" #'dnd5e-api-search
-  :desc "Roll d20" "d" #'org-d20-d20
-  :desc "Roll dice" "r" #'org-d20-roll
-  :desc "Lookup in D&D SRD" "s" #'dnd-search-srd
-  :desc "Lookup in Cypher SRD" "v" #'cypher-search-srd
-  :desc "Roll on the Wild Magic table" "w" #'dnd-wild-magic-roll
-  :desc "Flip a Binary Coin" "f" #'coin-flip
-  :desc "Draw a Card" "c" #'draw-card
-  :desc "Draw a Tarot Card" "t" #'draw-tarot
-  :desc "Draw a Major Arcana Card" "m" #'draw-major-arcana
-  :desc "Draw a Minor Arcana Card" "M" #'draw-minor-arcana
-  )
-
- (:prefix ("l" . "Lookup in API")
-  :desc "Monsters" "m m" #'dnd5e-api-search-monsters
-  :desc "Spells" "s" #'dnd5e-api-search-spells
-  :desc "Races" "r a" #'dnd5e-api-search-races
-  :desc "Rules" "r u" #'dnd5e-api-search-rules
-  :desc "Features" "f" #'dnd5e-api-search-features
-  :desc "Traits" "t" #'dnd5e-api-search-traits
-  :desc "Classes" "c l" #'dnd5e-api-search-classes
-  :desc "Equipment" "e" #'dnd5e-api-search-equipment
-  :desc "Languages" "l" #'dnd5e-api-search-languages
-  :desc "Conditions" "c o" #'dnd5e-api-search-conditions
-  :desc "Magic Items" "m i" #'dnd5e-api-search-magic-items
-  :desc "Rule Sections" "r s" #'dnd5e-api-search-rule-sections
-  :desc "Generic" "RET" #'dnd5e-api-search)
-
- (:prefix ("e" . "Emacs GameMaster")
-  :desc "Roll Dice" "r" #'egme-roll-dice
-  :desc "Oracle" "q" #'egme-y-n-oracle
-  :desc "Add NPC" "n" #'egme-add-npc
-  :desc "Delete NPC" "N" #'egme-delete-npc
-  :desc "Add Thread" "t" #'egme-add-thread
-  :desc "Delete Thread" "T" #'egme-delete-thread
-  :desc "Dashboard" "d" #'egme-toggle-dash
-  :desc "Draw Card" "c" #'insert-card
-  :desc "Draw Tarot/Oracle Card" "o" #'insert-tarot
-  :desc "Draw Major Arcana" "m" #'insert-major-arcana
-  :desc "Draw Minor Arcana" "m" #'insert-minor-arcana
-  )
-
  (:prefix ("v" . "Vivien")
   :desc "Display Fortune" "f" #'display-fortune
   :desc "Obsidian Create" "o" #'obsidian-capture
