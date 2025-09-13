@@ -752,52 +752,7 @@ converted to PDF at the same location."
   (map! :map json-mode-map :localleader
         (:desc "counsel-jq" "q" #'counsel-jq)))
 
-(after! ox-latex
-  (setq! org-latex-minted-options '(("breaklines"))
-         )
-  ;; (setq! org-latex-pdf-process "xelatex -shell-escape -interaction nonstopmode %f")
-  (setq! org-latex-pdf-process
-         '("xelatex -interaction nonstopmode %f"
-           "xelatex -interaction nonstopmode %f")) ;; for multiple passes
-  (setq! org-latex-compiler "xelatex")
-  (add-to-list 'org-latex-classes
-               '("extarticle"
-                 "\\documentclass{extarticle}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 
-
-
-  (add-to-list 'org-latex-classes
-               '("mla"
-                 "\\documentclass{mla}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-  (add-to-list 'org-latex-classes
-               '("altacv"
-                 "\\documentclass{altacv}"
-                 ("\\section{%s}" . "\\cvsection*{%s}")
-                 ("\\subsection{%s}" . "\\cvsubsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\cvsubsubsection*{%s}")))
-
-  (add-to-list 'org-latex-classes
-               '("dndbook"
-                 "\\documentclass{extarticle}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-
-
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  (setq org-latex-listings 'minted)
-
-  ;; (setq org-latex-pdf-process
-  ;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-  ;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-  ;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-  (setq org-src-fontify-natively t))
 
 
 
